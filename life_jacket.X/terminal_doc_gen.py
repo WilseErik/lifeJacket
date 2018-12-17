@@ -17,7 +17,7 @@ class Command_doc:
 class Cmd_parser:
     commands = []
     
-    def parse_command_doc(self, filename = "terminal.c"):
+    def parse_command_doc(self, filename = "src\\uart\\terminal.c"):
         start_tag = "/*§"
         end_tag = "*/"
         
@@ -51,14 +51,14 @@ class Cmd_parser:
                 doc += line.strip() + "\\n\\r\\t"
 
     def create_help_function(self):
-        with open("terminal_help.c", 'w') as f:
+        with open("src/uart/terminal_help.c", 'w') as f:
             print("/*", file=f)
             print("This file is an auto generated file.", file=f)
             print("Do not modify its contents manually!", file=f)
             print("*/", file=f)
             print("#include <string.h>", file=f)
             print("#include <stddef.h>", file=f)
-            print("#include \"uart.h\"", file=f)
+            print("#include \"hal/uart.h\"", file=f)
 
             print("void terminal_help(char* in)", file=f)
             print("{", file=f)

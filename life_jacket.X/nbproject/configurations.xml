@@ -51,6 +51,7 @@
         <itemPath>src/hal/gpio.c</itemPath>
         <itemPath>src/hal/spi_hal.c</itemPath>
         <itemPath>src/hal/uart.c</itemPath>
+        <itemPath>src/hal/configuration_bits.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="lora" projectFiles="true">
         <itemPath>src/lora/rfm95w.c</itemPath>
@@ -103,8 +104,8 @@
         </loading>
       </compileType>
       <makeCustomizationType>
-        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
-        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPreStepEnabled>true</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep>python -E terminal_doc_gen.py</makeCustomizationPreStep>
         <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
         <makeCustomizationPostStep></makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>

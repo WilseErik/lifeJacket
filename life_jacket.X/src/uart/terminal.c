@@ -73,6 +73,10 @@ static const char CMD_FLUSH_BUFFER[]    = "flush flash buffer";
  */
 static const char GET_FLASH[]       = "get flash";
 
+/*§
+ Sets one byte in the flash data memory.
+ Paramter: <index in hex format> <one byte value in hex format>
+ */
 static const char SET_FLASH[]       = "set flash";
 
 // =============================================================================
