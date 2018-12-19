@@ -52,6 +52,7 @@ void gpio_init(void)
     LORA_SELECT_ANT_1;
 
     GPS_TIMEPULSE_DIR   = DIR_IN;
+    GPS_ON_OFF_PIN      = 0;
     GPS_ON_OFF_DIR      = DIR_OUT;
     GPS_TXD_DIR         = DIR_OUT;
     GPS_RXD_DIR         = DIR_IN;

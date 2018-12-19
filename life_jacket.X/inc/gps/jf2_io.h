@@ -24,9 +24,19 @@ extern "C" {
 // Global constatants
 // =============================================================================
 
+#define JF2_IO_RTC_STARTUP_TIME_MS  (5000)
+
 // =============================================================================
 // Public function declarations
 // =============================================================================
+
+/**
+ @brief Send an on pulse to the JF2 in order to turn the module on.
+
+*/ 
+void jf2_io_send_on_pulse(void);
+
+
 
 #ifdef  __cplusplus
 }

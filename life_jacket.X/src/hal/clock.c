@@ -9,6 +9,8 @@
 
 #include <xc.h>
 
+#include "status.h"
+
 // =============================================================================
 // Private type definitions
 // =============================================================================
@@ -16,6 +18,8 @@
 // =============================================================================
 // Global variables
 // =============================================================================
+
+volatile uint16_t g_clock_gps_on_event_timeout;
 
 // =============================================================================
 // Private constants
@@ -109,6 +113,16 @@ uint32_t clock_get_msec(void)
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void)
 {
     IFS0bits.T1IF = 0;
+
+    if (g_clock_gps_on_event_timeout)
+    {
+        --g_clock_gps_on_event_timeout;
+
+        if (!g_clock_gps_on_event_timeout)
+        {
+            status_set(STATUS_GPS_ON_EVENT, true);
+        }
+    }
 
     ++current_time;
 }

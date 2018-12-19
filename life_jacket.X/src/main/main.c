@@ -19,6 +19,7 @@
 #include "hal/uart.h"
 #include "uart/terminal.h"
 #include "status.h"
+#include "gps/jf2_io.h"
 #include "gps/jf2_uart.h"
 #include "gps/nmea_queue.h"
 #include "gps/nmea.h"
@@ -68,6 +69,12 @@ int main(int argc, char** argv)
             terminal_handle_uart_event();
         }
 
+        if (status_check(STATUS_GPS_ON_EVENT))
+        {
+            status_clear(STATUS_GPS_ON_EVENT);
+            jf2_io_send_on_pulse();
+        }
+
         if (nmea_queue_size(nmea_rx_queue))
         {
             nmea_handle_message(nmea_queue_peek(nmea_rx_queue));
@@ -107,6 +114,7 @@ static void init(void)
     jf2_uart_init();
     nmea_queue_init(nmea_queue_get_rx_queue());
     nmea_queue_init(nmea_queue_get_tx_queue());
+    g_clock_gps_on_event_timeout = JF2_IO_RTC_STARTUP_TIME_MS;
 }
 
 static void print_start_message(uint16_t reset_reason)

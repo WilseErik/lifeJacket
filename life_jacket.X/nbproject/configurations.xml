@@ -55,6 +55,7 @@
         <itemPath>src/gps/jf2_uart.c</itemPath>
         <itemPath>src/gps/nmea.c</itemPath>
         <itemPath>src/gps/nmea_queue.c</itemPath>
+        <itemPath>src/gps/jf2_io.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="hal" projectFiles="true">
         <itemPath>src/hal/clock.c</itemPath>
