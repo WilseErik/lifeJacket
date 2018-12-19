@@ -54,6 +54,8 @@ void pcm1770_init(void)
     pcm1770_write_register(2, shadow_registers[2]);
     pcm1770_write_register(3, shadow_registers[3]);
     pcm1770_write_register(4, shadow_registers[4]);
+
+    pcm1770_i2s_init();
 }
 
 void pcm1770_write_register(uint8_t address, uint8_t value)

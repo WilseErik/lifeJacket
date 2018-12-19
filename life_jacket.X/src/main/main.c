@@ -17,6 +17,11 @@
 #include "audio/pcm1770.h"
 #include "hal/clock.h"
 #include "hal/uart.h"
+#include "uart/terminal.h"
+#include "status.h"
+#include "gps/jf2_uart.h"
+#include "gps/nmea_queue.h"
+#include "gps/nmea.h"
 
 // =============================================================================
 // Private type definitions
@@ -48,12 +53,26 @@ static void print_start_message(uint16_t reset_reason);
 
 int main(int argc, char** argv)
 {
+    nmea_queue_t nmea_rx_queue;
+
     init();
 
+    nmea_rx_queue = nmea_queue_get_rx_queue();
 
     while (1)
     {
         ClrWdt();
+
+        if (status_check(STATUS_UART_RECEIVE_FLAG))
+        {
+            terminal_handle_uart_event();
+        }
+
+        if (nmea_queue_size(nmea_rx_queue))
+        {
+            nmea_handle_message(nmea_queue_peek(nmea_rx_queue));
+            nmea_queue_pop(nmea_rx_queue);
+        }
     }
 
     return (EXIT_SUCCESS);
@@ -84,6 +103,10 @@ static void init(void)
     accelerometer_init();
     ext_flash_init();
     pcm1770_init();
+
+    jf2_uart_init();
+    nmea_queue_init(nmea_queue_get_rx_queue());
+    nmea_queue_init(nmea_queue_get_tx_queue());
 }
 
 static void print_start_message(uint16_t reset_reason)

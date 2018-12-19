@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=src/acc/accelerometer.c src/acc/lis2hh12_io.c src/audio/ext_flash.c src/audio/pcm1770.c src/hal/clock.c src/hal/flash.c src/hal/gpio.c src/hal/spi_hal.c src/hal/uart.c src/lora/rfm95w.c src/lora/rfm95w_io.c src/main/main.c src/uart/terminal.c src/uart/terminal_help.c src/uart/debug_log.c src/status.c src/hal/configuration_bits.c
+SOURCEFILES_QUOTED_IF_SPACED=src/acc/accelerometer.c src/acc/lis2hh12_io.c src/audio/ext_flash.c src/audio/pcm1770.c src/gps/jf2_uart.c src/hal/clock.c src/hal/flash.c src/hal/gpio.c src/hal/spi_hal.c src/hal/uart.c src/hal/configuration_bits.c src/lora/rfm95w.c src/lora/rfm95w_io.c src/main/main.c src/uart/terminal.c src/uart/terminal_help.c src/uart/debug_log.c src/status.c src/gps/nmea.c src/gps/nmea_queue.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/src/acc/accelerometer.o ${OBJECTDIR}/src/acc/lis2hh12_io.o ${OBJECTDIR}/src/audio/ext_flash.o ${OBJECTDIR}/src/audio/pcm1770.o ${OBJECTDIR}/src/hal/clock.o ${OBJECTDIR}/src/hal/flash.o ${OBJECTDIR}/src/hal/gpio.o ${OBJECTDIR}/src/hal/spi_hal.o ${OBJECTDIR}/src/hal/uart.o ${OBJECTDIR}/src/lora/rfm95w.o ${OBJECTDIR}/src/lora/rfm95w_io.o ${OBJECTDIR}/src/main/main.o ${OBJECTDIR}/src/uart/terminal.o ${OBJECTDIR}/src/uart/terminal_help.o ${OBJECTDIR}/src/uart/debug_log.o ${OBJECTDIR}/src/status.o ${OBJECTDIR}/src/hal/configuration_bits.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/src/acc/accelerometer.o.d ${OBJECTDIR}/src/acc/lis2hh12_io.o.d ${OBJECTDIR}/src/audio/ext_flash.o.d ${OBJECTDIR}/src/audio/pcm1770.o.d ${OBJECTDIR}/src/hal/clock.o.d ${OBJECTDIR}/src/hal/flash.o.d ${OBJECTDIR}/src/hal/gpio.o.d ${OBJECTDIR}/src/hal/spi_hal.o.d ${OBJECTDIR}/src/hal/uart.o.d ${OBJECTDIR}/src/lora/rfm95w.o.d ${OBJECTDIR}/src/lora/rfm95w_io.o.d ${OBJECTDIR}/src/main/main.o.d ${OBJECTDIR}/src/uart/terminal.o.d ${OBJECTDIR}/src/uart/terminal_help.o.d ${OBJECTDIR}/src/uart/debug_log.o.d ${OBJECTDIR}/src/status.o.d ${OBJECTDIR}/src/hal/configuration_bits.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/src/acc/accelerometer.o ${OBJECTDIR}/src/acc/lis2hh12_io.o ${OBJECTDIR}/src/audio/ext_flash.o ${OBJECTDIR}/src/audio/pcm1770.o ${OBJECTDIR}/src/gps/jf2_uart.o ${OBJECTDIR}/src/hal/clock.o ${OBJECTDIR}/src/hal/flash.o ${OBJECTDIR}/src/hal/gpio.o ${OBJECTDIR}/src/hal/spi_hal.o ${OBJECTDIR}/src/hal/uart.o ${OBJECTDIR}/src/hal/configuration_bits.o ${OBJECTDIR}/src/lora/rfm95w.o ${OBJECTDIR}/src/lora/rfm95w_io.o ${OBJECTDIR}/src/main/main.o ${OBJECTDIR}/src/uart/terminal.o ${OBJECTDIR}/src/uart/terminal_help.o ${OBJECTDIR}/src/uart/debug_log.o ${OBJECTDIR}/src/status.o ${OBJECTDIR}/src/gps/nmea.o ${OBJECTDIR}/src/gps/nmea_queue.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/src/acc/accelerometer.o.d ${OBJECTDIR}/src/acc/lis2hh12_io.o.d ${OBJECTDIR}/src/audio/ext_flash.o.d ${OBJECTDIR}/src/audio/pcm1770.o.d ${OBJECTDIR}/src/gps/jf2_uart.o.d ${OBJECTDIR}/src/hal/clock.o.d ${OBJECTDIR}/src/hal/flash.o.d ${OBJECTDIR}/src/hal/gpio.o.d ${OBJECTDIR}/src/hal/spi_hal.o.d ${OBJECTDIR}/src/hal/uart.o.d ${OBJECTDIR}/src/hal/configuration_bits.o.d ${OBJECTDIR}/src/lora/rfm95w.o.d ${OBJECTDIR}/src/lora/rfm95w_io.o.d ${OBJECTDIR}/src/main/main.o.d ${OBJECTDIR}/src/uart/terminal.o.d ${OBJECTDIR}/src/uart/terminal_help.o.d ${OBJECTDIR}/src/uart/debug_log.o.d ${OBJECTDIR}/src/status.o.d ${OBJECTDIR}/src/gps/nmea.o.d ${OBJECTDIR}/src/gps/nmea_queue.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/src/acc/accelerometer.o ${OBJECTDIR}/src/acc/lis2hh12_io.o ${OBJECTDIR}/src/audio/ext_flash.o ${OBJECTDIR}/src/audio/pcm1770.o ${OBJECTDIR}/src/hal/clock.o ${OBJECTDIR}/src/hal/flash.o ${OBJECTDIR}/src/hal/gpio.o ${OBJECTDIR}/src/hal/spi_hal.o ${OBJECTDIR}/src/hal/uart.o ${OBJECTDIR}/src/lora/rfm95w.o ${OBJECTDIR}/src/lora/rfm95w_io.o ${OBJECTDIR}/src/main/main.o ${OBJECTDIR}/src/uart/terminal.o ${OBJECTDIR}/src/uart/terminal_help.o ${OBJECTDIR}/src/uart/debug_log.o ${OBJECTDIR}/src/status.o ${OBJECTDIR}/src/hal/configuration_bits.o
+OBJECTFILES=${OBJECTDIR}/src/acc/accelerometer.o ${OBJECTDIR}/src/acc/lis2hh12_io.o ${OBJECTDIR}/src/audio/ext_flash.o ${OBJECTDIR}/src/audio/pcm1770.o ${OBJECTDIR}/src/gps/jf2_uart.o ${OBJECTDIR}/src/hal/clock.o ${OBJECTDIR}/src/hal/flash.o ${OBJECTDIR}/src/hal/gpio.o ${OBJECTDIR}/src/hal/spi_hal.o ${OBJECTDIR}/src/hal/uart.o ${OBJECTDIR}/src/hal/configuration_bits.o ${OBJECTDIR}/src/lora/rfm95w.o ${OBJECTDIR}/src/lora/rfm95w_io.o ${OBJECTDIR}/src/main/main.o ${OBJECTDIR}/src/uart/terminal.o ${OBJECTDIR}/src/uart/terminal_help.o ${OBJECTDIR}/src/uart/debug_log.o ${OBJECTDIR}/src/status.o ${OBJECTDIR}/src/gps/nmea.o ${OBJECTDIR}/src/gps/nmea_queue.o
 
 # Source Files
-SOURCEFILES=src/acc/accelerometer.c src/acc/lis2hh12_io.c src/audio/ext_flash.c src/audio/pcm1770.c src/hal/clock.c src/hal/flash.c src/hal/gpio.c src/hal/spi_hal.c src/hal/uart.c src/lora/rfm95w.c src/lora/rfm95w_io.c src/main/main.c src/uart/terminal.c src/uart/terminal_help.c src/uart/debug_log.c src/status.c src/hal/configuration_bits.c
+SOURCEFILES=src/acc/accelerometer.c src/acc/lis2hh12_io.c src/audio/ext_flash.c src/audio/pcm1770.c src/gps/jf2_uart.c src/hal/clock.c src/hal/flash.c src/hal/gpio.c src/hal/spi_hal.c src/hal/uart.c src/hal/configuration_bits.c src/lora/rfm95w.c src/lora/rfm95w_io.c src/main/main.c src/uart/terminal.c src/uart/terminal_help.c src/uart/debug_log.c src/status.c src/gps/nmea.c src/gps/nmea_queue.c
 
 
 CFLAGS=
@@ -73,22 +73,14 @@ FIXDEPS=fixDeps
 
 # The following macros may be used in the pre and post step lines
 Device=PIC24FJ128GA204
-ProjectDir="C:\Users\Erik\Dropbox\exjobb\sw\working_dir\lifeJacket\life_jacket.X"
+ProjectDir="D:\Program\Dropbox\Dropbox\exjobb\sw\working_dir\lifeJacket\life_jacket.X"
 ConfName=default
 ImagePath="dist\default\${IMAGE_TYPE}\life_jacket.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}"
 ImageDir="dist\default\${IMAGE_TYPE}"
 ImageName="life_jacket.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}"
-ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-IsDebug="true"
-else
-IsDebug="false"
-endif
 
 .build-conf:  .pre ${BUILD_SUBPROJECTS}
-ifneq ($(INFORMATION_MESSAGE), )
-	@echo $(INFORMATION_MESSAGE)
-endif
-	${MAKE}  -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+	${MAKE} ${MAKE_OPTIONS} -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 
 MP_PROCESSOR_OPTION=24FJ128GA204
 MP_LINKER_FILE_OPTION=,--script=p24FJ128GA204.gld
@@ -96,243 +88,285 @@ MP_LINKER_FILE_OPTION=,--script=p24FJ128GA204.gld
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 ${OBJECTDIR}/src/acc/accelerometer.o: src/acc/accelerometer.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/acc" 
+	@${MKDIR} ${OBJECTDIR}/src/acc 
 	@${RM} ${OBJECTDIR}/src/acc/accelerometer.o.d 
 	@${RM} ${OBJECTDIR}/src/acc/accelerometer.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/acc/accelerometer.c  -o ${OBJECTDIR}/src/acc/accelerometer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/acc/accelerometer.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/acc/accelerometer.c  -o ${OBJECTDIR}/src/acc/accelerometer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/acc/accelerometer.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/acc/accelerometer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/acc/lis2hh12_io.o: src/acc/lis2hh12_io.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/acc" 
+	@${MKDIR} ${OBJECTDIR}/src/acc 
 	@${RM} ${OBJECTDIR}/src/acc/lis2hh12_io.o.d 
 	@${RM} ${OBJECTDIR}/src/acc/lis2hh12_io.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/acc/lis2hh12_io.c  -o ${OBJECTDIR}/src/acc/lis2hh12_io.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/acc/lis2hh12_io.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/acc/lis2hh12_io.c  -o ${OBJECTDIR}/src/acc/lis2hh12_io.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/acc/lis2hh12_io.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/acc/lis2hh12_io.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/audio/ext_flash.o: src/audio/ext_flash.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/audio" 
+	@${MKDIR} ${OBJECTDIR}/src/audio 
 	@${RM} ${OBJECTDIR}/src/audio/ext_flash.o.d 
 	@${RM} ${OBJECTDIR}/src/audio/ext_flash.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/audio/ext_flash.c  -o ${OBJECTDIR}/src/audio/ext_flash.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/audio/ext_flash.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/audio/ext_flash.c  -o ${OBJECTDIR}/src/audio/ext_flash.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/audio/ext_flash.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/audio/ext_flash.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/audio/pcm1770.o: src/audio/pcm1770.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/audio" 
+	@${MKDIR} ${OBJECTDIR}/src/audio 
 	@${RM} ${OBJECTDIR}/src/audio/pcm1770.o.d 
 	@${RM} ${OBJECTDIR}/src/audio/pcm1770.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/audio/pcm1770.c  -o ${OBJECTDIR}/src/audio/pcm1770.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/audio/pcm1770.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/audio/pcm1770.c  -o ${OBJECTDIR}/src/audio/pcm1770.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/audio/pcm1770.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/audio/pcm1770.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/src/gps/jf2_uart.o: src/gps/jf2_uart.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/src/gps 
+	@${RM} ${OBJECTDIR}/src/gps/jf2_uart.o.d 
+	@${RM} ${OBJECTDIR}/src/gps/jf2_uart.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/gps/jf2_uart.c  -o ${OBJECTDIR}/src/gps/jf2_uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/gps/jf2_uart.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/gps/jf2_uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 ${OBJECTDIR}/src/hal/clock.o: src/hal/clock.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/clock.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/clock.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/clock.c  -o ${OBJECTDIR}/src/hal/clock.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/clock.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/clock.c  -o ${OBJECTDIR}/src/hal/clock.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/clock.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/clock.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/hal/flash.o: src/hal/flash.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/flash.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/flash.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/flash.c  -o ${OBJECTDIR}/src/hal/flash.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/flash.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/flash.c  -o ${OBJECTDIR}/src/hal/flash.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/flash.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/flash.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/hal/gpio.o: src/hal/gpio.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/gpio.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/gpio.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/gpio.c  -o ${OBJECTDIR}/src/hal/gpio.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/gpio.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/gpio.c  -o ${OBJECTDIR}/src/hal/gpio.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/gpio.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/gpio.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/hal/spi_hal.o: src/hal/spi_hal.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/spi_hal.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/spi_hal.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/spi_hal.c  -o ${OBJECTDIR}/src/hal/spi_hal.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/spi_hal.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/spi_hal.c  -o ${OBJECTDIR}/src/hal/spi_hal.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/spi_hal.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/spi_hal.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/hal/uart.o: src/hal/uart.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/uart.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/uart.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/uart.c  -o ${OBJECTDIR}/src/hal/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/uart.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/uart.c  -o ${OBJECTDIR}/src/hal/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/uart.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/src/hal/configuration_bits.o: src/hal/configuration_bits.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/src/hal 
+	@${RM} ${OBJECTDIR}/src/hal/configuration_bits.o.d 
+	@${RM} ${OBJECTDIR}/src/hal/configuration_bits.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/configuration_bits.c  -o ${OBJECTDIR}/src/hal/configuration_bits.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/configuration_bits.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/hal/configuration_bits.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 ${OBJECTDIR}/src/lora/rfm95w.o: src/lora/rfm95w.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/lora" 
+	@${MKDIR} ${OBJECTDIR}/src/lora 
 	@${RM} ${OBJECTDIR}/src/lora/rfm95w.o.d 
 	@${RM} ${OBJECTDIR}/src/lora/rfm95w.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/rfm95w.c  -o ${OBJECTDIR}/src/lora/rfm95w.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/rfm95w.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/rfm95w.c  -o ${OBJECTDIR}/src/lora/rfm95w.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/rfm95w.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/lora/rfm95w.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/lora/rfm95w_io.o: src/lora/rfm95w_io.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/lora" 
+	@${MKDIR} ${OBJECTDIR}/src/lora 
 	@${RM} ${OBJECTDIR}/src/lora/rfm95w_io.o.d 
 	@${RM} ${OBJECTDIR}/src/lora/rfm95w_io.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/rfm95w_io.c  -o ${OBJECTDIR}/src/lora/rfm95w_io.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/rfm95w_io.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/rfm95w_io.c  -o ${OBJECTDIR}/src/lora/rfm95w_io.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/rfm95w_io.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/lora/rfm95w_io.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/main/main.o: src/main/main.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/main" 
+	@${MKDIR} ${OBJECTDIR}/src/main 
 	@${RM} ${OBJECTDIR}/src/main/main.o.d 
 	@${RM} ${OBJECTDIR}/src/main/main.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/main/main.c  -o ${OBJECTDIR}/src/main/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/main/main.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/main/main.c  -o ${OBJECTDIR}/src/main/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/main/main.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/main/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/uart/terminal.o: src/uart/terminal.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/uart" 
+	@${MKDIR} ${OBJECTDIR}/src/uart 
 	@${RM} ${OBJECTDIR}/src/uart/terminal.o.d 
 	@${RM} ${OBJECTDIR}/src/uart/terminal.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/terminal.c  -o ${OBJECTDIR}/src/uart/terminal.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/terminal.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/terminal.c  -o ${OBJECTDIR}/src/uart/terminal.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/terminal.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/uart/terminal.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/uart/terminal_help.o: src/uart/terminal_help.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/uart" 
+	@${MKDIR} ${OBJECTDIR}/src/uart 
 	@${RM} ${OBJECTDIR}/src/uart/terminal_help.o.d 
 	@${RM} ${OBJECTDIR}/src/uart/terminal_help.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/terminal_help.c  -o ${OBJECTDIR}/src/uart/terminal_help.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/terminal_help.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/terminal_help.c  -o ${OBJECTDIR}/src/uart/terminal_help.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/terminal_help.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/uart/terminal_help.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/uart/debug_log.o: src/uart/debug_log.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/uart" 
+	@${MKDIR} ${OBJECTDIR}/src/uart 
 	@${RM} ${OBJECTDIR}/src/uart/debug_log.o.d 
 	@${RM} ${OBJECTDIR}/src/uart/debug_log.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/debug_log.c  -o ${OBJECTDIR}/src/uart/debug_log.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/debug_log.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/debug_log.c  -o ${OBJECTDIR}/src/uart/debug_log.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/debug_log.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/uart/debug_log.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/status.o: src/status.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src" 
+	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/status.o.d 
 	@${RM} ${OBJECTDIR}/src/status.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/status.c  -o ${OBJECTDIR}/src/status.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/status.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/status.c  -o ${OBJECTDIR}/src/status.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/status.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/status.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/src/hal/configuration_bits.o: src/hal/configuration_bits.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
-	@${RM} ${OBJECTDIR}/src/hal/configuration_bits.o.d 
-	@${RM} ${OBJECTDIR}/src/hal/configuration_bits.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/configuration_bits.c  -o ${OBJECTDIR}/src/hal/configuration_bits.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/configuration_bits.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
-	@${FIXDEPS} "${OBJECTDIR}/src/hal/configuration_bits.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+${OBJECTDIR}/src/gps/nmea.o: src/gps/nmea.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/src/gps 
+	@${RM} ${OBJECTDIR}/src/gps/nmea.o.d 
+	@${RM} ${OBJECTDIR}/src/gps/nmea.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/gps/nmea.c  -o ${OBJECTDIR}/src/gps/nmea.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/gps/nmea.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/gps/nmea.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/src/gps/nmea_queue.o: src/gps/nmea_queue.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/src/gps 
+	@${RM} ${OBJECTDIR}/src/gps/nmea_queue.o.d 
+	@${RM} ${OBJECTDIR}/src/gps/nmea_queue.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/gps/nmea_queue.c  -o ${OBJECTDIR}/src/gps/nmea_queue.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/gps/nmea_queue.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/gps/nmea_queue.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
 ${OBJECTDIR}/src/acc/accelerometer.o: src/acc/accelerometer.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/acc" 
+	@${MKDIR} ${OBJECTDIR}/src/acc 
 	@${RM} ${OBJECTDIR}/src/acc/accelerometer.o.d 
 	@${RM} ${OBJECTDIR}/src/acc/accelerometer.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/acc/accelerometer.c  -o ${OBJECTDIR}/src/acc/accelerometer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/acc/accelerometer.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/acc/accelerometer.c  -o ${OBJECTDIR}/src/acc/accelerometer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/acc/accelerometer.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/acc/accelerometer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/acc/lis2hh12_io.o: src/acc/lis2hh12_io.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/acc" 
+	@${MKDIR} ${OBJECTDIR}/src/acc 
 	@${RM} ${OBJECTDIR}/src/acc/lis2hh12_io.o.d 
 	@${RM} ${OBJECTDIR}/src/acc/lis2hh12_io.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/acc/lis2hh12_io.c  -o ${OBJECTDIR}/src/acc/lis2hh12_io.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/acc/lis2hh12_io.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/acc/lis2hh12_io.c  -o ${OBJECTDIR}/src/acc/lis2hh12_io.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/acc/lis2hh12_io.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/acc/lis2hh12_io.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/audio/ext_flash.o: src/audio/ext_flash.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/audio" 
+	@${MKDIR} ${OBJECTDIR}/src/audio 
 	@${RM} ${OBJECTDIR}/src/audio/ext_flash.o.d 
 	@${RM} ${OBJECTDIR}/src/audio/ext_flash.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/audio/ext_flash.c  -o ${OBJECTDIR}/src/audio/ext_flash.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/audio/ext_flash.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/audio/ext_flash.c  -o ${OBJECTDIR}/src/audio/ext_flash.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/audio/ext_flash.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/audio/ext_flash.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/audio/pcm1770.o: src/audio/pcm1770.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/audio" 
+	@${MKDIR} ${OBJECTDIR}/src/audio 
 	@${RM} ${OBJECTDIR}/src/audio/pcm1770.o.d 
 	@${RM} ${OBJECTDIR}/src/audio/pcm1770.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/audio/pcm1770.c  -o ${OBJECTDIR}/src/audio/pcm1770.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/audio/pcm1770.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/audio/pcm1770.c  -o ${OBJECTDIR}/src/audio/pcm1770.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/audio/pcm1770.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/audio/pcm1770.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/src/gps/jf2_uart.o: src/gps/jf2_uart.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/src/gps 
+	@${RM} ${OBJECTDIR}/src/gps/jf2_uart.o.d 
+	@${RM} ${OBJECTDIR}/src/gps/jf2_uart.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/gps/jf2_uart.c  -o ${OBJECTDIR}/src/gps/jf2_uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/gps/jf2_uart.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/gps/jf2_uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 ${OBJECTDIR}/src/hal/clock.o: src/hal/clock.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/clock.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/clock.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/clock.c  -o ${OBJECTDIR}/src/hal/clock.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/clock.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/clock.c  -o ${OBJECTDIR}/src/hal/clock.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/clock.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/clock.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/hal/flash.o: src/hal/flash.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/flash.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/flash.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/flash.c  -o ${OBJECTDIR}/src/hal/flash.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/flash.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/flash.c  -o ${OBJECTDIR}/src/hal/flash.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/flash.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/flash.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/hal/gpio.o: src/hal/gpio.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/gpio.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/gpio.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/gpio.c  -o ${OBJECTDIR}/src/hal/gpio.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/gpio.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/gpio.c  -o ${OBJECTDIR}/src/hal/gpio.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/gpio.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/gpio.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/hal/spi_hal.o: src/hal/spi_hal.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/spi_hal.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/spi_hal.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/spi_hal.c  -o ${OBJECTDIR}/src/hal/spi_hal.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/spi_hal.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/spi_hal.c  -o ${OBJECTDIR}/src/hal/spi_hal.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/spi_hal.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/spi_hal.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/hal/uart.o: src/hal/uart.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
+	@${MKDIR} ${OBJECTDIR}/src/hal 
 	@${RM} ${OBJECTDIR}/src/hal/uart.o.d 
 	@${RM} ${OBJECTDIR}/src/hal/uart.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/uart.c  -o ${OBJECTDIR}/src/hal/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/uart.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/uart.c  -o ${OBJECTDIR}/src/hal/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/uart.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/hal/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/src/hal/configuration_bits.o: src/hal/configuration_bits.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/src/hal 
+	@${RM} ${OBJECTDIR}/src/hal/configuration_bits.o.d 
+	@${RM} ${OBJECTDIR}/src/hal/configuration_bits.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/configuration_bits.c  -o ${OBJECTDIR}/src/hal/configuration_bits.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/configuration_bits.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/hal/configuration_bits.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 ${OBJECTDIR}/src/lora/rfm95w.o: src/lora/rfm95w.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/lora" 
+	@${MKDIR} ${OBJECTDIR}/src/lora 
 	@${RM} ${OBJECTDIR}/src/lora/rfm95w.o.d 
 	@${RM} ${OBJECTDIR}/src/lora/rfm95w.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/rfm95w.c  -o ${OBJECTDIR}/src/lora/rfm95w.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/rfm95w.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/rfm95w.c  -o ${OBJECTDIR}/src/lora/rfm95w.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/rfm95w.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/lora/rfm95w.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/lora/rfm95w_io.o: src/lora/rfm95w_io.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/lora" 
+	@${MKDIR} ${OBJECTDIR}/src/lora 
 	@${RM} ${OBJECTDIR}/src/lora/rfm95w_io.o.d 
 	@${RM} ${OBJECTDIR}/src/lora/rfm95w_io.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/rfm95w_io.c  -o ${OBJECTDIR}/src/lora/rfm95w_io.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/rfm95w_io.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/rfm95w_io.c  -o ${OBJECTDIR}/src/lora/rfm95w_io.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/rfm95w_io.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/lora/rfm95w_io.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/main/main.o: src/main/main.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/main" 
+	@${MKDIR} ${OBJECTDIR}/src/main 
 	@${RM} ${OBJECTDIR}/src/main/main.o.d 
 	@${RM} ${OBJECTDIR}/src/main/main.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/main/main.c  -o ${OBJECTDIR}/src/main/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/main/main.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/main/main.c  -o ${OBJECTDIR}/src/main/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/main/main.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/main/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/uart/terminal.o: src/uart/terminal.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/uart" 
+	@${MKDIR} ${OBJECTDIR}/src/uart 
 	@${RM} ${OBJECTDIR}/src/uart/terminal.o.d 
 	@${RM} ${OBJECTDIR}/src/uart/terminal.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/terminal.c  -o ${OBJECTDIR}/src/uart/terminal.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/terminal.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/terminal.c  -o ${OBJECTDIR}/src/uart/terminal.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/terminal.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/uart/terminal.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/uart/terminal_help.o: src/uart/terminal_help.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/uart" 
+	@${MKDIR} ${OBJECTDIR}/src/uart 
 	@${RM} ${OBJECTDIR}/src/uart/terminal_help.o.d 
 	@${RM} ${OBJECTDIR}/src/uart/terminal_help.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/terminal_help.c  -o ${OBJECTDIR}/src/uart/terminal_help.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/terminal_help.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/terminal_help.c  -o ${OBJECTDIR}/src/uart/terminal_help.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/terminal_help.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/uart/terminal_help.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/uart/debug_log.o: src/uart/debug_log.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/uart" 
+	@${MKDIR} ${OBJECTDIR}/src/uart 
 	@${RM} ${OBJECTDIR}/src/uart/debug_log.o.d 
 	@${RM} ${OBJECTDIR}/src/uart/debug_log.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/debug_log.c  -o ${OBJECTDIR}/src/uart/debug_log.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/debug_log.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/uart/debug_log.c  -o ${OBJECTDIR}/src/uart/debug_log.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/uart/debug_log.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/uart/debug_log.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/src/status.o: src/status.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src" 
+	@${MKDIR} ${OBJECTDIR}/src 
 	@${RM} ${OBJECTDIR}/src/status.o.d 
 	@${RM} ${OBJECTDIR}/src/status.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/status.c  -o ${OBJECTDIR}/src/status.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/status.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/status.c  -o ${OBJECTDIR}/src/status.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/status.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/status.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/src/hal/configuration_bits.o: src/hal/configuration_bits.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src/hal" 
-	@${RM} ${OBJECTDIR}/src/hal/configuration_bits.o.d 
-	@${RM} ${OBJECTDIR}/src/hal/configuration_bits.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  src/hal/configuration_bits.c  -o ${OBJECTDIR}/src/hal/configuration_bits.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/hal/configuration_bits.o.d"      -mno-eds-warn  -g -omf=elf -I"inc" -I"inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
-	@${FIXDEPS} "${OBJECTDIR}/src/hal/configuration_bits.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+${OBJECTDIR}/src/gps/nmea.o: src/gps/nmea.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/src/gps 
+	@${RM} ${OBJECTDIR}/src/gps/nmea.o.d 
+	@${RM} ${OBJECTDIR}/src/gps/nmea.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/gps/nmea.c  -o ${OBJECTDIR}/src/gps/nmea.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/gps/nmea.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/gps/nmea.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/src/gps/nmea_queue.o: src/gps/nmea_queue.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/src/gps 
+	@${RM} ${OBJECTDIR}/src/gps/nmea_queue.o.d 
+	@${RM} ${OBJECTDIR}/src/gps/nmea_queue.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/gps/nmea_queue.c  -o ${OBJECTDIR}/src/gps/nmea_queue.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/gps/nmea_queue.o.d"      -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/gps/nmea_queue.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 
@@ -353,13 +387,13 @@ endif
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CC} $(MP_EXTRA_LD_PRE)  -o dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf -I"inc" -I"inc"  -mreserve=data@0x800:0x81B -mreserve=data@0x81C:0x81D -mreserve=data@0x81E:0x81F -mreserve=data@0x820:0x821 -mreserve=data@0x822:0x823 -mreserve=data@0x824:0x827 -mreserve=data@0x82A:0x84F   -Wl,--local-stack,--defsym=__MPLAB_BUILD=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_PK3=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem$(MP_EXTRA_LD_POST) 
+	${MP_CC} $(MP_EXTRA_LD_PRE)  -o dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -omf=elf  -mreserve=data@0x800:0x81B -mreserve=data@0x81C:0x81D -mreserve=data@0x81E:0x81F -mreserve=data@0x820:0x821 -mreserve=data@0x822:0x823 -mreserve=data@0x824:0x827 -mreserve=data@0x82A:0x84F   -Wl,--defsym=__MPLAB_BUILD=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_PK3=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem$(MP_EXTRA_LD_POST) 
 	
 else
 dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CC} $(MP_EXTRA_LD_PRE)  -o dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -omf=elf -I"inc" -I"inc" -Wl,--local-stack,--defsym=__MPLAB_BUILD=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem$(MP_EXTRA_LD_POST) 
-	${MP_CC_DIR}\\xc16-bin2hex dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} -a  -omf=elf  
+	${MP_CC} $(MP_EXTRA_LD_PRE)  -o dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -omf=elf -Wl,--defsym=__MPLAB_BUILD=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem$(MP_EXTRA_LD_POST) 
+	${MP_CC_DIR}\\xc16-bin2hex dist/${CND_CONF}/${IMAGE_TYPE}/life_jacket.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} -a  -omf=elf 
 	
 endif
 
