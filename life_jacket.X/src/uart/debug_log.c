@@ -49,7 +49,7 @@ void debug_log_append_line(char * line)
             (uint16_t)clock_get_msec(),
             line);
     
-    uart_write_string(line);
+    uart_write_string(line_buffer);
 }
 
 // =============================================================================
