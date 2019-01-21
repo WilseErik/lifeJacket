@@ -79,7 +79,7 @@ extern "C" {
 
 #define GPS_RXD_PIN                 PORTBbits.RB14
 #define GPS_RXD_DIR                 TRISBbits.TRISB14
-#define GPS_RXD_PPS_REG             RPINR19bits.U2RXR
+#define GPS_RXD_PPS_REG             RPINR18bits.U1RXR
 #define GPS_RXD_RP_PIN              (14)
 
 #define GPS_ANT_SEL1_PIN            PORTAbits.RA9
@@ -164,7 +164,7 @@ extern "C" {
 //
 #define DEBUG_UART_RX_PIN           PORTBbits.PORTB2
 #define DEBUG_UART_RX_DIR           TRISBbits.TRISB2
-#define DEBUG_UART_RX_PPS_REG       RPINR18bits.U1RXR
+#define DEBUG_UART_RX_PPS_REG       RPINR19bits.U2RXR
 #define DEBUG_UART_RX_RP_PIN        (2)
 
 #define DEBUG_UART_TX_PIN           LATBbits.LATB3
