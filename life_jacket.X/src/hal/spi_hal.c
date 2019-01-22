@@ -12,6 +12,8 @@
 #include "hal/gpio.h"
 #include "hal/clock.h"
 
+#include "uart/debug_log.h"
+
 // =============================================================================
 // Private type definitions
 // =============================================================================
@@ -105,12 +107,12 @@ uint16_t spi_hal_tranceive16(uint16_t v)
 
 	spi_hal_cs_on();
 
-        SPI1BUFH = 0;
+    SPI1BUFH = 0;
 	SPI1BUFL = v;
 
-	while (!SPI1STATLbits.SPIRBF) {;}
+	while (SPI1STATLbits.SPIRBE) {;}
 
-        read_value = SPI1BUFH;
+    read_value = SPI1BUFH;
 	read_value = SPI1BUFL;
 
 	spi_hal_cs_off();
@@ -125,7 +127,7 @@ uint8_t spi_hal_tranceive8(uint8_t v)
     SPI1BUFH = 0;
     SPI1BUFL = v;
 
-    while (!SPI1STATLbits.SPIRBF) {;}
+    while (SPI1STATLbits.SPIRBE) {;}
 
     read_value = SPI1BUFH;
     read_value = SPI1BUFL;
@@ -239,7 +241,7 @@ static void spi_hal_setup_for_mx25r6435f(void)
     SPI1CON1Lbits.MODE32 = 0;   // 8 bit mode
     SPI1CON1Lbits.MODE16 = 0;   // 8 bit mode
     SPI1CON1Lbits.CKP = 0;      // Clock idle low
-    SPI1CON1Lbits.CKE = 0;      // Transmit at idle to active clk transition
+    SPI1CON1Lbits.CKE = 1;      // Transmit at active to idle clk transition
     SPI1CON1Lbits.MSTEN = 1;    // Master mode
     SPI1CON1Lbits.ENHBUF = 1;   // Use enhanced buffer mode
 

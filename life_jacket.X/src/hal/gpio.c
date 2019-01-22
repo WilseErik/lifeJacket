@@ -54,6 +54,7 @@ void gpio_init(void)
     GPS_TIMEPULSE_DIR   = DIR_IN;
     GPS_ON_OFF_PIN      = 0;
     GPS_ON_OFF_DIR      = DIR_OUT;
+    GPS_ON_OFF_PIN      = 0;
     GPS_TXD_DIR         = DIR_OUT;
     GPS_RXD_DIR         = DIR_IN;
     GPS_ANT_SEL1_DIR    = DIR_OUT;
@@ -76,6 +77,9 @@ void gpio_init(void)
 
     ACC_N_CS_DIR        = DIR_OUT;
     ACC_CS_OFF;
+
+    FLASH_N_CS_DIR      = DIR_OUT;
+    FLASH_CS_OFF;
 
     SPI_CLK_DIR         = DIR_OUT;
     SPI_MOSI_DIR        = DIR_OUT;

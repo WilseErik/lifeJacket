@@ -43,8 +43,6 @@ static void pcm1770_i2s_init(void);
 
 void pcm1770_init(void)
 {
-    PCM1770_N_PD_PIN = 1;
-
     shadow_registers[1] = 0x3F;
     shadow_registers[2] = 0x3F;
     shadow_registers[3] = 0x00;
@@ -56,6 +54,8 @@ void pcm1770_init(void)
     pcm1770_write_register(4, shadow_registers[4]);
 
     pcm1770_i2s_init();
+
+    PCM1770_N_PD_PIN = 1;
 }
 
 void pcm1770_write_register(uint8_t address, uint8_t value)
