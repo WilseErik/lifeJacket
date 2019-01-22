@@ -6,6 +6,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #include <xc.h>
 
@@ -35,7 +36,7 @@ static const uint8_t RFM95W_REG_INIT_TABLE[][2] =
 
 };
 
-static const uint8_t RFM95W_SILICON_VERSION = 0x11;
+static const uint8_t RFM95W_SILICON_VERSION = 0x12;
 
 
 /*
