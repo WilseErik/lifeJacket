@@ -18,11 +18,13 @@
 #include "hal/clock.h"
 #include "hal/uart.h"
 #include "uart/terminal.h"
+#include "build_number.h"
 #include "status.h"
 #include "gps/jf2_io.h"
 #include "gps/jf2_uart.h"
 #include "gps/nmea_queue.h"
 #include "gps/nmea.h"
+#include "uart/debug_log.h"
 
 // =============================================================================
 // Private type definitions
@@ -67,11 +69,13 @@ int main(int argc, char** argv)
         if (status_check(STATUS_UART_RECEIVE_FLAG))
         {
             terminal_handle_uart_event();
+            status_clear(STATUS_UART_RECEIVE_FLAG);
         }
 
         if (status_check(STATUS_GPS_ON_EVENT))
         {
             status_clear(STATUS_GPS_ON_EVENT);
+            debug_log_append_line("Sending GPS on pulse");
             jf2_io_send_on_pulse();
         }
 
@@ -108,7 +112,9 @@ static void init(void)
 
     rfm95w_init();
     accelerometer_init();
+    while (!uart_is_write_buffer_empty()){;}
     ext_flash_init();
+
     pcm1770_init();
 
     jf2_uart_init();
@@ -121,7 +127,9 @@ static void print_start_message(uint16_t reset_reason)
 {
     uart_write_string("\r\n\r\n");
     uart_write_string("Life jacket tracker V1.0.0\r\n");
-    uart_write_string("Last compiled ");
+    uart_write_string("Build number: ");
+    uart_write_string(BUILD_NUMBER_STRING);
+    uart_write_string("\r\nLast compiled ");
     uart_write_string(__DATE__);
     uart_write_string(", ");
     uart_write_string(__TIME__);
