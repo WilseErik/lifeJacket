@@ -63,7 +63,7 @@ void jf2_io_send_on_pulse(void)
     {
         uint32_t start_time = clock_get_msec();
 
-        while (clock_get_msec() != start_time)
+        while (clock_get_msec() == start_time)
         {
             ;
         }

@@ -21,6 +21,8 @@
 #include "hal/clock.h"
 #include "status.h"
 
+#include "hal/uart.h"
+
 // =============================================================================
 // Private type definitions
 // =============================================================================
@@ -35,7 +37,7 @@
 #define BUFFER_SIZE     ((uint16_t)256)
 #define BACKSPACE_CHAR  (0x08)
 
-static const uint32_t UART_BAUD = 4800;
+static const uint32_t UART_BAUD = 9600;
 static const uint32_t PERIPHERAL_FREQ = CLOCK_HAL_PCBCLOCK_FREQ;
 
 static const uint8_t COMMAND_START_CHAR = '$';
@@ -106,8 +108,9 @@ void jf2_uart_init()
 
         U1BRG = (PERIPHERAL_FREQ / UART_BAUD) / 16 - 1;
 
-        U1MODEbits.PDSEL = 0; // 8 bit data, no parity
-        U1MODEbits.STSEL = 0; // 1 Stop bit
+        U1MODEbits.PDSEL = 0;  // 8 bit data, no parity
+        U1MODEbits.STSEL = 0;  // 1 Stop bit
+        U1MODEbits.URXINV = 1; // Idle state low
 
         // Interrupt is generated when any character is transfered to the
         // Transmit Shift Register and the hw transmit buffer is empty.
@@ -305,6 +308,8 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(void)
     while (U1STAbits.URXDA)
     {
         received = U1RXREG;
+
+        uart_write(received);
 
         if (!receiving_message &&
             (COMMAND_START_CHAR == received))
