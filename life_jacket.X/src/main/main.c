@@ -102,13 +102,12 @@ static void init(void)
     reset_reason = RCON;
 
     gpio_init();
+    clock_start_msec_timer();
 
     uart_init();
     print_start_message(reset_reason);
 
     flash_init();
-
-    clock_start_msec_timer();
 
     rfm95w_init();
     accelerometer_init();

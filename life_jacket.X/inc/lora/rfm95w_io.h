@@ -21,57 +21,57 @@ extern "C" {
 //
 typedef enum
 {
-    RFM95W_REG_FIFO                 = 0x00,
-    RFM95W_REG_OP_MODE              = 0x01,
-    RFM95W_REG_UNUSED1              = 0x02,
-    RFM95W_REG_UNUSED2              = 0x03,
-    RFM95W_REG_UNUSED3              = 0x04,
-    RFM95W_REG_UNUSED4              = 0x05,
-    RFM95W_REG_FRF_MSB              = 0x06,
-    RFM95W_REG_FRF_MID              = 0x07,
-    RFM95W_REG_FRF_LSB              = 0x08,
-    RFM95W_REG_PA_CONFIG            = 0x09,
-    RFM95W_REG_PA_RAMP              = 0x0A,
-    RFM95W_REG_OCP                  = 0x0B,
-    RFM95W_REG_LNA                  = 0x0C,
-    RFM95W_REG_FIFO_ADDR_PTR        = 0x0D,
-    RFM95W_REG_FIFO_TX_BASE_ADDR    = 0x0E,
-    RFM95W_REG_FIFO_RX_BASE_ADDR    = 0x0F,
-    RFM95W_REG_IRQ_FLAGS            = 0x10,
-    RFM95W_REG_IRQ_FLAGS_MASK       = 0x11,
-    RFM95W_REG_FREQ_IF_MSB          = 0x12,
-    RFM95W_REG_FREQ_IF_LSB          = 0x13,
-    RFM95W_REG_SYMB_TIMEOUT_MSB     = 0x14,
-    RFM95W_REG_SYMB_TIMEOUT_LSB     = 0x15,
-    RFM95W_REG_TX_CFG               = 0x16,
-    RFM95W_REG_PAYLOAD_LENGTH       = 0x17,
-    RFM95W_REG_PREAMBLE_MSB         = 0x18,
-    RFM95W_REG_PREAMBLE_LSB         = 0x19,
-    RFM95W_REG_MODULATION_CFG       = 0x1A,
-    RFM95W_REG_RF_MODE              = 0x1B,
-    RFM95W_REG_HOP_PERIOD           = 0x1C,
-    RFM95W_REG_NB_RX_BYTES          = 0x1D,
-    RFM95W_REG_RX_HEADER_INFO       = 0x1E,
-    RFM95W_REG_RX_HEADER_CNT_VALUE  = 0x1F,
-    RFM95W_REG_RX_PACKET_CNT_VALUE  = 0x20,
-    RFM95W_REG_MODEM_STAT           = 0x21,
-    RFM95W_REG_PKT_SNT_VALUE        = 0x22,
-    RFM95W_REG_RSSI_VALUE           = 0x23,
-    RFM95W_REG_PKT_RSSI_VALUE       = 0x24,
-    RFM95W_REG_HOP_CHANNEL          = 0x25,
-    RFM95W_REG_RX_DATA_ADDR         = 0x26,
+    RFM95W_REG_FIFO                     = 0x00,
+    RFM95W_REG_OP_MODE                  = 0x01,
+    RFM95W_REG_UNUSED1                  = 0x02,
+    RFM95W_REG_UNUSED2                  = 0x03,
+    RFM95W_REG_UNUSED3                  = 0x04,
+    RFM95W_REG_UNUSED4                  = 0x05,
+    RFM95W_REG_FRF_MSB                  = 0x06,
+    RFM95W_REG_FRF_MID                  = 0x07,
+    RFM95W_REG_FRF_LSB                  = 0x08,
+    RFM95W_REG_PA_CONFIG                = 0x09,
+    RFM95W_REG_PA_RAMP                  = 0x0A,
+    RFM95W_REG_OCP                      = 0x0B,
+    RFM95W_REG_LNA                      = 0x0C,
+    RFM95W_REG_FIFO_ADDR_PTR            = 0x0D,
+    RFM95W_REG_FIFO_TX_BASE_ADDR        = 0x0E,
+    RFM95W_REG_FIFO_RX_BASE_ADDR        = 0x0F,
+    RFM95W_REG_FIFO_CURRENT_ADDR        = 0x10,
+    RFM95W_REG_IRQ_FLAGS                = 0x11,
+    RFM95W_REG_IRQ_FLAGS_MASK           = 0x12,
+    RFM95W_REG_RX_NBR_BYTES             = 0x13,
+    RFM95W_REG_RX_HEADER_CNT_MSB        = 0x14,
+    RFM95W_REG_RX_HEADER_CNT_LSB        = 0x15,
+    RFM95W_REG_RX_PACKET_CNT_VALUE_MSB  = 0x16,
+    RFM95W_REG_RX_PACKET_CNT_VALUE_LSB  = 0x17,
+    RFM95W_REG_MODEM_STAT               = 0x18,
+    RFM95W_REG_PKT_SNR_VALUE            = 0x19,
+    RFM95W_REG_PKT_RSSI_VALUE           = 0x1A,
+    RFM95W_REG_RSSI_VALUE               = 0x1B,
+    RFM95W_REG_HOP_CHANNEL              = 0x1C,
+    RFM95W_REG_MODEM_CONFIG1            = 0x1D,
+    RFM95W_REG_MODEM_CONFIG2            = 0x1E,
+    RFM95W_REG_SYMB_TIMEOUT_LSB         = 0x1F,
+    RFM95W_REG_PREAMBLE_MSB             = 0x20,
+    RFM95W_REG_PREAMBLE_LSB             = 0x21,
+    RFM95W_REG_PAYLOAD_LENGTH           = 0x22,
+    RFM95W_REG_MAX_PAYLOAD_LENGTH       = 0x23,
+    RFM95W_REG_HOP_PERIOD               = 0x24,
+    RFM95W_REG_FIFO_RX_BYTE_ADDR        = 0x25,
+    RFM95W_REG_MODEM_CONFIG3            = 0x26,
     //
-    RFM95W_REG_DIO_MAPPING_1        = 0x40,
-    RFM95W_REG_DIO_MAPPING_2        = 0x41,
-    RFM95W_REG_VERSION              = 0x42,
+    RFM95W_REG_DIO_MAPPING_1            = 0x40,
+    RFM95W_REG_DIO_MAPPING_2            = 0x41,
+    RFM95W_REG_VERSION                  = 0x42,
     //
-    RFM95W_REG_TCXO                 = 0x4B,
-    RFM95W_REG_PA_DAC               = 0x4D,
-    RFM95W_REG_FORMER_TEMP          = 0x5B,
-    RFM95W_REG_AGC_REF              = 0x61,
-    RFM95W_REG_AGC_THRESH_1         = 0x62,
-    RFM95W_REG_AGC_THRESH_2         = 0x63,
-    RFM95W_REG_AGC_THRESH_3         = 0x64
+    RFM95W_REG_TCXO                     = 0x4B,
+    RFM95W_REG_PA_DAC                   = 0x4D,
+    RFM95W_REG_FORMER_TEMP              = 0x5B,
+    RFM95W_REG_AGC_REF                  = 0x61,
+    RFM95W_REG_AGC_THRESH_1             = 0x62,
+    RFM95W_REG_AGC_THRESH_2             = 0x63,
+    RFM95W_REG_AGC_THRESH_3             = 0x64
 } rfm95w_address_t;
 
 //
@@ -151,6 +151,20 @@ typedef enum
 
 typedef enum
 {
+    RFM95W_CODING_RATE_4_5  = 0x01,
+    RFM95W_CODING_RATE_4_6  = 0x02,
+    RFM95W_CODING_RATE_4_7  = 0x03,
+    RFM95W_CODING_RATE_4_8  = 0x04
+} rfm95w_coding_rate_t;
+
+typedef enum
+{
+    RFM95W_EXPLICIT_HEADER_MODE = 0x00,
+    RFM95W_IMPLICIT_HEADER_MODE = 0x01
+} rfm95w_implicit_header_mode_on_t;
+
+typedef enum
+{
     RFM95W_SPREADING_FACTOR_64_CHIPS    = 6,
     RFM95W_SPREADING_FACTOR_128_CHIPS   = 7,
     RFM95W_SPREADING_FACTOR_256_CHIPS   = 8,
@@ -159,6 +173,18 @@ typedef enum
     RFM95W_SPREADING_FACTOR_2048_CHIPS  = 11,
     RFM95W_SPREADING_FACTOR_4096_CHIPS  = 12,
 } rfm95w_spreading_factor_t;
+
+typedef enum
+{
+    RFM95W_TX_NORMAL_MODE       = 0x00,
+    RFM95W_TX_CONTINUOUS_MODE   = 0x01
+} rfm95w_tx_continuous_mode_t;
+
+typedef enum
+{
+    RFM95W_PAYLOAD_CRC_DISABLE  = 0x00,
+    RFM95W_PAYLOAD_CRC_ENABLE   = 0x01
+} rfm95w_payload_crc_on_t;
 
 // =============================================================================
 // Global variable declarations
