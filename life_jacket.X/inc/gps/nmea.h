@@ -33,6 +33,11 @@ extern "C" {
 */
 void nmea_handle_message(char * message);
 
+/**
+ * @brief Prints the current status on the debug UART.
+ */
+void nmea_print_status(void);
+
 #ifdef  __cplusplus
 }
 #endif

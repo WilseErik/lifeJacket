@@ -62,6 +62,7 @@ static volatile uint16_t tx_buff_size = 0;
 static volatile bool receiving_message = false;
 static char rx_message[NMEA_MAX_MESSAGE_LENGTH];
 
+static volatile bool debug_echo_enabled = false;
 // =============================================================================
 // Private function declarations
 // =============================================================================
@@ -134,6 +135,7 @@ void jf2_uart_init()
             ;
         }
 
+        debug_echo_enabled = false;
         uart_initialized = true;
     }
 }
@@ -266,6 +268,11 @@ void jf2_uart_clear_receive_buffer(void)
     jf2_uart_enable_rx_interrupt();
 }
 
+void jf2_uart_enable_debug_uart_echo(bool enable)
+{
+    debug_echo_enabled = enable;
+}
+
 
 // =============================================================================
 // Private function definitions
@@ -309,7 +316,10 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(void)
     {
         received = U1RXREG;
 
-        uart_write(received);
+        if (debug_echo_enabled)
+        {
+            uart_write(received);
+        }
 
         if (!receiving_message &&
             (COMMAND_START_CHAR == received))

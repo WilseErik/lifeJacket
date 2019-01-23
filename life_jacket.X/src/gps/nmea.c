@@ -13,6 +13,8 @@
 #include "gps/nmea.h"
 #include "gps/nmea_queue.h"
 
+#include "hal/uart.h"
+
 // =============================================================================
 // Private type definitions
 // =============================================================================
@@ -29,15 +31,15 @@ typedef enum
 
 typedef enum
 {
-    NMEA_GPS_QUALITY_INDICATOR_NO_FIX           = 0,
-    NMEA_GPS_QUALITY_INDICATOR_SPS_MODE         = 1,
-    NMEA_GPS_QUALITY_INDICATOR_DIFF_SPS_MODE    = 2,
-    NMEA_GPS_QUALITY_INDICATOR_PPS_MODE         = 3,
-    NMEA_GPS_QUALITY_INDICATOR_RT_KINEMATIC     = 4,
-    NMEA_GPS_QUALITY_INDICATOR_FLOAT_RTK        = 5,
-    NMEA_GPS_QUALITY_INDICATOR_DEAD_RECKONING   = 6,
-    NMEA_GPS_QUALITY_INDICATOR_MANUAL_INPUT     = 7,
-    NMEA_GPS_QUALITY_INDICATOR_SIMULATOR        = 8
+    NMEA_GPS_QUALITY_INDICATOR_NO_FIX           = '0',
+    NMEA_GPS_QUALITY_INDICATOR_SPS_MODE         = '1',
+    NMEA_GPS_QUALITY_INDICATOR_DIFF_SPS_MODE    = '2',
+    NMEA_GPS_QUALITY_INDICATOR_PPS_MODE         = '3',
+    NMEA_GPS_QUALITY_INDICATOR_RT_KINEMATIC     = '4',
+    NMEA_GPS_QUALITY_INDICATOR_FLOAT_RTK        = '5',
+    NMEA_GPS_QUALITY_INDICATOR_DEAD_RECKONING   = '6',
+    NMEA_GPS_QUALITY_INDICATOR_MANUAL_INPUT     = '7',
+    NMEA_GPS_QUALITY_INDICATOR_SIMULATOR        = '8'
 } nmea_gps_quality_indicator_t;
 
 typedef enum
@@ -183,6 +185,102 @@ void nmea_handle_message(char * message)
     {
         nmea_parse_message(message);
     }
+}
+
+void nmea_print_status(void)
+{
+    uart_write_string("\tMode indicator: ");
+
+    switch (mode_indicator)
+    {
+    case NMEA_MODE_INDICATOR_AUTONOMOUS:
+        uart_write_string("AUTONOMOUS");
+        break;
+
+    case NMEA_MODE_INDICATOR_DIFFERENTAL:
+        uart_write_string("DIFFERENTAL");
+        break;
+
+    case NMEA_MODE_INDICATOR_ESTIMATED:
+        uart_write_string("ESTIMATED");
+        break;
+
+    case NMEA_MODE_INDICATOR_MANUAL:
+        uart_write_string("MANUAL");
+        break;
+
+    case NMEA_MODE_INDICATOR_SIMULATOR:
+        uart_write_string("SIMULATOR");
+        break;
+
+    case NMEA_MODE_INDICATOR_DATA_NOT_VALID:
+        uart_write_string("DATA NOT VALID");
+        break;
+    }
+
+    uart_write_string("\r\n\tQuality indicator: ");
+
+    switch (gps_quality_indicator)
+    {
+    case NMEA_GPS_QUALITY_INDICATOR_NO_FIX:
+        uart_write_string("FIX NOT AVAILABLE OR INVALID");
+        break;
+
+    case NMEA_GPS_QUALITY_INDICATOR_SPS_MODE:
+        uart_write_string("SPS MODE, FIX VALID");
+        break;
+
+    case NMEA_GPS_QUALITY_INDICATOR_DIFF_SPS_MODE:
+        uart_write_string("DIFFERENTIAL GPS, SPS MODE, FIX VALID");
+        break;
+
+    case NMEA_GPS_QUALITY_INDICATOR_PPS_MODE:
+        uart_write_string("GPS PPS MODE, FIX VALID");
+        break;
+
+    case NMEA_GPS_QUALITY_INDICATOR_RT_KINEMATIC:
+        uart_write_string("REAL TIME KINEMATIC");
+        break;
+
+    case NMEA_GPS_QUALITY_INDICATOR_FLOAT_RTK:
+        uart_write_string("FLOAT REAL TIME KINEMATIC");
+        break;
+
+    case NMEA_GPS_QUALITY_INDICATOR_DEAD_RECKONING:
+        uart_write_string("ESTIMATED MODE");
+        break;
+
+    case NMEA_GPS_QUALITY_INDICATOR_MANUAL_INPUT:
+        uart_write_string("MANUAL INPUT MODE");
+        break;
+
+    case NMEA_GPS_QUALITY_INDICATOR_SIMULATOR:
+        uart_write_string("SIMULATOR MODE");
+        break;
+    }
+
+    uart_write_string("\r\n\tLocked: ");
+
+    if (is_locked)
+    {
+        uart_write_string("true");
+    }
+    else
+    {
+        uart_write_string("false");
+    }
+
+    uart_write_string("\r\n\tLatitude: ");
+    uart_write_string(position_info.latitude);
+    uart_write_string(" ");
+    uart_write(position_info.latitude_ns);
+    uart_write_string("\r\n\tLongitude: ");
+    uart_write_string(position_info.longitude);
+    uart_write_string(" ");
+    uart_write(position_info.longitude_ew);
+    uart_write_string("\r\n\tTime of fix (UTC): ");
+    uart_write_string(position_info.time_of_fix);
+    uart_write_string("\r\n");
 }
 
 // =============================================================================

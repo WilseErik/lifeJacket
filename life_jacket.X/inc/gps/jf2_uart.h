@@ -93,6 +93,12 @@ bool jf2_uart_is_receive_buffer_empty(void);
 void jf2_uart_clear_receive_buffer(void);
 
 /**
+ * @brief Enables/disables the characters received from the GPS receiver to
+ *        be echoed onto the debug uart channel.
+ */
+void jf2_uart_enable_debug_uart_echo(bool enable);
+
+/**
  * @brief Enables the UART receive interrupt.
  * @details This interrupt will affect the transmit and receive buffer.
  */
