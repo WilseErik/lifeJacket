@@ -5,6 +5,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "hal/gpio.h"
 
@@ -24,9 +25,13 @@
 // Private variables
 // =============================================================================
 
+static volatile gpio_cn_pin_status_t cn_pins;
+
 // =============================================================================
 // Private function declarations
 // =============================================================================
+
+void gpio_handle_cn_pin_state_update(gpio_cn_pin_info_t * pin, bool new_state);
 
 // =============================================================================
 // Public function definitions
@@ -45,7 +50,7 @@ void gpio_init(void)
     LORA_CS_OFF;
 
     LORA_N_RESET_DIR    = DIR_OUT;
-    LORA_RESET_OFF;
+    LORA_RESET_ON;
 
     LORA_ANT_SEL1_DIR  = DIR_OUT;
     LORA_ANT_SEL2_DIR  = DIR_OUT;
@@ -110,11 +115,109 @@ void gpio_init(void)
     // GPS UART
     GPS_TXD_PPS_REG = GPIO_PPS_OUT_U1TX;
     GPS_RXD_PPS_REG = GPS_RXD_RP_PIN;
+
+    memset((void*)&cn_pins, sizeof(cn_pins), 0);
+}
+
+void gpio_register_cn_handler(gpio_cn_pin_t pin, gpio_cn_callback_t callback)
+{
+    switch (pin)
+    {
+    case GPIO_CN_PIN_LORA_DIO0:
+        cn_pins.lora_dio0.callback = callback;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO1:
+        cn_pins.lora_dio1.callback = callback;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO2:
+        cn_pins.lora_dio2.callback = callback;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO3:
+        cn_pins.lora_dio3.callback = callback;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO4:
+        cn_pins.lora_dio4.callback = callback;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO5:
+        cn_pins.lora_dio5.callback = callback;
+        break;    
+    }
+}
+
+void gpio_enable_cn(gpio_cn_pin_t pin, bool enable)
+{
+    switch (pin)
+    {
+    case GPIO_CN_PIN_LORA_DIO0:
+        cn_pins.lora_dio0.cn_enabled = enable;
+        LORA_DIO0_CNEN = enable;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO1:
+        cn_pins.lora_dio1.cn_enabled = enable;
+        LORA_DIO1_CNEN = enable;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO2:
+        cn_pins.lora_dio2.cn_enabled = enable;
+        LORA_DIO2_CNEN = enable;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO3:
+        cn_pins.lora_dio3.cn_enabled = enable;
+        LORA_DIO3_CNEN = enable;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO4:
+        cn_pins.lora_dio4.cn_enabled = enable;
+        LORA_DIO4_CNEN = enable;
+        break;
+
+    case GPIO_CN_PIN_LORA_DIO5:
+        cn_pins.lora_dio5.cn_enabled = enable;
+        LORA_DIO5_CNEN = enable;
+        break;
+    }
 }
 
 // =============================================================================
 // Private function definitions
 // =============================================================================
 
+void gpio_handle_cn_pin_state_update(gpio_cn_pin_info_t * pin, bool new_state)
+{
+    if (pin->cn_enabled &&
+        (new_state != pin->state))
+    {
+        if (NULL != pin->callback)
+        {
+            pin->callback(pin->state);   
+        }
+    }
 
+    pin->state = new_state;
+}
+
+void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void)
+{
+    IFS1bits.CNIF = 0;
+
+    gpio_handle_cn_pin_state_update((gpio_cn_pin_info_t*)&cn_pins.lora_dio0,
+                                    LORA_DIO0_PIN);
+    gpio_handle_cn_pin_state_update((gpio_cn_pin_info_t*)&cn_pins.lora_dio1,
+                                    LORA_DIO1_PIN);
+    gpio_handle_cn_pin_state_update((gpio_cn_pin_info_t*)&cn_pins.lora_dio2,
+                                    LORA_DIO2_PIN);
+    gpio_handle_cn_pin_state_update((gpio_cn_pin_info_t*)&cn_pins.lora_dio3,
+                                    LORA_DIO3_PIN);
+    gpio_handle_cn_pin_state_update((gpio_cn_pin_info_t*)&cn_pins.lora_dio4,
+                                    LORA_DIO4_PIN);
+    gpio_handle_cn_pin_state_update((gpio_cn_pin_info_t*)&cn_pins.lora_dio5,
+                                    LORA_DIO5_PIN);
+}
 

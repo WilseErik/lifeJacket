@@ -26,21 +26,27 @@ extern "C" {
 //
 #define LORA_DIO0_PIN               PORTAbits.RA0
 #define LORA_DIO0_DIR               TRISAbits.TRISA0
+#define LORA_DIO0_CNEN              CNEN1bits.CN2IE
 
 #define LORA_DIO1_PIN               PORTAbits.RA1
 #define LORA_DIO1_DIR               TRISAbits.TRISA1
+#define LORA_DIO1_CNEN              CNEN1bits.CN3IE
 
 #define LORA_DIO2_PIN               PORTAbits.RA2
 #define LORA_DIO2_DIR               TRISAbits.TRISA2
+#define LORA_DIO2_CNEN              CNEN2bits.CN30IE
 
 #define LORA_DIO3_PIN               PORTCbits.RC9
 #define LORA_DIO3_DIR               TRISCbits.TRISC9
+#define LORA_DIO3_CNEN              CNEN2bits.CN19IE
 
 // LORA_DIO4 is input only
 #define LORA_DIO4_PIN               PORTAbits.RA4
+#define LORA_DIO4_CNEN              CNEN1bits.CN0IE
 
 #define LORA_DIO5_PIN               PORTAbits.RA7
 #define LORA_DIO5_DIR               TRISAbits.TRISA7
+#define LORA_DIO5_CNEN              CNEN3bits.CN33IE
 
 #define LORA_N_CS_PIN               LATCbits.LATC4
 #define LORA_N_CS_DIR               TRISCbits.TRISC4
@@ -200,6 +206,36 @@ typedef enum
     GPIO_PPS_OUT_OC5        = 22
 } gpio_pps_output_function_t;
 
+typedef enum
+{
+    GPIO_CN_PIN_LORA_DIO0,
+    GPIO_CN_PIN_LORA_DIO1,
+    GPIO_CN_PIN_LORA_DIO2,
+    GPIO_CN_PIN_LORA_DIO3,
+    GPIO_CN_PIN_LORA_DIO4,
+    GPIO_CN_PIN_LORA_DIO5,
+} gpio_cn_pin_t;
+
+typedef void (*gpio_cn_callback_t)(bool rising);
+
+typedef struct  gpio_cn_pin_info_t
+{
+    bool                state;
+    bool                cn_enabled;
+    gpio_cn_callback_t  callback;
+} gpio_cn_pin_info_t;
+
+typedef struct gpio_cn_pin_status_t
+{
+    gpio_cn_pin_info_t lora_dio0;
+    gpio_cn_pin_info_t lora_dio1;
+    gpio_cn_pin_info_t lora_dio2;
+    gpio_cn_pin_info_t lora_dio3;
+    gpio_cn_pin_info_t lora_dio4;
+    gpio_cn_pin_info_t lora_dio5;
+} gpio_cn_pin_status_t;
+
+
 // =============================================================================
 // Global variable declarations
 // =============================================================================
@@ -216,6 +252,23 @@ typedef enum
  * @brief Sets up the GPIOs to their default state.
  */
 void gpio_init(void);
+
+/**
+ * @brief Registers a callback function to be called when the specified pin
+ *        triggers a change notification.
+ * @details The callback function will run in isr context.
+ * @param pin       - Pin to register the callback for.
+ * @param callback  - Function to call at a change notification event.
+ */
+void gpio_register_cn_handler(gpio_cn_pin_t pin, gpio_cn_callback_t callback);
+
+/**
+ * @brief Enables/disables a change notification callback to be generated.
+ * @param pin       - Pin to enable/disable change notification for.
+ * @param enable    - True if change notification should be enabed, false if
+ *                    it should be disabled.
+ */
+void gpio_enable_cn(gpio_cn_pin_t pin, bool enable);
 
 #ifdef	__cplusplus
 }
