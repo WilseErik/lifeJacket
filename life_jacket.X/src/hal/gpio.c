@@ -156,31 +156,37 @@ void gpio_enable_cn(gpio_cn_pin_t pin, bool enable)
     case GPIO_CN_PIN_LORA_DIO0:
         cn_pins.lora_dio0.cn_enabled = enable;
         LORA_DIO0_CNEN = enable;
+        cn_pins.lora_dio0.state = LORA_DIO0_PIN;
         break;
 
     case GPIO_CN_PIN_LORA_DIO1:
         cn_pins.lora_dio1.cn_enabled = enable;
         LORA_DIO1_CNEN = enable;
+        cn_pins.lora_dio1.state = LORA_DIO1_PIN;
         break;
 
     case GPIO_CN_PIN_LORA_DIO2:
         cn_pins.lora_dio2.cn_enabled = enable;
         LORA_DIO2_CNEN = enable;
+        cn_pins.lora_dio2.state = LORA_DIO2_PIN;
         break;
 
     case GPIO_CN_PIN_LORA_DIO3:
         cn_pins.lora_dio3.cn_enabled = enable;
         LORA_DIO3_CNEN = enable;
+        cn_pins.lora_dio3.state = LORA_DIO3_PIN;
         break;
 
     case GPIO_CN_PIN_LORA_DIO4:
         cn_pins.lora_dio4.cn_enabled = enable;
         LORA_DIO4_CNEN = enable;
+        cn_pins.lora_dio4.state = LORA_DIO4_PIN;
         break;
 
     case GPIO_CN_PIN_LORA_DIO5:
         cn_pins.lora_dio5.cn_enabled = enable;
         LORA_DIO5_CNEN = enable;
+        cn_pins.lora_dio5.state = LORA_DIO5_PIN;
         break;
     }
 }
