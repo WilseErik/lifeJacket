@@ -32,9 +32,24 @@ void terminal_help(char* in)
         uart_write_string("\tGets one byte from the flash data memory.\n\r\tParameter: <index in hex format>\n\r\tReturns: <hex value of byte at specified index>\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "get gps status"))
+    {
+        uart_write_string("\tGets the status of the GPS.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "get orientation"))
+    {
+        uart_write_string("\tGets the x, y, z values from the accelerometer.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else if (NULL != strstr(in, "set flash"))
     {
         uart_write_string("\tSets one byte in the flash data memory.\n\r\tParamter: <index in hex format> <one byte value in hex format>\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "set gps echo"))
+    {
+        uart_write_string("\tEnabled/disables received GPS messages from being echoed onto the debug UART.\n\r\tParamter: <'on' or 'off'>\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
     else
@@ -51,11 +66,17 @@ void terminal_help(char* in)
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("get flash\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("get gps status\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("get orientation\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
         uart_write_string("hello\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("init flash bufffer\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set flash\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set gps echo\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("\n\r");
     }

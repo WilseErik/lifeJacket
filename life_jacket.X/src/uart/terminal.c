@@ -14,6 +14,10 @@
 #include "uart/terminal_help.h"
 #include "hal/gpio.h"
 #include "hal/flash.h"
+#include "gps/jf2_uart.h"
+#include "gps/nmea.h"
+#include "acc/accelerometer.h"
+
 // =============================================================================
 // Private type definitions
 // =============================================================================
@@ -74,10 +78,26 @@ static const char CMD_FLUSH_BUFFER[]    = "flush flash buffer";
 static const char GET_FLASH[]       = "get flash";
 
 /*§
+ Gets the status of the GPS.
+ */
+static const char GET_GPS_STATUS[]  = "get gps status";
+
+/*§
+ Gets the x, y, z values from the accelerometer.
+ */
+static const char GET_ORIENTATION[] = "get orientation";
+
+/*§
  Sets one byte in the flash data memory.
  Paramter: <index in hex format> <one byte value in hex format>
  */
 static const char SET_FLASH[]       = "set flash";
+
+/*§
+ Enabled/disables received GPS messages from being echoed onto the debug UART.
+ Paramter: <'on' or 'off'>
+ */
+static const char SET_GPS_ECHO[]    = "set gps echo";
 
 // =============================================================================
 // Private variables
@@ -110,7 +130,11 @@ static void cmd_buffered_write(void);
 static void cmd_flush_buffer(void);
 
 static void get_flash(void);
+static void get_gps_status(void);
+static void get_orientation(void);
+
 static void set_flash(void);
+static void set_gps_echo(void);
 
 // =============================================================================
 // Public function definitions
@@ -152,28 +176,49 @@ static void execute_command(void)
     {
         terminal_help(cmd_buffer);
     }
+    //
+    // GET
+    //
     else if (NULL != strstr(cmd_buffer, CMD_TYPE_GET))
     {
         if (NULL != strstr(cmd_buffer, GET_FLASH))
         {
             get_flash();
         }
+        else if (NULL != strstr(cmd_buffer, GET_GPS_STATUS))
+        {
+            get_gps_status();
+        }
+        else if (NULL != strstr(cmd_buffer, GET_ORIENTATION))
+        {
+            get_orientation();
+        }
         else
         {
             syntax_error = true;
         }
     }
+    //
+    // SET
+    //
     else if (NULL != strstr(cmd_buffer, CMD_TYPE_SET))
     {
         if (NULL != strstr(cmd_buffer, SET_FLASH))
         {
             set_flash();
         }
+        else if (NULL != strstr(cmd_buffer, SET_GPS_ECHO))
+        {
+            set_gps_echo();
+        }
         else
         {
             syntax_error = true;
         }
     }
+    //
+    // CMD
+    //
     else
     {
         if (NULL != strstr(cmd_buffer, CMD_HELLO))
@@ -206,6 +251,11 @@ static void execute_command(void)
     else if (arg_error)
     {
         uart_write_string(ARGUMENT_ERROR);
+        uart_write_string(NEWLINE);
+    }
+    else
+    {
+        uart_write_string("ok");
         uart_write_string(NEWLINE);
     }
 }
@@ -335,6 +385,26 @@ static void get_flash(void)
     }
 }
 
+static void get_gps_status(void)
+{
+    nmea_print_status();
+}
+
+static void get_orientation(void)
+{
+    accelerometer_output_t xyz;
+    char s[32] = {0};
+
+    accelerometer_get_orientation(&xyz);
+
+    sprintf(s, "\tx: %u", xyz.x);
+    uart_write_string(s);
+    sprintf(s, "\r\n\ty: %u", xyz.y);
+    uart_write_string(s);
+    sprintf(s, "\r\n\tz: %u\r\n", xyz.z);
+    uart_write_string(s);
+}
+
 static void set_flash(void)
 {
     uint8_t * p;
@@ -395,5 +465,26 @@ static void set_flash(void)
         {
             arg_error = true;
         }
+    }
+}
+
+static void set_gps_echo(void)
+{
+    uint8_t * p;
+
+    p = (uint8_t*)strstr(cmd_buffer, SET_GPS_ECHO);
+    p += strlen(SET_GPS_ECHO);
+    p += 1;     // +1 for space
+
+    if (('o' == *p) && ('n' == *(p + 1)))
+    {
+        jf2_uart_enable_debug_uart_echo(true);
+    } else if (('o' == *p) && ('f' == *(p + 1)) && ('f' == *(p + 2)))
+    {
+        jf2_uart_enable_debug_uart_echo(false);
+    }
+    else
+    {
+        arg_error = true;
     }
 }
