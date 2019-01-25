@@ -44,6 +44,12 @@ void rfm95w_register_received_message_callback(
     rfmw95w_received_message_callback_t callback);
 
 /**
+ * @brief Checks if the RFM95W is in an idle state.
+ * @return True if in idle.
+ */
+bool rfm95w_is_idle(void);
+
+/**
  * @brief Appends data to the TX FIFO.
  * @param data      - Data to append to the FIFO.
  * @param length    - Number of bytes to append to the FIFO.

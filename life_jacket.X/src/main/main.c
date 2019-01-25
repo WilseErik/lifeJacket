@@ -13,6 +13,7 @@
 #include "hal/flash.h"
 #include "acc/accelerometer.h"
 #include "lora/rfm95w.h"
+#include "lora/lora_tx_queue.h"
 #include "audio/ext_flash.h"
 #include "audio/pcm1770.h"
 #include "hal/clock.h"
@@ -84,6 +85,11 @@ int main(int argc, char** argv)
             nmea_handle_message(nmea_queue_peek(nmea_rx_queue));
             nmea_queue_pop(nmea_rx_queue);
         }
+
+        if (!lora_tx_queue_is_empty() && rfm95w_is_idle())
+        {
+            lora_tx_queue_transmit_and_pop();
+        }
     }
 
     return (EXIT_SUCCESS);
@@ -120,6 +126,8 @@ static void init(void)
     nmea_queue_init(nmea_queue_get_rx_queue());
     nmea_queue_init(nmea_queue_get_tx_queue());
     g_clock_gps_on_event_timeout = JF2_IO_RTC_STARTUP_TIME_MS;
+
+    lora_tx_queue_init();
 }
 
 static void print_start_message(uint16_t reset_reason)

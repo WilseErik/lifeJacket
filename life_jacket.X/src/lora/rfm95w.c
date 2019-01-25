@@ -251,6 +251,11 @@ void rfm95w_register_received_message_callback(
     received_message_callback = callback;
 }
 
+bool rfm95w_is_idle(void)
+{
+    return (RFM95W_RADIO_STATE_IDLE == radio_state);
+}
+
 void rfm95w_write_tx_fifo(const uint8_t * data,
                           uint8_t length,
                           uint8_t offset)
