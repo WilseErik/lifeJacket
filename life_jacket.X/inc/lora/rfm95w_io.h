@@ -37,9 +37,9 @@ typedef enum
     RFM95W_REG_FIFO_ADDR_PTR            = 0x0D,
     RFM95W_REG_FIFO_TX_BASE_ADDR        = 0x0E,
     RFM95W_REG_FIFO_RX_BASE_ADDR        = 0x0F,
-    RFM95W_REG_FIFO_CURRENT_ADDR        = 0x10,
-    RFM95W_REG_IRQ_FLAGS                = 0x11,
-    RFM95W_REG_IRQ_FLAGS_MASK           = 0x12,
+    RFM95W_REG_FIFO_RX_CURRENT_ADDR     = 0x10,
+    RFM95W_REG_IRQ_FLAGS_MASK           = 0x11,
+    RFM95W_REG_IRQ_FLAGS                = 0x12,
     RFM95W_REG_RX_NBR_BYTES             = 0x13,
     RFM95W_REG_RX_HEADER_CNT_MSB        = 0x14,
     RFM95W_REG_RX_HEADER_CNT_LSB        = 0x15,
@@ -186,6 +186,18 @@ typedef enum
     RFM95W_PAYLOAD_CRC_ENABLE   = 0x01
 } rfm95w_payload_crc_on_t;
 
+typedef enum
+{
+    RFM95W_IRQ_FLAG_RX_TIMEOUT_MASK             = 0x80,
+    RFM95W_IRQ_FLAG_RX_DONE_MASK                = 0x40,
+    RFM95W_IRQ_FLAG_PAYLOAD_CRC_ERROR_MASK      = 0x20,
+    RFM95W_IRQ_FLAG_VALID_HEADER_MASK           = 0x10,
+    RFM95W_IRQ_FLAG_TX_DONE_MASK                = 0x08,
+    RFM95W_IRQ_FLAG_CAD_DONE_MASK               = 0x04,
+    RFM95W_IRQ_FLAG_FHSS_CHANGE_CHANNEL_MASK    = 0x02,
+    RFM95W_IRQ_FLAG_CAD_DETECTED_MASK           = 0x01
+} rfm95w_irq_flag_t;
+
 // =============================================================================
 // Global variable declarations
 // =============================================================================
@@ -203,14 +215,14 @@ typedef enum
  @param register    - Address to write to.
  @param value       - Value to be written to the register.
 */
-void rfm95w_io_write_single_reg(rfm95w_address_t register, uint8_t value);
+void rfm95w_io_write(rfm95w_address_t register, uint8_t value);
 
 /**
  @brief Reads the value from one register in the RFM95W.
  @param register    - Address to read from.
  @return Value in the read register.
 */
-uint8_t rfm95w_io_read_single_reg(rfm95w_address_t register);
+uint8_t rfm95w_io_read(rfm95w_address_t register);
 
 /**
  @brief Sets the output function of one of the DIO pins.
@@ -223,6 +235,17 @@ void rfm95w_io_set_dio_function(uint8_t dio_number, uint8_t dio_function);
  @brief Sets the operating mode.
 */
 void rfm95w_io_set_operating_mode(rfm95w_operating_mode_t mode);
+
+/**
+ * @brief Sets the rx timeout in single RX mode.
+ * @param symbols   - Timeout length in number of symbols. Must be in [4, 1023]
+ */
+void rfm95w_io_set_single_rx_timeout(uint16_t symbols);
+
+/**
+ * @brief Clears all IRQs.
+ */
+void rfm95w_io_clear_all_irqs(void);
 
 #ifdef	__cplusplus
 }
