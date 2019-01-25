@@ -17,6 +17,7 @@
 #include "gps/jf2_uart.h"
 #include "gps/nmea.h"
 #include "acc/accelerometer.h"
+#include "lora/rfm95w.h"
 
 // =============================================================================
 // Private type definitions
@@ -69,6 +70,11 @@ static const char CMD_BUFFERED_WRITE[] = "buffered write";
  Write the contents of the flash buffer to the flash memory.
  */
 static const char CMD_FLUSH_BUFFER[]    = "flush flash buffer";
+
+/*§
+ Starts a LORA CW transmission.
+ */
+static const char CMD_LORA_CW[]         = "lora cw";
 
 /*§
  Gets one byte from the flash data memory.
@@ -128,6 +134,7 @@ static void cmd_hello(void);
 static void cmd_init_flash_buffer(void);
 static void cmd_buffered_write(void);
 static void cmd_flush_buffer(void);
+static void cmd_lora_cw(void);
 
 static void get_flash(void);
 static void get_gps_status(void);
@@ -237,6 +244,10 @@ static void execute_command(void)
         {
             cmd_flush_buffer();
         }
+        else if (NULL != strstr(cmd_buffer, CMD_LORA_CW))
+        {
+            cmd_lora_cw();
+        }
         else
         {
             syntax_error = true;
@@ -335,6 +346,12 @@ static void cmd_buffered_write(void)
 static void cmd_flush_buffer(void)
 {
     flash_write_buffer_to_flash();
+}
+
+static void cmd_lora_cw(void)
+{
+    rfm95w_init();
+    rfmw_send_cw();
 }
 
 static void get_flash(void)

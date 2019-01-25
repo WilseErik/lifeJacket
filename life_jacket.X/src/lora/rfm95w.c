@@ -175,11 +175,6 @@ static void rfm95w_setup_dio0_for_rx_done(void);
  */
 static void rfm95w_setup_dio1_for_rx_timeout(void);
 
-/**
- @brief Performs a CW transmission.
- */
-static void rfmw_send_cw(void);
-
 //
 // DIO interrupts
 //
@@ -316,6 +311,17 @@ void rfm95w_start_single_rx(void)
     radio_state = RFM95W_RADIO_STATE_RX_SINGLE;
 
     rfm95w_io_set_operating_mode(RFM95W_OP_MODE_RX_SINGLE);
+}
+
+void rfmw_send_cw(void)
+{
+    uint8_t modem_config_2;
+
+    modem_config_2 = rfm95w_io_read(RFM95W_REG_MODEM_CONFIG2);
+    modem_config_2 |= RFM95W_TX_CONTINUOUS_MODE << 3;
+    rfm95w_io_write(RFM95W_REG_MODEM_CONFIG2, modem_config_2);
+
+    rfm95w_io_set_operating_mode(RFM95W_OP_MODE_TX);
 }
 
 // =============================================================================
@@ -468,18 +474,6 @@ static void rfm95w_setup_dio1_for_rx_timeout(void)
     gpio_register_cn_handler(GPIO_CN_PIN_LORA_DIO1, rfmw_dio1_callback);
     gpio_enable_cn(GPIO_CN_PIN_LORA_DIO1, true);
 }
-
-static void rfmw_send_cw(void)
-{
-    uint8_t modem_config_2;
-
-    modem_config_2 = rfm95w_io_read(RFM95W_REG_MODEM_CONFIG2);
-    modem_config_2 |= RFM95W_TX_CONTINUOUS_MODE << 3;
-    rfm95w_io_write(RFM95W_REG_MODEM_CONFIG2, modem_config_2);
-
-    rfm95w_io_set_operating_mode(RFM95W_OP_MODE_TX);
-}
-
 
 static void rfmw_dio0_callback(bool rising)
 {

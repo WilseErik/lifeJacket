@@ -76,6 +76,8 @@ void rfm95w_start_tx(void);
  */
 void rfm95w_start_single_rx(void);
 
+void rfmw_send_cw(void);
+
 #ifdef  __cplusplus
 }
 #endif

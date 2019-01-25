@@ -27,6 +27,11 @@ void terminal_help(char* in)
         uart_write_string("\tWrite the contents of the flash buffer to the flash memory.\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "lora cw"))
+    {
+        uart_write_string("\tStarts a LORA CW transmission.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else if (NULL != strstr(in, "get flash"))
     {
         uart_write_string("\tGets one byte from the flash data memory.\n\r\tParameter: <index in hex format>\n\r\tReturns: <hex value of byte at specified index>\n\r\t\n\r");
@@ -73,6 +78,8 @@ void terminal_help(char* in)
         uart_write_string("hello\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("init flash bufffer\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("lora cw\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set flash\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
