@@ -14,6 +14,7 @@
 #include "acc/accelerometer.h"
 #include "lora/rfm95w.h"
 #include "lora/lora_tx_queue.h"
+#include "lora/p2pc_protocol.h"
 #include "audio/ext_flash.h"
 #include "audio/pcm1770.h"
 #include "hal/clock.h"
@@ -90,6 +91,13 @@ int main(int argc, char** argv)
         {
             lora_tx_queue_transmit_and_pop();
         }
+
+        if (status_check(STATUS_GPS_BROADCAST_EVENT))
+        {
+            status_clear(STATUS_GPS_BROADCAST_EVENT);
+            p2pc_protocol_broadcast_gps_position();
+            debug_log_append_line("GPS broadcast added to tx queue.");
+        }
     }
 
     return (EXIT_SUCCESS);
@@ -130,6 +138,7 @@ static void init(void)
     g_clock_gps_on_event_timeout = JF2_IO_RTC_STARTUP_TIME_MS;
 
     lora_tx_queue_init();
+    p2pc_protocol_init();
 }
 
 static void print_start_message(uint16_t reset_reason)

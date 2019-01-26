@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=src/acc/accelerometer.c src/acc/lis2hh12_io.c src/audio/ext_flash.c src/audio/pcm1770.c src/gps/jf2_uart.c src/gps/nmea.c src/gps/nmea_queue.c src/gps/jf2_io.c src/hal/clock.c src/hal/flash.c src/hal/gpio.c src/hal/spi_hal.c src/hal/uart.c src/hal/configuration_bits.c src/lora/rfm95w.c src/lora/rfm95w_io.c src/lora/lora_tx_queue.c src/main/main.c src/uart/terminal.c src/uart/terminal_help.c src/uart/debug_log.c src/status.c
+SOURCEFILES_QUOTED_IF_SPACED=src/acc/accelerometer.c src/acc/lis2hh12_io.c src/audio/ext_flash.c src/audio/pcm1770.c src/gps/jf2_uart.c src/gps/nmea.c src/gps/nmea_queue.c src/gps/jf2_io.c src/hal/clock.c src/hal/flash.c src/hal/gpio.c src/hal/spi_hal.c src/hal/uart.c src/hal/configuration_bits.c src/lora/rfm95w.c src/lora/rfm95w_io.c src/lora/lora_tx_queue.c src/main/main.c src/uart/terminal.c src/uart/terminal_help.c src/uart/debug_log.c src/status.c src/lora/p2pc_protocol.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/src/acc/accelerometer.o ${OBJECTDIR}/src/acc/lis2hh12_io.o ${OBJECTDIR}/src/audio/ext_flash.o ${OBJECTDIR}/src/audio/pcm1770.o ${OBJECTDIR}/src/gps/jf2_uart.o ${OBJECTDIR}/src/gps/nmea.o ${OBJECTDIR}/src/gps/nmea_queue.o ${OBJECTDIR}/src/gps/jf2_io.o ${OBJECTDIR}/src/hal/clock.o ${OBJECTDIR}/src/hal/flash.o ${OBJECTDIR}/src/hal/gpio.o ${OBJECTDIR}/src/hal/spi_hal.o ${OBJECTDIR}/src/hal/uart.o ${OBJECTDIR}/src/hal/configuration_bits.o ${OBJECTDIR}/src/lora/rfm95w.o ${OBJECTDIR}/src/lora/rfm95w_io.o ${OBJECTDIR}/src/lora/lora_tx_queue.o ${OBJECTDIR}/src/main/main.o ${OBJECTDIR}/src/uart/terminal.o ${OBJECTDIR}/src/uart/terminal_help.o ${OBJECTDIR}/src/uart/debug_log.o ${OBJECTDIR}/src/status.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/src/acc/accelerometer.o.d ${OBJECTDIR}/src/acc/lis2hh12_io.o.d ${OBJECTDIR}/src/audio/ext_flash.o.d ${OBJECTDIR}/src/audio/pcm1770.o.d ${OBJECTDIR}/src/gps/jf2_uart.o.d ${OBJECTDIR}/src/gps/nmea.o.d ${OBJECTDIR}/src/gps/nmea_queue.o.d ${OBJECTDIR}/src/gps/jf2_io.o.d ${OBJECTDIR}/src/hal/clock.o.d ${OBJECTDIR}/src/hal/flash.o.d ${OBJECTDIR}/src/hal/gpio.o.d ${OBJECTDIR}/src/hal/spi_hal.o.d ${OBJECTDIR}/src/hal/uart.o.d ${OBJECTDIR}/src/hal/configuration_bits.o.d ${OBJECTDIR}/src/lora/rfm95w.o.d ${OBJECTDIR}/src/lora/rfm95w_io.o.d ${OBJECTDIR}/src/lora/lora_tx_queue.o.d ${OBJECTDIR}/src/main/main.o.d ${OBJECTDIR}/src/uart/terminal.o.d ${OBJECTDIR}/src/uart/terminal_help.o.d ${OBJECTDIR}/src/uart/debug_log.o.d ${OBJECTDIR}/src/status.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/src/acc/accelerometer.o ${OBJECTDIR}/src/acc/lis2hh12_io.o ${OBJECTDIR}/src/audio/ext_flash.o ${OBJECTDIR}/src/audio/pcm1770.o ${OBJECTDIR}/src/gps/jf2_uart.o ${OBJECTDIR}/src/gps/nmea.o ${OBJECTDIR}/src/gps/nmea_queue.o ${OBJECTDIR}/src/gps/jf2_io.o ${OBJECTDIR}/src/hal/clock.o ${OBJECTDIR}/src/hal/flash.o ${OBJECTDIR}/src/hal/gpio.o ${OBJECTDIR}/src/hal/spi_hal.o ${OBJECTDIR}/src/hal/uart.o ${OBJECTDIR}/src/hal/configuration_bits.o ${OBJECTDIR}/src/lora/rfm95w.o ${OBJECTDIR}/src/lora/rfm95w_io.o ${OBJECTDIR}/src/lora/lora_tx_queue.o ${OBJECTDIR}/src/main/main.o ${OBJECTDIR}/src/uart/terminal.o ${OBJECTDIR}/src/uart/terminal_help.o ${OBJECTDIR}/src/uart/debug_log.o ${OBJECTDIR}/src/status.o ${OBJECTDIR}/src/lora/p2pc_protocol.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/src/acc/accelerometer.o.d ${OBJECTDIR}/src/acc/lis2hh12_io.o.d ${OBJECTDIR}/src/audio/ext_flash.o.d ${OBJECTDIR}/src/audio/pcm1770.o.d ${OBJECTDIR}/src/gps/jf2_uart.o.d ${OBJECTDIR}/src/gps/nmea.o.d ${OBJECTDIR}/src/gps/nmea_queue.o.d ${OBJECTDIR}/src/gps/jf2_io.o.d ${OBJECTDIR}/src/hal/clock.o.d ${OBJECTDIR}/src/hal/flash.o.d ${OBJECTDIR}/src/hal/gpio.o.d ${OBJECTDIR}/src/hal/spi_hal.o.d ${OBJECTDIR}/src/hal/uart.o.d ${OBJECTDIR}/src/hal/configuration_bits.o.d ${OBJECTDIR}/src/lora/rfm95w.o.d ${OBJECTDIR}/src/lora/rfm95w_io.o.d ${OBJECTDIR}/src/lora/lora_tx_queue.o.d ${OBJECTDIR}/src/main/main.o.d ${OBJECTDIR}/src/uart/terminal.o.d ${OBJECTDIR}/src/uart/terminal_help.o.d ${OBJECTDIR}/src/uart/debug_log.o.d ${OBJECTDIR}/src/status.o.d ${OBJECTDIR}/src/lora/p2pc_protocol.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/src/acc/accelerometer.o ${OBJECTDIR}/src/acc/lis2hh12_io.o ${OBJECTDIR}/src/audio/ext_flash.o ${OBJECTDIR}/src/audio/pcm1770.o ${OBJECTDIR}/src/gps/jf2_uart.o ${OBJECTDIR}/src/gps/nmea.o ${OBJECTDIR}/src/gps/nmea_queue.o ${OBJECTDIR}/src/gps/jf2_io.o ${OBJECTDIR}/src/hal/clock.o ${OBJECTDIR}/src/hal/flash.o ${OBJECTDIR}/src/hal/gpio.o ${OBJECTDIR}/src/hal/spi_hal.o ${OBJECTDIR}/src/hal/uart.o ${OBJECTDIR}/src/hal/configuration_bits.o ${OBJECTDIR}/src/lora/rfm95w.o ${OBJECTDIR}/src/lora/rfm95w_io.o ${OBJECTDIR}/src/lora/lora_tx_queue.o ${OBJECTDIR}/src/main/main.o ${OBJECTDIR}/src/uart/terminal.o ${OBJECTDIR}/src/uart/terminal_help.o ${OBJECTDIR}/src/uart/debug_log.o ${OBJECTDIR}/src/status.o
+OBJECTFILES=${OBJECTDIR}/src/acc/accelerometer.o ${OBJECTDIR}/src/acc/lis2hh12_io.o ${OBJECTDIR}/src/audio/ext_flash.o ${OBJECTDIR}/src/audio/pcm1770.o ${OBJECTDIR}/src/gps/jf2_uart.o ${OBJECTDIR}/src/gps/nmea.o ${OBJECTDIR}/src/gps/nmea_queue.o ${OBJECTDIR}/src/gps/jf2_io.o ${OBJECTDIR}/src/hal/clock.o ${OBJECTDIR}/src/hal/flash.o ${OBJECTDIR}/src/hal/gpio.o ${OBJECTDIR}/src/hal/spi_hal.o ${OBJECTDIR}/src/hal/uart.o ${OBJECTDIR}/src/hal/configuration_bits.o ${OBJECTDIR}/src/lora/rfm95w.o ${OBJECTDIR}/src/lora/rfm95w_io.o ${OBJECTDIR}/src/lora/lora_tx_queue.o ${OBJECTDIR}/src/main/main.o ${OBJECTDIR}/src/uart/terminal.o ${OBJECTDIR}/src/uart/terminal_help.o ${OBJECTDIR}/src/uart/debug_log.o ${OBJECTDIR}/src/status.o ${OBJECTDIR}/src/lora/p2pc_protocol.o
 
 # Source Files
-SOURCEFILES=src/acc/accelerometer.c src/acc/lis2hh12_io.c src/audio/ext_flash.c src/audio/pcm1770.c src/gps/jf2_uart.c src/gps/nmea.c src/gps/nmea_queue.c src/gps/jf2_io.c src/hal/clock.c src/hal/flash.c src/hal/gpio.c src/hal/spi_hal.c src/hal/uart.c src/hal/configuration_bits.c src/lora/rfm95w.c src/lora/rfm95w_io.c src/lora/lora_tx_queue.c src/main/main.c src/uart/terminal.c src/uart/terminal_help.c src/uart/debug_log.c src/status.c
+SOURCEFILES=src/acc/accelerometer.c src/acc/lis2hh12_io.c src/audio/ext_flash.c src/audio/pcm1770.c src/gps/jf2_uart.c src/gps/nmea.c src/gps/nmea_queue.c src/gps/jf2_io.c src/hal/clock.c src/hal/flash.c src/hal/gpio.c src/hal/spi_hal.c src/hal/uart.c src/hal/configuration_bits.c src/lora/rfm95w.c src/lora/rfm95w_io.c src/lora/lora_tx_queue.c src/main/main.c src/uart/terminal.c src/uart/terminal_help.c src/uart/debug_log.c src/status.c src/lora/p2pc_protocol.c
 
 
 CFLAGS=
@@ -253,6 +253,13 @@ ${OBJECTDIR}/src/status.o: src/status.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE)  src/status.c  -o ${OBJECTDIR}/src/status.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/status.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/status.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/src/lora/p2pc_protocol.o: src/lora/p2pc_protocol.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src/lora" 
+	@${RM} ${OBJECTDIR}/src/lora/p2pc_protocol.o.d 
+	@${RM} ${OBJECTDIR}/src/lora/p2pc_protocol.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/p2pc_protocol.c  -o ${OBJECTDIR}/src/lora/p2pc_protocol.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/p2pc_protocol.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/lora/p2pc_protocol.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 else
 ${OBJECTDIR}/src/acc/accelerometer.o: src/acc/accelerometer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/src/acc" 
@@ -407,6 +414,13 @@ ${OBJECTDIR}/src/status.o: src/status.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/src/status.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  src/status.c  -o ${OBJECTDIR}/src/status.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/status.o.d"        -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/src/status.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/src/lora/p2pc_protocol.o: src/lora/p2pc_protocol.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src/lora" 
+	@${RM} ${OBJECTDIR}/src/lora/p2pc_protocol.o.d 
+	@${RM} ${OBJECTDIR}/src/lora/p2pc_protocol.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  src/lora/p2pc_protocol.c  -o ${OBJECTDIR}/src/lora/p2pc_protocol.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/src/lora/p2pc_protocol.o.d"        -g -omf=elf -O0 -I"inc" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/src/lora/p2pc_protocol.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 
