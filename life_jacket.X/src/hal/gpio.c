@@ -117,6 +117,9 @@ void gpio_init(void)
     GPS_RXD_PPS_REG = GPS_RXD_RP_PIN;
 
     memset((void*)&cn_pins, sizeof(cn_pins), 0);
+
+    // Enable change notification interrupts
+    IEC1bits.CNIE = 1;
 }
 
 void gpio_register_cn_handler(gpio_cn_pin_t pin, gpio_cn_callback_t callback)
@@ -202,7 +205,7 @@ void gpio_handle_cn_pin_state_update(gpio_cn_pin_info_t * pin, bool new_state)
     {
         if (NULL != pin->callback)
         {
-            pin->callback(pin->state);   
+            pin->callback(new_state);   
         }
     }
 
