@@ -444,7 +444,6 @@ static void rfm95w_start_retransmission(void)
     rfm95w_setup_dio0_for_tx_done();
 
     radio_state = RFM95W_RADIO_STATE_TX;
-    rfm95w_retransmission_count = 0;
 
     rfm95w_refill_tx_fifo();
 
