@@ -115,7 +115,9 @@ static void init(void)
 
     flash_init();
 
+    while (!uart_is_write_buffer_empty()){;}
     rfm95w_init();
+    while (!uart_is_write_buffer_empty()){;}
     accelerometer_init();
     while (!uart_is_write_buffer_empty()){;}
     ext_flash_init();
@@ -168,8 +170,20 @@ static void print_start_message(uint16_t reset_reason)
 
     if (reset_reason & _RCON_WDTO_MASK)
     {
+        uint8_t wdt_reset_count;
+
+        wdt_reset_count = flash_read_byte(FLASH_INDEX_WDT_RESETS) + 1;
+        flash_init_write_buffer();
+        flash_write_byte_to_buffer(FLASH_INDEX_WDT_RESETS, wdt_reset_count);
+        flash_write_buffer_to_flash();
+
         RCONbits.WDTO = 0;
-        uart_write_string("\r\n\tWatchdog timeout reset");
+        sprintf(g_uart_string_buffer,
+                "\r\n\tWatchdog timeout reset #%u",
+                wdt_reset_count);
+        uart_write_string(g_uart_string_buffer);
+
+
     }
 
     if (reset_reason & _RCON_BOR_MASK)

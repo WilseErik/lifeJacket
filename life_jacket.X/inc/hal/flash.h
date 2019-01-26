@@ -30,7 +30,14 @@ extern "C" {
 
 typedef enum
 {
-    FLASH_INDEX_WDT_RESETS  = 0x00,
+    FLASH_INDEX_WDT_RESETS                  = 0x00,
+    // LORA parameters
+    FLASH_INDEX_LORA_PARAMS_INITIALIZED     = 0x01,
+    FLASH_INDEX_LORA_BANDWIDTH              = 0x02,
+    FLASH_INDEX_LORA_CODING_RATE            = 0x03,
+    FLASH_INDEX_LORA_SPREADING_FACTOR       = 0x04,
+    FLASH_INDEX_LORA_FREQUENCY              = 0x05
+
 } flash_index_t;
 
 // =============================================================================

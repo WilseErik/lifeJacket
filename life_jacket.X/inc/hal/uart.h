@@ -22,7 +22,7 @@ extern "C" {
 // Global variable declarations
 // =============================================================================
 #define UART_STRING_BUFFER_SIZE (80)
-extern volatile char g_uart_string_buffer[UART_STRING_BUFFER_SIZE];
+extern char g_uart_string_buffer[UART_STRING_BUFFER_SIZE];
 
 // =============================================================================
 // Global constatants

@@ -28,7 +28,7 @@
 // Global variables
 // =============================================================================
 
-volatile char g_uart_string_buffer[UART_STRING_BUFFER_SIZE];
+char g_uart_string_buffer[UART_STRING_BUFFER_SIZE];
 
 // =============================================================================
 // Private constants

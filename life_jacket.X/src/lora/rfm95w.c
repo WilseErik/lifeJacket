@@ -16,6 +16,7 @@
 #include "hal/uart.h"
 #include "hal/gpio.h"
 #include "hal/clock.h"
+#include "hal/flash.h"
 
 // =============================================================================
 // Private type definitions
@@ -25,7 +26,8 @@ typedef enum
 {
     RFM95W_RADIO_STATE_IDLE,
     RFM95W_RADIO_STATE_TX,
-    RFM95W_RADIO_STATE_RX_SINGLE
+    RFM95W_RADIO_STATE_RX_SINGLE,
+    RFM95W_RADIO_STATE_RX_CONTINUOUS
 } rfm95w_radio_state_t;
 
 #define RFM95W_RX_BUFFER_SIZE (256)
@@ -75,23 +77,6 @@ static const uint8_t RFM95W_REG_INIT_TABLE[][2] =
 
 static const uint8_t RFM95W_SILICON_VERSION = 0x12;
 
-
-/*
- Allowed frequencies:
-    868.1 - SF7BW125 to SF12BW125
-    868.3 - SF7BW125 to SF12BW125 and SF7BW250
-    868.5 - SF7BW125 to SF12BW125
-    867.1 - SF7BW125 to SF12BW125
-    867.3 - SF7BW125 to SF12BW125
-    867.5 - SF7BW125 to SF12BW125
-    867.7 - SF7BW125 to SF12BW125
-    867.9 - SF7BW125 to SF12BW125
-    868.8 - FSK
-
- Max output power: 14 dBm
-*/
-static const uint8_t FREQ_WORD_868_1[] = {0xD9, 0x06, 0x66};
-
 static const uint16_t SINGLE_RX_TIMEOUT_SYMBOLS = 1023; // must be in [4, 1023]
 
 static const uint8_t RFM95W_MAX_RETRANSMISSION_COUNT = 3;
@@ -129,6 +114,11 @@ static void handle_tx_done(void);
 static void handle_rx_done(void);
 
 /**
+ * @brief Handles the RX done event while in contiuous RX mode.
+ */
+static void handle_continuous_rx_packet(void);
+
+/**
  * @brief Handles the RX timeout event.
  */
 static void handle_rx_timeout(void);
@@ -156,6 +146,12 @@ static void rfm95w_start_retransmission(void);
  * @brief Fills up the TX fifo for a retransmission.
  */
 static void rfm95w_refill_tx_fifo(void);
+
+/**
+ * @Brief Configures the channel settings according to the data stored
+ *        in the flash memory.
+ */
+static void rfm95w_write_settings_from_flash(void);
 
 /**
  * @brief Configures DIO0 to generate an interrupt when the message has been
@@ -227,15 +223,13 @@ void rfm95w_init(void)
     // LORA mode, high frequency mode
     rfm95w_io_write(RFM95W_REG_OP_MODE, 0x80);
 
-    rfm95w_io_write(RFM95W_REG_FRF_MSB, FREQ_WORD_868_1[0]);
-    rfm95w_io_write(RFM95W_REG_FRF_MID, FREQ_WORD_868_1[1]);
-    rfm95w_io_write(RFM95W_REG_FRF_LSB, FREQ_WORD_868_1[2]);
-
     for (i = 0; i != RFM95W_REG_INIT_TABLE_LEN; ++i)
     {
         rfm95w_io_write(RFM95W_REG_INIT_TABLE[i][0],
                                    RFM95W_REG_INIT_TABLE[i][1]);
     }
+
+    rfm95w_write_settings_from_flash();
 
     rfm95w_io_set_operating_mode(RFM95W_OP_MODE_STAND_BY);
 }
@@ -313,6 +307,23 @@ void rfm95w_start_single_rx(void)
     rfm95w_io_set_operating_mode(RFM95W_OP_MODE_RX_SINGLE);
 }
 
+void rfm95w_start_continuous_rx(void)
+{
+    uint8_t rx_base_addr;
+
+    rx_base_addr = rfm95w_io_read(RFM95W_REG_FIFO_RX_BASE_ADDR);
+    rfm95w_io_write(RFM95W_REG_FIFO_ADDR_PTR, rx_base_addr);
+
+    rfm95w_io_set_single_rx_timeout(SINGLE_RX_TIMEOUT_SYMBOLS);
+
+    rfm95w_io_clear_all_irqs();
+    rfm95w_setup_dio0_for_rx_done();
+
+    radio_state = RFM95W_RADIO_STATE_RX_CONTINUOUS;
+
+    rfm95w_io_set_operating_mode(RFM95W_OP_MODE_RX_CONT);
+}
+
 void rfmw_send_cw(void)
 {
     uint8_t modem_config_2;
@@ -339,16 +350,14 @@ static void handle_rx_done(void)
 
     reg_irq_flags = rfm95w_io_read(RFM95W_REG_IRQ_FLAGS);
 
+    rfm95w_io_clear_all_irqs();
+
     if (reg_irq_flags & RFM95W_IRQ_FLAG_PAYLOAD_CRC_ERROR_MASK)
     {
-        rfm95w_io_clear_all_irqs();
-
         handle_rx_timeout();
     }
     else
     {
-        rfm95w_io_clear_all_irqs();
-
         rfm95w_read_fifo();
 
         if (NULL != received_message_callback)
@@ -357,6 +366,34 @@ static void handle_rx_done(void)
                                       rx_buffer.length);
         }
     }
+}
+
+static void handle_continuous_rx_packet(void)
+{
+    uint8_t reg_irq_flags;
+    uint8_t rx_base_addr;
+
+    reg_irq_flags = rfm95w_io_read(RFM95W_REG_IRQ_FLAGS);
+
+    if (reg_irq_flags & RFM95W_IRQ_FLAG_PAYLOAD_CRC_ERROR_MASK)
+    {
+        debug_log_append_line("CRC error on received packet in contiuous rx.");
+    }
+    else
+    {
+        rfm95w_read_fifo();
+
+        if (NULL != received_message_callback)
+        {
+            received_message_callback((uint8_t*)rx_buffer.data,
+                                      rx_buffer.length);
+        }
+    }
+
+    rx_base_addr = rfm95w_io_read(RFM95W_REG_FIFO_RX_BASE_ADDR);
+    rfm95w_io_write(RFM95W_REG_FIFO_ADDR_PTR, rx_base_addr);
+
+    rfm95w_io_clear_all_irqs();
 }
 
 static void handle_rx_timeout(void)
@@ -430,6 +467,42 @@ static void rfm95w_refill_tx_fifo(void)
     rfm95w_io_write(RFM95W_REG_PAYLOAD_LENGTH, tx_buffer.length);
 }
 
+static void rfm95w_write_settings_from_flash(void)
+{
+    rfm95w_modem_cfg_bw_t bandwidth;
+    rfm95w_coding_rate_t coding_rate;
+    rfm95w_spreading_factor_t spreading_factor;
+    rfm95w_channel_frequency_t frequency;
+
+    if (!flash_read_byte(FLASH_INDEX_LORA_PARAMS_INITIALIZED))
+    {
+        flash_init_write_buffer();
+
+        flash_write_byte_to_buffer(FLASH_INDEX_LORA_BANDWIDTH,
+                                   RFM95W_BW_125K);
+        flash_write_byte_to_buffer(FLASH_INDEX_LORA_CODING_RATE,
+                                   RFM95W_CODING_RATE_4_5);
+        flash_write_byte_to_buffer(FLASH_INDEX_LORA_SPREADING_FACTOR,
+                                   RFM95W_SPREADING_FACTOR_128_CHIPS);
+        flash_write_byte_to_buffer(FLASH_INDEX_LORA_FREQUENCY,
+                                   RFM95W_CHANNEL_FREQUENCY_868_1);
+        flash_write_byte_to_buffer(FLASH_INDEX_LORA_PARAMS_INITIALIZED,
+                                   1);
+
+        flash_write_buffer_to_flash();
+    }
+
+    bandwidth = flash_read_byte(FLASH_INDEX_LORA_BANDWIDTH);
+    coding_rate = flash_read_byte(FLASH_INDEX_LORA_CODING_RATE);
+    spreading_factor = flash_read_byte(FLASH_INDEX_LORA_SPREADING_FACTOR);
+    frequency = flash_read_byte(FLASH_INDEX_LORA_FREQUENCY);
+
+    rfm95w_io_set_bandwidth(bandwidth);
+    rfm95w_io_set_coding_rate(coding_rate);
+    rfm95w_io_set_speading_factor(spreading_factor);
+    rfm95w_io_set_frequency(frequency);
+}
+
 static void rfm95w_setup_dio0_for_tx_done(void)
 {
     uint8_t reg_irq_masks;
@@ -486,6 +559,10 @@ static void rfmw_dio0_callback(bool rising)
         else if (RFM95W_RADIO_STATE_RX_SINGLE == radio_state)
         {
             handle_rx_done();
+        }
+        else if (RFM95W_RADIO_STATE_RX_CONTINUOUS == radio_state)
+        {
+            handle_continuous_rx_packet();
         }
     }
     else

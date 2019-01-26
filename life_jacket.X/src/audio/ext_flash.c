@@ -52,29 +52,29 @@ void ext_flash_init(void)
 
     if (RDID_MANUFACTURER_ID != manufacturer_id)
     {
-        sprintf((char*)g_uart_string_buffer,
+        sprintf(g_uart_string_buffer,
                 "External flash - invalid manufacturer id. Was 0x%02X should be 0x%02X",
                 manufacturer_id,
                 RDID_MANUFACTURER_ID);
-        debug_log_append_line((char*)g_uart_string_buffer);
+        debug_log_append_line(g_uart_string_buffer);
         
         return;
     }
 
     if (RDID_DEVICE_ID != device_id)
     {
-        sprintf((char*)g_uart_string_buffer,
+        sprintf(g_uart_string_buffer,
                 "External flash - invalid device id. Was 0x%04X should be 0x%04X",
                 device_id,
                 RDID_DEVICE_ID);
-        debug_log_append_line((char*)g_uart_string_buffer);
+        debug_log_append_line(g_uart_string_buffer);
 
         return;
     }
 
-    sprintf((char*)g_uart_string_buffer,
+    sprintf(g_uart_string_buffer,
             "External flash communication ok");
-    debug_log_append_line((char*)g_uart_string_buffer);
+    debug_log_append_line(g_uart_string_buffer);
 }
 
 // =============================================================================

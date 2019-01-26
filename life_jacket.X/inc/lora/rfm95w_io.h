@@ -198,6 +198,18 @@ typedef enum
     RFM95W_IRQ_FLAG_CAD_DETECTED_MASK           = 0x01
 } rfm95w_irq_flag_t;
 
+typedef enum
+{
+    RFM95W_CHANNEL_FREQUENCY_868_1  = 0x01,
+    RFM95W_CHANNEL_FREQUENCY_868_3  = 0x02,
+    RFM95W_CHANNEL_FREQUENCY_868_5  = 0x03,
+    RFM95W_CHANNEL_FREQUENCY_867_1  = 0x04,
+    RFM95W_CHANNEL_FREQUENCY_867_3  = 0x05,
+    RFM95W_CHANNEL_FREQUENCY_867_5  = 0x06,
+    RFM95W_CHANNEL_FREQUENCY_867_7  = 0x07,
+    RFM95W_CHANNEL_FREQUENCY_867_9  = 0x08,
+} rfm95w_channel_frequency_t;
+
 // =============================================================================
 // Global variable declarations
 // =============================================================================
@@ -246,6 +258,14 @@ void rfm95w_io_set_single_rx_timeout(uint16_t symbols);
  * @brief Clears all IRQs.
  */
 void rfm95w_io_clear_all_irqs(void);
+
+void rfm95w_io_set_bandwidth(rfm95w_modem_cfg_bw_t bandwidth);
+
+void rfm95w_io_set_coding_rate(rfm95w_coding_rate_t coding_rate);
+
+void rfm95w_io_set_speading_factor(rfm95w_spreading_factor_t spreading_factor);
+
+void rfm95w_io_set_frequency(rfm95w_channel_frequency_t frequency);
 
 #ifdef	__cplusplus
 }

@@ -76,6 +76,11 @@ void rfm95w_start_tx(void);
  */
 void rfm95w_start_single_rx(void);
 
+/**
+ * @brief Starts a continuous RX session.
+ */
+void rfm95w_start_continuous_rx(void);
+
 void rfmw_send_cw(void);
 
 #ifdef  __cplusplus
