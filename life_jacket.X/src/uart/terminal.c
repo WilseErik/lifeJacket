@@ -18,6 +18,7 @@
 #include "gps/nmea.h"
 #include "acc/accelerometer.h"
 #include "lora/rfm95w.h"
+#include "lora/rfm95w_io.h"
 
 // =============================================================================
 // Private type definitions
@@ -54,6 +55,11 @@ static const char ARGUMENT_ERROR[]  = "[Invalid argument]";
  Say hi!
  */
 static const char CMD_HELLO[]       = "hello";
+
+/*§
+ Forces a software reboot.
+ */
+static const char CMD_SYSTEM_RESET[] = "system reset";
 
 /*§
  Initiates the flash write buffer with the contents of theflash data memory.
@@ -105,6 +111,58 @@ static const char SET_FLASH[]       = "set flash";
  */
 static const char SET_GPS_ECHO[]    = "set gps echo";
 
+/*§
+ Sets the LoRa channel bandwidth.
+ Parameter: <bandwidth setting in range [0, 9]>
+
+ 0 = 7.8kHz
+ 1 = 10.4kHz
+ 2 = 15.6 kHz
+ 3 = 20.8 kHz
+ 4 = 31.25 kHz
+ 5 = 41.7 kHz
+ 6 = 62.5 kHz
+ 7 = 125 kHz
+ 8 = 250 kHz
+ 9 = 500 kHz
+*/
+static const char SET_LORA_BANDWIDTH[] = "set lora bw";
+
+/*§
+ Sets the LoRa coding rate.
+ Parameter: <coding rate setting in range[1, 4]>
+
+ 1 = coding rate 4/5
+ 2 = coding rate 4/6
+ 3 = coding rate 4/7
+ 4 = coding rate 4/8
+ */
+static const char SET_LORA_CODING_RATE[] = "set lora cr";
+
+/*§
+ Sets the LoRa spreading factor.
+ Parameter: <spreading factor in range [6, 12]>
+
+ A spreading factor of 'sf' gives 2^(sf) chips 
+ */
+static const char SET_LORA_SPREADING_FACTOR[] = "set lora sf";
+
+/*§
+ Sets the LoRa frequency.
+ Parameter: <frequency band in range [1, 8]>
+
+ Bands:
+ 1 = 868.1 MHz
+ 2 = 868.3 MHz
+ 3 = 868.5 MHz
+ 4 = 867.1 MHz
+ 5 = 867.3 MHz
+ 6 = 867.5 MHz
+ 7 = 867.7 MHz
+ 8 = 867.9 MHz
+ */
+static const char SET_LORA_FREQUENCY[] = "set lora freq";
+
 // =============================================================================
 // Private variables
 // =============================================================================
@@ -130,7 +188,7 @@ static void execute_command(void);
 // Command help functions
 //
 static void cmd_hello(void);
-
+static void cmd_system_reset(void);
 static void cmd_init_flash_buffer(void);
 static void cmd_buffered_write(void);
 static void cmd_flush_buffer(void);
@@ -142,6 +200,10 @@ static void get_orientation(void);
 
 static void set_flash(void);
 static void set_gps_echo(void);
+static void set_lora_bandwidth(void);
+static void set_lora_coding_rate(void);
+static void set_lora_spreading_factor(void);
+static void set_lora_frequency_band(void);
 
 // =============================================================================
 // Public function definitions
@@ -218,6 +280,22 @@ static void execute_command(void)
         {
             set_gps_echo();
         }
+        else if (NULL != strstr(cmd_buffer, SET_LORA_BANDWIDTH))
+        {
+            set_lora_bandwidth();
+        }
+        else if (NULL != strstr(cmd_buffer, SET_LORA_CODING_RATE))
+        {
+            set_lora_coding_rate();
+        }
+        else if (NULL != strstr(cmd_buffer, SET_LORA_SPREADING_FACTOR))
+        {
+            set_lora_spreading_factor();
+        }
+        else if (NULL != strstr(cmd_buffer, SET_LORA_FREQUENCY))
+        {
+            set_lora_frequency_band();
+        }
         else
         {
             syntax_error = true;
@@ -231,6 +309,10 @@ static void execute_command(void)
         if (NULL != strstr(cmd_buffer, CMD_HELLO))
         {
             cmd_hello();
+        }
+        else if (NULL != strstr(cmd_buffer, CMD_SYSTEM_RESET))
+        {
+            cmd_system_reset();
         }
         else if (NULL != strstr(cmd_buffer, CMD_INIT_WRITE_BUFFER))
         {
@@ -275,6 +357,11 @@ static void cmd_hello(void)
 {
     uart_write_string("Hello!");
     uart_write_string(NEWLINE);
+}
+
+static void cmd_system_reset(void)
+{
+    __asm__ volatile ("reset");
 }
 
 static void cmd_init_flash_buffer(void)
@@ -503,5 +590,138 @@ static void set_gps_echo(void)
     else
     {
         arg_error = true;
+    }
+}
+
+static void set_lora_bandwidth(void)
+{
+    uint8_t * p;
+    char bandwidth_arg[2] = {0};
+
+    p = (uint8_t*)strstr(cmd_buffer, SET_LORA_BANDWIDTH);
+    p += strlen(SET_LORA_BANDWIDTH);
+    p += 1;     // +1 for space
+
+    if (!isdigit(*p))
+    {
+        arg_error = true;
+    }
+    else
+    {
+        uint8_t bandwidth;
+        bandwidth_arg[0] = *p;
+
+        bandwidth = (uint8_t)strtol(bandwidth_arg, NULL, 10);
+
+        if ((bandwidth >= RFM95W_BW_7K8) && (bandwidth <= RFM95W_BW_500K))
+        {
+            rfm95w_io_set_bandwidth((rfm95w_modem_cfg_bw_t)bandwidth);
+        }
+        else
+        {
+            arg_error = true;
+        }
+    }
+}
+
+static void set_lora_coding_rate(void)
+{
+    uint8_t * p;
+    char coding_rate_arg[2] = {0};
+
+    p = (uint8_t*)strstr(cmd_buffer, SET_LORA_CODING_RATE);
+    p += strlen(SET_LORA_CODING_RATE);
+    p += 1;     // +1 for space
+
+    if (!isdigit(*p))
+    {
+        arg_error = true;
+    }
+    else
+    {
+        uint8_t coding_rate;
+        coding_rate_arg[0] = *p;
+
+        coding_rate = (uint8_t)strtol(coding_rate_arg, NULL, 10);
+
+        if ((coding_rate >= RFM95W_CODING_RATE_4_5) &&
+            (coding_rate <= RFM95W_CODING_RATE_4_8))
+        {
+            rfm95w_io_set_coding_rate((rfm95w_coding_rate_t)coding_rate);
+        }
+        else
+        {
+            arg_error = true;
+        }
+    }
+}
+
+static void set_lora_spreading_factor(void)
+{
+    uint8_t * p;
+    char spreading_factor_arg[3] = {0};
+
+    p = (uint8_t*)strstr(cmd_buffer, SET_LORA_SPREADING_FACTOR);
+    p += strlen(SET_LORA_SPREADING_FACTOR);
+    p += 1;     // +1 for space
+
+    if (!isdigit(*p))
+    {
+        arg_error = true;
+    }
+    else
+    {
+        uint8_t spreading_factor;
+        spreading_factor_arg[0] = *p;
+        ++p;
+
+        if (isdigit(*p))
+        {
+            spreading_factor_arg[1] = *p;
+        }
+
+        spreading_factor = (uint8_t)strtol(spreading_factor_arg, NULL, 10);
+
+        if ((spreading_factor >= RFM95W_SPREADING_FACTOR_64_CHIPS) &&
+            (spreading_factor <= RFM95W_SPREADING_FACTOR_4096_CHIPS))
+        {
+            rfm95w_io_set_speading_factor((rfm95w_spreading_factor_t)spreading_factor);
+        }
+        else
+        {
+            arg_error = true;
+        }
+    }
+}
+
+static void set_lora_frequency_band(void)
+{
+    uint8_t * p;
+    char frequency_arg[2] = {0};
+
+    p = (uint8_t*)strstr(cmd_buffer, SET_LORA_FREQUENCY);
+    p += strlen(SET_LORA_FREQUENCY);
+    p += 1;     // +1 for space
+
+    if (!isdigit(*p))
+    {
+        arg_error = true;
+    }
+    else
+    {
+        uint8_t frequency;
+        frequency_arg[0] = *p;
+
+        frequency = (uint8_t)strtol(frequency_arg, NULL, 10);
+
+        if ((frequency >= RFM95W_CHANNEL_FREQUENCY_868_1) &&
+            (frequency <= RFM95W_CHANNEL_FREQUENCY_867_9))
+        {
+            rfm95w_io_set_frequency((rfm95w_channel_frequency_t)frequency);
+        }
+        else
+        {
+            arg_error = true;
+        }
     }
 }

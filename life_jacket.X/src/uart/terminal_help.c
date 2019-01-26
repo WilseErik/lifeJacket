@@ -12,6 +12,11 @@ void terminal_help(char* in)
         uart_write_string("\tSay hi!\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "system reset"))
+    {
+        uart_write_string("\tForces a software reboot.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else if (NULL != strstr(in, "init flash bufffer"))
     {
         uart_write_string("\tInitiates the flash write buffer with the contents of theflash data memory.\n\r\t\n\r");
@@ -57,6 +62,26 @@ void terminal_help(char* in)
         uart_write_string("\tEnabled/disables received GPS messages from being echoed onto the debug UART.\n\r\tParamter: <'on' or 'off'>\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "set lora bw"))
+    {
+        uart_write_string("\tSets the LoRa channel bandwidth.\n\r\tParameter: <bandwidth setting in range [0, 9]>\n\r\t\n\r\t0 = 7.8kHz\n\r\t1 = 10.4kHz\n\r\t2 = 15.6 kHz\n\r\t3 = 20.8 kHz\n\r\t4 = 31.25 kHz\n\r\t5 = 41.7 kHz\n\r\t6 = 62.5 kHz\n\r\t7 = 125 kHz\n\r\t8 = 250 kHz\n\r\t9 = 500 kHz\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "set lora cr"))
+    {
+        uart_write_string("\tSets the LoRa coding rate.\n\r\tParameter: <coding rate setting in range[1, 4]>\n\r\t\n\r\t1 = coding rate 4/5\n\r\t2 = coding rate 4/6\n\r\t3 = coding rate 4/7\n\r\t4 = coding rate 4/8\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "set lora sf"))
+    {
+        uart_write_string("\tSets the LoRa spreading factor.\n\r\tParameter: <spreading factor in range [6, 12]>\n\r\t\n\r\tA spreading factor of 'sf' gives 2^(sf) chips\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "set lora freq"))
+    {
+        uart_write_string("\tSets the LoRa frequency.\n\r\tParameter: <frequency band in range [1, 8]>\n\r\t\n\r\tBands:\n\r\t1 = 868.1 MHz\n\r\t2 = 868.3 MHz\n\r\t3 = 868.5 MHz\n\r\t4 = 867.1 MHz\n\r\t5 = 867.3 MHz\n\r\t6 = 867.5 MHz\n\r\t7 = 867.7 MHz\n\r\t8 = 867.9 MHz\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else
     {
         uart_write_string("\tType \"help <command>\" for more info\n\r");
@@ -84,6 +109,16 @@ void terminal_help(char* in)
         uart_write_string("set flash\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set gps echo\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set lora bw\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set lora cr\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set lora freq\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set lora sf\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("system reset\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("\n\r");
     }
