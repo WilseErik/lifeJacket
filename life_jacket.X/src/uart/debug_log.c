@@ -41,12 +41,12 @@ static uint16_t line_number = 0;
 // Public function definitions
 // =============================================================================
 
-void debug_log_append_line(char * line)
+void debug_log_append_line(const char * line)
 {
     sprintf(line_buffer,
-            "[%u, %u] %s\r\n",
+            "[%u, %lu] %s\r\n",
             line_number++,
-            (uint16_t)clock_get_msec(),
+            clock_get_msec(),
             line);
     
     uart_write_string(line_buffer);

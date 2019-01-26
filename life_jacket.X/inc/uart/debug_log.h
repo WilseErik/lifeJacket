@@ -32,7 +32,7 @@ extern "C" {
  @brief Prints one line to the debug interface.
  @param line    - Line to print.
 */
-void debug_log_append_line(char * line);
+void debug_log_append_line(const char * line);
 
 #ifdef  __cplusplus
 }
