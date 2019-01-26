@@ -235,7 +235,7 @@ void rfm95w_io_set_coding_rate(rfm95w_coding_rate_t coding_rate)
 
     modem_config_1 = rfm95w_io_read(RFM95W_REG_MODEM_CONFIG1);
 
-    modem_config_1 &= 0x0E;
+    modem_config_1 &= 0xF1;
     modem_config_1 |= (coding_rate << 1);
 
     rfm95w_io_write(RFM95W_REG_MODEM_CONFIG1, modem_config_1);
@@ -270,7 +270,7 @@ void rfm95w_io_set_speading_factor(rfm95w_spreading_factor_t spreading_factor)
 
     modem_config_2 = rfm95w_io_read(RFM95W_REG_MODEM_CONFIG2);
 
-    modem_config_2 &= 0xF0;
+    modem_config_2 &= 0x0F;
     modem_config_2 |= (spreading_factor << 4);
 
     rfm95w_io_write(RFM95W_REG_MODEM_CONFIG2, modem_config_2);
