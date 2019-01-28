@@ -139,6 +139,8 @@ static void init(void)
 
     lora_tx_queue_init();
     p2pc_protocol_init();
+
+    clock_start_rtc();
 }
 
 static void print_start_message(uint16_t reset_reason)

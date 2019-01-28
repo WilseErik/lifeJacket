@@ -41,6 +41,11 @@ void clock_start_msec_timer(void);
  @brief Gets the current millisecond timer value. 
 */
 uint32_t clock_get_msec(void);
+
+/**
+ @brief Starts the RTC timer.
+*/
+void clock_start_rtc(void);
  
 #ifdef  __cplusplus
 }
