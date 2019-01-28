@@ -15,10 +15,12 @@
 #include "hal/gpio.h"
 #include "hal/flash.h"
 #include "gps/jf2_uart.h"
+#include "gps/jf2_io.h"
 #include "gps/nmea.h"
 #include "acc/accelerometer.h"
 #include "lora/rfm95w.h"
 #include "lora/rfm95w_io.h"
+#include "lora/p2pc_protocol.h"
 
 // =============================================================================
 // Private type definitions
@@ -81,6 +83,21 @@ static const char CMD_FLUSH_BUFFER[]    = "flush flash buffer";
  Starts a LORA CW transmission.
  */
 static const char CMD_LORA_CW[]         = "lora cw";
+
+/*§
+ Starts a LoRa GPS position broadcast.
+ */
+static const char CMD_LORA_GPS_BROADCAST[] = "lora gps broadcast";
+
+/*§
+ Starts continuous rx LoRa mode.
+ */
+static const char CMD_LORA_CONTIUOUS_RX[] = "lora cont rx";
+
+/*§
+ Sends a on/off pulse to the GPS module.
+ */
+static const char CMD_GPS_ON_OFF_PULSE[] = "gps on off pulse";
 
 /*§
  Gets one byte from the flash data memory.
@@ -193,6 +210,9 @@ static void cmd_init_flash_buffer(void);
 static void cmd_buffered_write(void);
 static void cmd_flush_buffer(void);
 static void cmd_lora_cw(void);
+static void cmd_lora_gps_broadcast(void);
+static void cmd_lora_contiuous_rx(void);
+static void cmd_gps_on_off_pulse(void);
 
 static void get_flash(void);
 static void get_gps_status(void);
@@ -330,6 +350,18 @@ static void execute_command(void)
         {
             cmd_lora_cw();
         }
+        else if (NULL != strstr(cmd_buffer, CMD_LORA_GPS_BROADCAST))
+        {
+            cmd_lora_gps_broadcast();
+        }
+        else if (NULL != strstr(cmd_buffer, CMD_LORA_CONTIUOUS_RX))
+        {
+            cmd_lora_contiuous_rx();
+        }
+        else if (NULL != strstr(cmd_buffer, CMD_GPS_ON_OFF_PULSE))
+        {
+            cmd_gps_on_off_pulse();
+        }
         else
         {
             syntax_error = true;
@@ -440,6 +472,22 @@ static void cmd_lora_cw(void)
     rfm95w_init();
     rfmw_send_cw();
 }
+
+static void cmd_lora_gps_broadcast(void)
+{
+    p2pc_protocol_broadcast_gps_position();
+}
+
+static void cmd_lora_contiuous_rx(void)
+{
+    rfm95w_start_continuous_rx();
+}
+
+static void cmd_gps_on_off_pulse(void)
+{
+    jf2_io_send_on_pulse();
+}
+
 
 static void get_flash(void)
 {
