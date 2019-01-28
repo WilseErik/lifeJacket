@@ -25,6 +25,7 @@ typedef enum
     STATUS_UART_RECEIVE_FLAG,
     STATUS_GPS_ON_EVENT,
     STATUS_GPS_BROADCAST_EVENT,
+    STATUS_GPS_HOTSTART_EVENT,
 
     // Status runtime values
     STATUS_BYTE_LAST

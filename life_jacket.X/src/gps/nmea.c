@@ -116,6 +116,7 @@ static const char NMEA_STATUS_WARNING = 'V';
 // =============================================================================
 
 static bool is_locked = false;
+static bool on_lock_event_flag = false;
 static nmea_position_info_t position_info;
 
 static nmea_mode_indicator_t            mode_indicator;
@@ -186,6 +187,19 @@ void nmea_handle_message(char * message)
         nmea_parse_message(message);
     }
 }
+
+
+void nmea_reset_on_lock_event(void)
+{
+    on_lock_event_flag = 0;
+}
+
+bool nmea_check_on_lock_event(void)
+{
+    return on_lock_event_flag;
+}
+
+
 
 void nmea_print_status(void)
 {
@@ -394,6 +408,13 @@ static void nmea_handle_gga_message(char * message)
         (NMEA_GPS_QUALITY_INDICATOR_DIFF_SPS_MODE == gps_quality_indicator) ||
         (NMEA_GPS_QUALITY_INDICATOR_PPS_MODE == gps_quality_indicator);
 
+    if (is_locked &&
+        (NMEA_GPS_QUALITY_INDICATOR_SPS_MODE == gps_quality_indicator) &&
+        (NMEA_MODE_INDICATOR_AUTONOMOUS == mode_indicator))
+    {
+        on_lock_event_flag = true;    
+    }
+
     if (is_locked)
     {
         uint16_t latitude_field_len;
@@ -445,6 +466,13 @@ static void nmea_handle_rmc_message(char * message)
     }
 
     is_locked = (NMEA_STATUS_LOCKED == *fields[NMEA_RMC_FIELD_STATUS]);
+
+    if (is_locked &&
+        (NMEA_GPS_QUALITY_INDICATOR_SPS_MODE == gps_quality_indicator) &&
+        (NMEA_MODE_INDICATOR_AUTONOMOUS == mode_indicator))
+    {
+        on_lock_event_flag = true;    
+    }
 
     if (is_locked)
     {

@@ -26,6 +26,7 @@
 #include "gps/jf2_uart.h"
 #include "gps/nmea_queue.h"
 #include "gps/nmea.h"
+#include "gps/gps.h"
 #include "uart/debug_log.h"
 
 // =============================================================================
@@ -98,6 +99,8 @@ int main(int argc, char** argv)
             p2pc_protocol_broadcast_gps_position();
             debug_log_append_line("GPS broadcast added to tx queue.");
         }
+
+        gps_poll();
     }
 
     return (EXIT_SUCCESS);
@@ -132,10 +135,7 @@ static void init(void)
 
     pcm1770_init();
 
-    jf2_uart_init();
-    nmea_queue_init(nmea_queue_get_rx_queue());
-    nmea_queue_init(nmea_queue_get_tx_queue());
-    g_clock_gps_on_event_timeout = JF2_IO_RTC_STARTUP_TIME_MS;
+    gps_init();
 
     lora_tx_queue_init();
     p2pc_protocol_init();

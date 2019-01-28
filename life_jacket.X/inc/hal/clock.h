@@ -21,6 +21,8 @@ extern "C" {
 // =============================================================================
 
 extern volatile uint16_t g_clock_gps_on_event_timeout;
+extern volatile uint16_t g_clock_gps_off_timeout;
+extern volatile uint16_t g_clock_gps_hot_start_timeout_sec;
 
 // =============================================================================
 // Global constatants
