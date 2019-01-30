@@ -412,9 +412,11 @@ static void rfm95w_read_fifo(void)
 {
     uint8_t length;
     uint8_t i;
+    uint8_t fifo_rx_current_address;
 
     length = rfm95w_io_read(RFM95W_REG_RX_NBR_BYTES);
-    rfm95w_io_write(RFM95W_REG_FIFO_ADDR_PTR, RFM95W_REG_FIFO_RX_CURRENT_ADDR);
+    fifo_rx_current_address = rfm95w_io_read(RFM95W_REG_FIFO_RX_CURRENT_ADDR);
+    rfm95w_io_write(RFM95W_REG_FIFO_ADDR_PTR, fifo_rx_current_address);
 
     for (i = 0; i != length; ++i)
     {

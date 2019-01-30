@@ -86,7 +86,6 @@ void p2pc_protocol_broadcast_gps_position(void)
     uint8_t message[32];
     p2p_frame_header_t header;
     lora_tx_queue_element_t queue_element;
-    uint8_t i;
 
     header.source_address = 0xA1A2A3A4;
     header.destination_address = 0xFFFFFFFF;
@@ -103,7 +102,7 @@ void p2pc_protocol_broadcast_gps_position(void)
 
 
     queue_element.data = message;
-    queue_element.length = sizeof(p2p_frame_header_t);
+    queue_element.length = 12;
     lora_tx_queue_append(&queue_element);
 }
 

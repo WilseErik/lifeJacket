@@ -72,18 +72,19 @@ bool lora_tx_queue_is_empty(void)
 
 void lora_tx_queue_append(const lora_tx_queue_element_t * element)
 {
-    lora_tx_element_t * p;
+    lora_tx_element_t * first_element;
 
     if (LORA_TX_QUEUE_LENGTH == lora_tx_queue.size)
     {
         return;
     }
 
-    p = &lora_tx_queue.elements[lora_tx_queue.first];
+    first_element = &lora_tx_queue.elements[lora_tx_queue.first];
 
-    memcpy(lora_tx_queue.elements[lora_tx_queue.first].data,
+    memcpy(first_element->data,
            element->data,
            element->length);
+    first_element->length = element->length;
 
     lora_tx_queue_increment_first();
 
