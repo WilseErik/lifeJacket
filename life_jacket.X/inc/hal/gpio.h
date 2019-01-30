@@ -180,9 +180,13 @@ extern "C" {
 
 #define NC1_PIN                     LATBbits.LATB4
 #define NC1_DIR                     TRISBbits.TRISB4
+#define NC1_PULL_DOWN               CNPD1bits.CN0PDE
 
 #define NC2_PIN                     LATBbits.LATB5
 #define NC2_DIR                     TRISBbits.TRISB5
+
+#define PGD1_PULL_DOWN              CNPD1bits.CN4PDE
+#define PGC1_PULL_DOWN              CNPD1bits.CN5PDE
 
 typedef enum
 {

@@ -116,6 +116,18 @@ void gpio_init(void)
     GPS_TXD_PPS_REG = GPIO_PPS_OUT_U1TX;
     GPS_RXD_PPS_REG = GPS_RXD_RP_PIN;
 
+    //
+    // Unused pins
+    //
+    NC1_PULL_DOWN = 1;
+
+    NC2_PIN = 0;
+    NC2_DIR = DIR_OUT;
+    NC2_PIN = 0;
+
+    PGD1_PULL_DOWN = 1;
+    PGC1_PULL_DOWN = 1;
+
     memset((void*)&cn_pins, sizeof(cn_pins), 0);
 
     // Enable change notification interrupts

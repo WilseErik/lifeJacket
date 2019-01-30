@@ -55,7 +55,7 @@ void pcm1770_init(void)
 
     pcm1770_i2s_init();
 
-    PCM1770_N_PD_PIN = 1;
+    PCM1770_N_PD_PIN = 0;
 }
 
 void pcm1770_write_register(uint8_t address, uint8_t value)

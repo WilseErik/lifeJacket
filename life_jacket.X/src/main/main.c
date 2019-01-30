@@ -101,6 +101,11 @@ int main(int argc, char** argv)
         }
 
         gps_poll();
+
+        if (rfm95w_is_idle() && gps_allows_sleep_mode())
+        {
+            Sleep();
+        }
     }
 
     return (EXIT_SUCCESS);
@@ -132,8 +137,6 @@ static void init(void)
     accelerometer_init();
     while (!uart_is_write_buffer_empty()){;}
     ext_flash_init();
-
-    pcm1770_init();
 
     gps_init();
 
