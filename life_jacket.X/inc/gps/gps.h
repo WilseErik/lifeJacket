@@ -1,5 +1,5 @@
-#ifndef NMEA_H
-#define NMEA_H
+#ifndef GPS_H
+#define GPS_H
 
 #ifdef  __cplusplus
 extern "C" {
@@ -12,24 +12,11 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "gps/nmea.h"
+
 // =============================================================================
 // Public type definitions
 // =============================================================================
-
-typedef struct nmea_coordinates_info_t
-{
-    bool        latitude_north;
-    uint16_t    latitude_deg;
-    float       latitude_minutes;
-    
-    bool        longitude_east;
-    uint16_t    longitude_deg;
-    float       longitude_minutes;
-    
-    uint8_t     time_of_fix_hours;
-    uint8_t     time_of_fix_minutes;
-    uint8_t     time_of_fix_seconds;
-} nmea_coordinates_info_t;
 
 // =============================================================================
 // Global variable declarations
@@ -39,40 +26,37 @@ typedef struct nmea_coordinates_info_t
 // Global constatants
 // =============================================================================
 
+#define GPS_BROADCAST_INTERVAL_SEC (120)
+
 // =============================================================================
 // Public function declarations
 // =============================================================================
 
 /**
- @brief Handles a NMEA output message.
+ * @brief Initializes the GPS receiver.
+ */
+void gps_init(void);
+
+/**
+ * @brief Should be polled from the main loop.
+ */
+void gps_poll(void);
+
+/**
+ * @brief Checks if the GPS receiver allows the MCU to enter sleep mode.
+ * @return True if the MCU can enter sleep.
+ */
+bool gps_allows_sleep_mode(void);
+
+/**
+ @Brief Gets the current GPS coordinates.
+ @return Pointer to a GPS coordinates structure.
 */
-void nmea_handle_message(char * message);
-
-/**
- @brief Resets the on lock event flag.
- */
-void nmea_reset_on_lock_event(void);
-
-/**
- @brief Checks if the on lock event flag is set.
- @return On lock event flag.
- */
-bool nmea_check_on_lock_event(void);
-
-/**
- @brief Gets the most recent current coordinates.
- @param coordinates     - Where to store the coordinates.
-*/
-void nmea_get_coordinates(nmea_coordinates_info_t * coordinates);
-
-/**
- * @brief Prints the current status on the debug UART.
- */
-void nmea_print_status(void);
+const nmea_coordinates_info_t * gps_get_coordinates(void);
 
 #ifdef  __cplusplus
 }
 #endif
 
-#endif  /* NMEA_H */
+#endif  /* GPS_H */
 

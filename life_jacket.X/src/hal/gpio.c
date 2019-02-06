@@ -64,7 +64,7 @@ void gpio_init(void)
     GPS_RXD_DIR         = DIR_IN;
     GPS_ANT_SEL1_DIR    = DIR_OUT;
     GPS_ANT_SEL2_DIR    = DIR_OUT;
-    GPS_SELECT_ANT_1;
+    GPS_SELECT_ANT_2;
 
     PCM1770_SCKI_DIR    = DIR_OUT;
     PCM1770_N_CS_DIR    = DIR_OUT;

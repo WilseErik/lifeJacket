@@ -24,6 +24,7 @@
 volatile uint16_t g_clock_gps_on_event_timeout;
 volatile uint16_t g_clock_gps_off_timeout;
 volatile uint16_t g_clock_gps_hot_start_timeout_sec;
+volatile uint16_t g_clock_gps_broadcast_timeout_sec;
 
 // =============================================================================
 // Private constants
@@ -163,6 +164,16 @@ void __attribute__((interrupt, no_auto_psv)) _RTCCInterrupt(void)
         if (!g_clock_gps_hot_start_timeout_sec)
         {
             status_set(STATUS_GPS_HOTSTART_EVENT, true);
+        }
+    }
+
+    if (g_clock_gps_broadcast_timeout_sec)
+    {
+        --g_clock_gps_broadcast_timeout_sec;
+
+        if (!g_clock_gps_broadcast_timeout_sec)
+        {
+            status_set(STATUS_GPS_BROADCAST_EVENT, true);
         }
     }
 }

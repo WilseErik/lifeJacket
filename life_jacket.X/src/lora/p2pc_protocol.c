@@ -15,6 +15,7 @@
 #include "uart/debug_log.h"
 #include "hal/uart.h"
 #include "lora/lora_tx_queue.h"
+#include "gps/gps.h"
 
 // =============================================================================
 // Private type definitions
@@ -87,6 +88,9 @@ void p2pc_protocol_broadcast_gps_position(void)
     p2p_frame_header_t header;
     lora_tx_queue_element_t queue_element;
 
+    const nmea_coordinates_info_t * coordinates;
+    uint8_t * minutes_pointer;
+
     header.source_address = 0xA1A2A3A4;
     header.destination_address = 0xFFFFFFFF;
     header.frame_number = frame_number++;
@@ -99,10 +103,45 @@ void p2pc_protocol_broadcast_gps_position(void)
     //
     // Fill in GPS data here
     //
+    coordinates = gps_get_coordinates();
 
+    if (NULL == coordinates)
+    {
+        return;
+    }
+    
+    message[P2P_INDEX_APPLICATION + 0] = coordinates->latitude_deg;
+
+    if (coordinates->latitude_north)
+    {
+        message[P2P_INDEX_APPLICATION + 0] |= 0x80;
+    }
+
+    message[P2P_INDEX_APPLICATION + 1] = coordinates->longitude_deg;
+
+    if (coordinates->longitude_east)
+    {
+        message[P2P_INDEX_APPLICATION + 1] |= 0x80;
+    }
+
+    minutes_pointer = (uint8_t*)&(coordinates->latitude_minutes);
+    message[P2P_INDEX_APPLICATION + 2] = *(minutes_pointer + 0);
+    message[P2P_INDEX_APPLICATION + 3] = *(minutes_pointer + 1);
+    message[P2P_INDEX_APPLICATION + 4] = *(minutes_pointer + 2);
+    message[P2P_INDEX_APPLICATION + 5] = *(minutes_pointer + 3);
+
+    minutes_pointer = (uint8_t*)&(coordinates->longitude_minutes);
+    message[P2P_INDEX_APPLICATION + 6] = *(minutes_pointer + 0);
+    message[P2P_INDEX_APPLICATION + 7] = *(minutes_pointer + 1);
+    message[P2P_INDEX_APPLICATION + 8] = *(minutes_pointer + 2);
+    message[P2P_INDEX_APPLICATION + 9] = *(minutes_pointer + 3);
+
+    message[P2P_INDEX_APPLICATION + 10] = coordinates->time_of_fix_hours;
+    message[P2P_INDEX_APPLICATION + 11] = coordinates->time_of_fix_minutes;
+    message[P2P_INDEX_APPLICATION + 12] = coordinates->time_of_fix_seconds;
 
     queue_element.data = message;
-    queue_element.length = 12;
+    queue_element.length = P2P_INDEX_APPLICATION + 13;
     lora_tx_queue_append(&queue_element);
 }
 

@@ -176,6 +176,16 @@ static void nmea_handle_rmc_message(char * message);
 */
 static void nmea_handle_gsv_message(char * message);
 
+/**
+ @brief Parses a string with degrees and minutes.
+ @param string  - String to parse.
+ @param degrees - Parsed degrees value.
+ @param minutes - Parsed minutes value.
+*/
+static void nmea_parse_deg_minutes(const char * string,
+                                   uint16_t * degrees,
+                                   float * minutes);
+
 // =============================================================================
 // Public function definitions
 // =============================================================================
@@ -188,7 +198,6 @@ void nmea_handle_message(char * message)
     }
 }
 
-
 void nmea_reset_on_lock_event(void)
 {
     on_lock_event_flag = 0;
@@ -199,7 +208,36 @@ bool nmea_check_on_lock_event(void)
     return on_lock_event_flag;
 }
 
+void nmea_get_coordinates(nmea_coordinates_info_t * coordinates)
+{
+    char hours_str[3];
+    char minutes_str[3];
+    char seconds_str[3];
 
+    coordinates->latitude_north = ('N' == position_info.latitude_ns);
+    nmea_parse_deg_minutes(position_info.latitude,
+                           &(coordinates->latitude_deg),
+                           &(coordinates->latitude_minutes));
+
+    coordinates->longitude_east = ('E' == position_info.longitude_ew);
+    nmea_parse_deg_minutes(position_info.longitude,
+                           &(coordinates->longitude_deg),
+                           &(coordinates->longitude_minutes));
+
+    hours_str[0] = position_info.time_of_fix[0];
+    hours_str[1] = position_info.time_of_fix[1];
+    hours_str[2] = NULL;
+    minutes_str[0] = position_info.time_of_fix[2];
+    minutes_str[1] = position_info.time_of_fix[3];
+    minutes_str[2] = NULL;
+    seconds_str[0] = position_info.time_of_fix[4];
+    seconds_str[1] = position_info.time_of_fix[5];
+    seconds_str[2] = NULL;
+
+    coordinates->time_of_fix_hours = (uint8_t)atoi(hours_str);
+    coordinates->time_of_fix_minutes = (uint8_t)atoi(minutes_str);
+    coordinates->time_of_fix_seconds = (uint8_t)atoi(seconds_str);
+}
 
 void nmea_print_status(void)
 {
@@ -511,5 +549,31 @@ static void nmea_handle_rmc_message(char * message)
 static void nmea_handle_gsv_message(char * message)
 {
     // GNSS Satellites in View message
+}
+
+static void nmea_parse_deg_minutes(const char * string,
+                                   uint16_t * degrees,
+                                   float * minutes)
+{
+    const char * p;
+    const char * minutes_str;
+    char degrees_str[4];
+    uint8_t degrees_len;
+    uint8_t i;
+
+    p = strchr(string, '.');
+    degrees_len = p - string - 2;
+
+    for (i = 0; i != degrees_len; ++i)
+    {
+        degrees_str[i] = string[i];
+    }
+
+    degrees_str[i] = 0;
+
+    minutes_str = p - 2;
+
+    *degrees = (uint8_t)atoi(degrees_str);
+    *minutes = atof(minutes_str);
 }
 

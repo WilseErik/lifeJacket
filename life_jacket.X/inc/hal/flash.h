@@ -36,7 +36,11 @@ typedef enum
     FLASH_INDEX_LORA_BANDWIDTH              = 0x02,
     FLASH_INDEX_LORA_CODING_RATE            = 0x03,
     FLASH_INDEX_LORA_SPREADING_FACTOR       = 0x04,
-    FLASH_INDEX_LORA_FREQUENCY              = 0x05
+    FLASH_INDEX_LORA_FREQUENCY              = 0x05,
+    FLASH_INDEX_LORA_ADDRESS_MSB            = 0x06,
+    FLASH_INDEX_LORA_ADDRESS_HIGH_MID       = 0x07,
+    FLASH_INDEX_LORA_ADDRESS_LOW_MID        = 0x08,
+    FLASH_INDEX_LORA_ADDRESS_LSB            = 0x09,
 
 } flash_index_t;
 

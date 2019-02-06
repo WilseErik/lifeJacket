@@ -96,6 +96,7 @@ int main(int argc, char** argv)
         if (status_check(STATUS_GPS_BROADCAST_EVENT))
         {
             status_clear(STATUS_GPS_BROADCAST_EVENT);
+            g_clock_gps_broadcast_timeout_sec = GPS_BROADCAST_INTERVAL_SEC;
             p2pc_protocol_broadcast_gps_position();
             debug_log_append_line("GPS broadcast added to tx queue.");
         }
