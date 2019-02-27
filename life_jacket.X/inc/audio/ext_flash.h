@@ -59,6 +59,7 @@ typedef enum
 // =============================================================================
 // Global constatants
 // =============================================================================
+#define EXT_FLASH_PAGE_LENGTH (256)
 
 // =============================================================================
 // Public function declarations
@@ -68,6 +69,52 @@ typedef enum
  @brief Initializes the mx25r6435f chip.
 */
 void ext_flash_init(void);
+
+/**
+ @brief Reads a number of consecutive bytes from the flash memeory.
+ @param destination - Where to store the read data.
+ @param address     - Address of first byte to read.
+ @param length      - Number of bytes to read. Must be multiple of 4.
+*/
+void ext_flash_read(void * destination, uint32_t address, uint32_t length);
+
+/**
+ @brief Reads one byte from the external flash memory.
+ @param address     - Address to read from.
+ @return Read byte.
+*/
+uint8_t ext_flash_read_byte(uint32_t address);
+
+/**
+ @brief Reads one word from the external flash memory.
+ @param address     - Address to read from.
+ @return Read word.
+*/
+uint16_t ext_flash_read_word(uint32_t address);
+
+/**
+ @brief Reads one dword from the external flash memory.
+ @param address     - Address to read from.
+ @return Read dword.
+*/
+uint32_t ext_flash_read_dword(uint32_t address);
+
+/**
+ @brief Erases all data on the flash memory.
+*/
+void ext_flash_chip_erase(void);
+
+/**
+ @brief Checks if a write is in progress.
+*/
+bool ext_flash_is_write_in_progress(void);
+
+/**
+ @brief Programs a 256 byte data block.
+ @param data    - The data to program the flash with.
+ @param address - Start address of the page to program.
+*/
+void ext_flash_program_page(const void * data, uint32_t address);
 
 #ifdef  __cplusplus
 }

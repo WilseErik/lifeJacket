@@ -58,6 +58,17 @@ uint16_t spi_hal_tranceive16(uint16_t v);
  @return Received value.
 */
 uint8_t spi_hal_tranceive8(uint8_t v);
+
+/**
+ @brief Performs a series of 16bit spi transmissions.
+ @details This is a blocking operation, and does no take control over the CS pin.
+          0x00 is sent while receiving.
+          Length must be a multiple of 4.
+ @param read_data       - Where to store the read data.
+ @param length          - Number of bytes in the transmission.
+*/
+void spi_hal_read16_block(uint16_t * read_data,
+                          uint16_t length);
  
 #ifdef  __cplusplus
 }

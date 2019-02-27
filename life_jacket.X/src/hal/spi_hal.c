@@ -6,12 +6,15 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include <xc.h>
 
 #include "hal/gpio.h"
 #include "hal/clock.h"
 
+#include <stdio.h>
+#include "hal/uart.h"
 #include "uart/debug_log.h"
 
 // =============================================================================
@@ -41,8 +44,8 @@ static uint16_t RFM95W_BRG =
 static uint16_t PCM1770_BRG = 
     CLOCK_HAL_PCBCLOCK_FREQ / (2 * PCM1770_TARGET_FREQ) - 1;
 
-// MX25R6435F max clock freq is 8Mhz of reads, run at 4 MHz
-#define MX25R6435F_TARGET_FREQ (4000000ull)
+// MX25R6435F max clock freq is 8Mhz of reads, run at 8 MHz
+#define MX25R6435F_TARGET_FREQ (8000000ull)
 static uint16_t MX25R6435F_BRG = 
     CLOCK_HAL_PCBCLOCK_FREQ / (2 * MX25R6435F_TARGET_FREQ) - 1;
 // =============================================================================
@@ -133,6 +136,92 @@ uint8_t spi_hal_tranceive8(uint8_t v)
     read_value = SPI1BUFL;
 
     return read_value;
+}
+
+void spi_hal_read16_block(uint16_t * read_data,
+                          uint16_t length)
+{
+    {
+        SPI1IMSKL = 0;              // No interrupts
+        SPI1IMSKH = 0;              // No interrupts
+        
+        SPI1CON1Lbits.SPIEN = 0;    // Turn of and reset the module
+
+        SPI1CON1L = 0;
+        SPI1CON1H = 0;
+
+        SPI1CON1Lbits.MODE32 = 1;   // 32 bit mode
+        SPI1CON1Lbits.MODE16 = 0;   // 32 bit mode
+        SPI1CON1Lbits.CKP = 0;      // Clock idle low
+        SPI1CON1Lbits.CKE = 1;      // Transmit at active to idle clk transition
+        SPI1CON1Lbits.MSTEN = 1;    // Master mode
+        SPI1CON1Lbits.ENHBUF = 1;   // Use enhanced buffer mode
+
+        SPI1CON2L = 0;              // 16 bit mode
+        SPI1STATL = 0;              // Clear any errors
+
+        SPI1BRGL = MX25R6435F_BRG;
+
+        SPI1CON1Lbits.SPIEN = 1;
+    }
+
+    uint16_t read_count;
+    uint16_t write_count;
+
+    length = length >> 2;
+    read_count = length;
+    write_count = length;
+
+    SPI1BUFL = 0;
+    SPI1BUFH = 0;
+
+    while (1 != read_count)
+    {
+        if (SPI1STATLbits.SPITBE)
+        {
+            SPI1BUFL = 0;
+            SPI1BUFH = 0;
+            --write_count;
+        }
+
+        if (!SPI1STATLbits.SPIRBE)
+        {
+            *(read_data + 1) = SPI1BUFL;
+            *read_data       = SPI1BUFH;
+            read_data += 2;
+            --read_count;
+        }
+    }
+
+    while (SPI1STATLbits.SPIRBE) {;}
+    
+    *(read_data + 1) = SPI1BUFL;
+    *read_data       = SPI1BUFH;
+    read_data += 2;
+
+    {
+        SPI1IMSKL = 0;              // No interrupts
+        SPI1IMSKH = 0;              // No interrupts
+        
+        SPI1CON1Lbits.SPIEN = 0;    // Turn of and reset the module
+
+        SPI1CON1L = 0;
+        SPI1CON1H = 0;
+
+        SPI1CON1Lbits.MODE32 = 0;   // 8 bit mode
+        SPI1CON1Lbits.MODE16 = 0;   // 8 bit mode
+        SPI1CON1Lbits.CKP = 0;      // Clock idle low
+        SPI1CON1Lbits.CKE = 1;      // Transmit at active to idle clk transition
+        SPI1CON1Lbits.MSTEN = 1;    // Master mode
+        SPI1CON1Lbits.ENHBUF = 1;   // Use enhanced buffer mode
+
+        SPI1CON2L = 0;              // 16 bit mode
+        SPI1STATL = 0;              // Clear any errors
+
+        SPI1BRGL = MX25R6435F_BRG;
+        
+        SPI1CON1Lbits.SPIEN = 1;
+    }
 }
 
 // =============================================================================
@@ -243,7 +332,7 @@ static void spi_hal_setup_for_mx25r6435f(void)
     SPI1CON1Lbits.CKP = 0;      // Clock idle low
     SPI1CON1Lbits.CKE = 1;      // Transmit at active to idle clk transition
     SPI1CON1Lbits.MSTEN = 1;    // Master mode
-    SPI1CON1Lbits.ENHBUF = 1;   // Use enhanced buffer mode
+    SPI1CON1Lbits.ENHBUF = 0;   // Don't use enhanced buffer mode
 
     SPI1CON2L = 0;              // 16 bit mode
     SPI1STATL = 0;              // Clear any errors

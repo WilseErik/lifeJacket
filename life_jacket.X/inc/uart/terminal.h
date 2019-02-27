@@ -33,6 +33,12 @@ extern "C" {
  */
 void terminal_handle_uart_event(void);
 
+/**
+ * @brief Checks if the terminal allows the mcu to enter sleep mode.
+ * @return True if sleep is allowed.
+ */
+bool termnial_allows_sleep(void);
+
 #ifdef	__cplusplus
 }
 #endif

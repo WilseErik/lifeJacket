@@ -9,25 +9,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "status.h"
+#include "build_number.h"
+
 #include "hal/gpio.h"
 #include "hal/flash.h"
+#include "hal/clock.h"
+#include "hal/uart.h"
+
 #include "acc/accelerometer.h"
+
 #include "lora/rfm95w.h"
 #include "lora/lora_tx_queue.h"
 #include "lora/p2pc_protocol.h"
+
 #include "audio/ext_flash.h"
 #include "audio/pcm1770.h"
-#include "hal/clock.h"
-#include "hal/uart.h"
+
 #include "uart/terminal.h"
-#include "build_number.h"
-#include "status.h"
+#include "uart/debug_log.h"
+
 #include "gps/jf2_io.h"
 #include "gps/jf2_uart.h"
 #include "gps/nmea_queue.h"
 #include "gps/nmea.h"
 #include "gps/gps.h"
-#include "uart/debug_log.h"
+
+#include "audio/audio.h"
 
 // =============================================================================
 // Private type definitions
@@ -103,7 +111,15 @@ int main(int argc, char** argv)
 
         gps_poll();
 
-        if (rfm95w_is_idle() && gps_allows_sleep_mode())
+        if (status_check(STATUS_AUDIO_BUFFER_UPDATE_EVENT))
+        {
+            status_clear(STATUS_AUDIO_BUFFER_UPDATE_EVENT);
+            audio_handle_buffer_update();
+        }
+
+        if (rfm95w_is_idle() &&
+            gps_allows_sleep_mode() &&
+            termnial_allows_sleep())
         {
             Sleep();
         }

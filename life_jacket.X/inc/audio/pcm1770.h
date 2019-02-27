@@ -34,6 +34,11 @@ extern "C" {
 void pcm1770_init(void);
 
 /**
+ @brief Shuts down the PCM1770 chip and its I2S bus.
+*/
+void pcm1770_deinit(void);
+
+/**
  @brief Writes a value to one of the PCM1770 registers.
  @param address     - Register address to write to.
  @param value       - Value to write into the register.

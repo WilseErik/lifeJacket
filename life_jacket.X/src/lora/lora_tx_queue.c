@@ -17,7 +17,7 @@
 // Private type definitions
 // =============================================================================
 
-#define LORA_TX_QUEUE_MAX_MESSAGE_LENGTH (256)
+#define LORA_TX_QUEUE_MAX_MESSAGE_LENGTH (128)
 
 typedef struct lora_tx_element_t
 {

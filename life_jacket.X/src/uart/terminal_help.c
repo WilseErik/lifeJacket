@@ -52,9 +52,39 @@ void terminal_help(char* in)
         uart_write_string("\tSends a on/off pulse to the GPS module.\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "ext flash chip erase"))
+    {
+        uart_write_string("\tErases the whole external flash memory.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "ext flash write test"))
+    {
+        uart_write_string("\tWrites test data to the first page (first 256 bytes).\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "test audio session"))
+    {
+        uart_write_string("\tRuns a audio session test.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "write audio test data"))
+    {
+        uart_write_string("\tWrites test audio data to the external flash memory.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else if (NULL != strstr(in, "get flash"))
     {
         uart_write_string("\tGets one byte from the flash data memory.\n\r\tParameter: <index in hex format>\n\r\tReturns: <hex value of byte at specified index>\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "get ext flash"))
+    {
+        uart_write_string("\tGets one byte from the external flash memory.\n\r\tParameter: <address in hex>\n\r\tReturns: <read byte in hex format>\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "get page ext flash"))
+    {
+        uart_write_string("\tGets 256 of bytes from the external flash memory.\n\r\tParameters: <start address in hex>\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
     else if (NULL != strstr(in, "get gps status"))
@@ -97,6 +127,11 @@ void terminal_help(char* in)
         uart_write_string("\tSets the LoRa frequency.\n\r\tParameter: <frequency band in range [1, 8]>\n\r\t\n\r\tBands:\n\r\t1 = 868.1 MHz\n\r\t2 = 868.3 MHz\n\r\t3 = 868.5 MHz\n\r\t4 = 867.1 MHz\n\r\t5 = 867.3 MHz\n\r\t6 = 867.5 MHz\n\r\t7 = 867.7 MHz\n\r\t8 = 867.9 MHz\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "set sleep allowed"))
+    {
+        uart_write_string("\tEnables/disables sleep mode.\n\r\tParamter: <'on' or 'off'>\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else
     {
         uart_write_string("\tType \"help <command>\" for more info\n\r");
@@ -107,13 +142,21 @@ void terminal_help(char* in)
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("buffered write\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("ext flash chip erase\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("ext flash write test\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
         uart_write_string("flush flash buffer\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("get ext flash\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("get flash\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("get gps status\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("get orientation\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("get page ext flash\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("gps on off pulse\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
@@ -139,7 +182,13 @@ void terminal_help(char* in)
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set lora sf\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set sleep allowed\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
         uart_write_string("system reset\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("test audio session\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("write audio test data\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("\n\r");
     }

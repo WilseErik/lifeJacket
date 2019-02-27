@@ -11,6 +11,7 @@
 #include <stdlib.h>
 
 #include "hal/uart.h"
+#include "uart/debug_log.h"
 #include "uart/terminal_help.h"
 #include "hal/gpio.h"
 #include "hal/flash.h"
@@ -21,6 +22,8 @@
 #include "lora/rfm95w.h"
 #include "lora/rfm95w_io.h"
 #include "lora/p2pc_protocol.h"
+#include "audio/ext_flash.h"
+#include "audio/audio.h"
 
 // =============================================================================
 // Private type definitions
@@ -100,11 +103,44 @@ static const char CMD_LORA_CONTIUOUS_RX[] = "lora cont rx";
 static const char CMD_GPS_ON_OFF_PULSE[] = "gps on off pulse";
 
 /*§
+ Erases the whole external flash memory.
+ */
+static const char CMD_EXT_FLASH_CHIP_ERASE[] = "ext flash chip erase";
+
+/*§
+ Writes test data to the first page (first 256 bytes).
+*/
+static const char CMD_EXT_FLASH_WRITE_TEST[] = "ext flash write test";
+
+/*§
+ Runs a audio session test.
+*/
+static const char CMD_TEST_AUDIO_SESSION[] = "test audio session";
+
+/*§
+ Writes test audio data to the external flash memory.
+*/
+static const char CMD_WRITE_AUDIO_TEST_DATA[] = "write audio test data";
+
+/*§
  Gets one byte from the flash data memory.
  Parameter: <index in hex format>
  Returns: <hex value of byte at specified index>
  */
 static const char GET_FLASH[]       = "get flash";
+
+/*§
+ Gets one byte from the external flash memory.
+ Parameter: <address in hex>
+ Returns: <read byte in hex format>
+ */
+static const char GET_EXT_FLASH[]   = "get ext flash";
+
+/*§
+ Gets 256 of bytes from the external flash memory.
+ Parameters: <start address in hex>
+*/
+static const char GET_PAGE_EXT_FLASH[] = "get page ext flash";
 
 /*§
  Gets the status of the GPS.
@@ -180,12 +216,19 @@ static const char SET_LORA_SPREADING_FACTOR[] = "set lora sf";
  */
 static const char SET_LORA_FREQUENCY[] = "set lora freq";
 
+/*§
+ Enables/disables sleep mode.
+ Paramter: <'on' or 'off'>
+*/
+static const char SET_SLEEP_ALLOWED[] = "set sleep allowed";
+
 // =============================================================================
 // Private variables
 // =============================================================================
 
 static char cmd_buffer[CMD_BUFFER_SIZE] = {0};
 static bool arg_error = false;
+static bool is_sleep_allowed = true;
 
 // =============================================================================
 // Private function declarations
@@ -213,8 +256,14 @@ static void cmd_lora_cw(void);
 static void cmd_lora_gps_broadcast(void);
 static void cmd_lora_contiuous_rx(void);
 static void cmd_gps_on_off_pulse(void);
+static void cmd_ext_flash_chip_erase(void);
+static void cmd_ext_flash_write_test(void);
+static void cmd_test_audio_session(void);
+static void cmd_write_audio_test_data(void);
 
 static void get_flash(void);
+static void get_ext_flash(void);
+static void get_page_ext_flash(void);
 static void get_gps_status(void);
 static void get_orientation(void);
 
@@ -224,6 +273,7 @@ static void set_lora_bandwidth(void);
 static void set_lora_coding_rate(void);
 static void set_lora_spreading_factor(void);
 static void set_lora_frequency_band(void);
+static void set_sleep_allowed(void);
 
 // =============================================================================
 // Public function definitions
@@ -233,6 +283,11 @@ void terminal_handle_uart_event(void)
 {
     copy_to_cmd_buffer();
     execute_command();
+}
+
+bool termnial_allows_sleep(void)
+{
+    return is_sleep_allowed;
 }
 
 // =============================================================================
@@ -273,6 +328,14 @@ static void execute_command(void)
         if (NULL != strstr(cmd_buffer, GET_FLASH))
         {
             get_flash();
+        }
+        else if (NULL != strstr(cmd_buffer, GET_EXT_FLASH))
+        {
+            get_ext_flash();
+        }
+        else if (NULL != strstr(cmd_buffer, GET_PAGE_EXT_FLASH))
+        {
+            get_page_ext_flash();
         }
         else if (NULL != strstr(cmd_buffer, GET_GPS_STATUS))
         {
@@ -315,6 +378,10 @@ static void execute_command(void)
         else if (NULL != strstr(cmd_buffer, SET_LORA_FREQUENCY))
         {
             set_lora_frequency_band();
+        }
+        else if (NULL != strstr(cmd_buffer, SET_SLEEP_ALLOWED))
+        {
+            set_sleep_allowed();
         }
         else
         {
@@ -361,6 +428,22 @@ static void execute_command(void)
         else if (NULL != strstr(cmd_buffer, CMD_GPS_ON_OFF_PULSE))
         {
             cmd_gps_on_off_pulse();
+        }
+        else if (NULL != strstr(cmd_buffer, CMD_EXT_FLASH_CHIP_ERASE))
+        {
+            cmd_ext_flash_chip_erase();
+        }
+        else if (NULL != strstr(cmd_buffer, CMD_EXT_FLASH_WRITE_TEST))
+        {
+            cmd_ext_flash_write_test();
+        }
+        else if (NULL != strstr(cmd_buffer, CMD_TEST_AUDIO_SESSION))
+        {
+            cmd_test_audio_session();
+        }
+        else if (NULL != strstr(cmd_buffer, CMD_WRITE_AUDIO_TEST_DATA))
+        {
+            cmd_write_audio_test_data();
         }
         else
         {
@@ -488,6 +571,86 @@ static void cmd_gps_on_off_pulse(void)
     jf2_io_send_on_pulse();
 }
 
+static void cmd_ext_flash_chip_erase(void)
+{
+    ext_flash_chip_erase();
+}
+
+static void cmd_ext_flash_write_test(void)
+{
+    uint8_t test_data[EXT_FLASH_PAGE_LENGTH];
+    uint16_t i;
+
+    for (i = 0; i != EXT_FLASH_PAGE_LENGTH; ++i)
+    {
+        test_data[i] = i;
+    }
+
+    ext_flash_program_page(test_data, 0);
+
+    for (i = 0; i != EXT_FLASH_PAGE_LENGTH; ++i)
+    {
+        test_data[i] = (uint8_t)(i << 1);
+    }
+
+    ext_flash_program_page(test_data, 256);
+}
+
+static void cmd_test_audio_session(void)
+{
+    audio_start_playback_session(0);
+}
+
+static void cmd_write_audio_test_data(void)
+{
+    uint16_t i;
+    uint16_t k;
+    uint16_t index;
+    uint16_t page[128];
+    
+    ext_flash_chip_erase();
+
+    for (i = 0; i != 128; ++i)
+    {
+        page[i] = 0x0000;
+    }
+
+    page[0] = 1;    // number of tracks
+
+    // Track header for track 0:
+    page[1 + 0] = 0;        // start address 256
+    page[1 + 1] = 256;
+    page[1 + 2] = 0x0004;   // 4c400 samples (610*512)
+    page[1 + 3] = 0xc400;
+
+    ext_flash_program_page(page, 0);
+
+    for (i = 0; i != 2; ++i)
+    {
+        for (k = 0; k != 32; ++k)
+        {
+            index = i * 64 + k;
+            page[index] = k * 4;
+        }
+
+        for (k = 0; k != 32; ++k)
+        {
+            index = i * 64 + 32 + k;
+            page[index] = (32 - k) * 4;
+        }
+    }
+
+    for (i = 0; i != 610; ++i)
+    {
+        uint16_t page_number = (2 + i);
+        uint32_t address = ((uint32_t)page_number) << 8;
+
+        page[0] = i;
+        ext_flash_program_page(page, address);        
+    }
+
+    debug_log_append_line("Audio test data written!");
+}
 
 static void get_flash(void)
 {
@@ -529,6 +692,122 @@ static void get_flash(void)
             value = flash_read_byte((flash_index_t)address);
             sprintf(ans, "%02X%s", value, NEWLINE);
             uart_write_string(ans);
+        }
+        else
+        {
+            arg_error = true;
+        }
+    }
+}
+
+static void get_ext_flash(void)
+{
+    uint8_t * p;
+    char address_arg[HEX_DWORD_STR_LEN] = {0};
+
+    p = (uint8_t*)strstr(cmd_buffer, GET_EXT_FLASH);
+    p += strlen(GET_EXT_FLASH);
+    p += 1;     // +1 for space
+
+    if (!isxdigit(*p))
+    {
+        arg_error = true;
+    }
+    else
+    {
+        uint8_t i = 0;
+        uint32_t address;
+
+        //
+        // Parse address argument
+        //
+        while ((i != HEX_DWORD_STR_LEN) && isxdigit(*p))
+        {
+            address_arg[i++] = *(p++);
+        }
+
+        address_arg[i] = NULL;
+        address = (uint32_t)strtol(address_arg, NULL, 16);
+
+        //
+        // Perform flash read
+        //
+        if (address < 0x01000000)
+        {
+            uint8_t value;
+            char ans[32];
+            
+            value = ext_flash_read_byte(address);
+            sprintf(ans, "%02X%s", value, NEWLINE);
+            uart_write_string(ans);
+        }
+        else
+        {
+            arg_error = true;
+        }
+    }
+}
+
+static void get_page_ext_flash(void)
+{
+    uint8_t * p;
+    char address_arg[HEX_DWORD_STR_LEN] = {0};
+
+    p = (uint8_t*)strstr(cmd_buffer, GET_PAGE_EXT_FLASH);
+    p += strlen(GET_PAGE_EXT_FLASH);
+    p += 1;     // +1 for space
+
+    if (!isxdigit(*p))
+    {
+        arg_error = true;
+    }
+    else
+    {
+        uint8_t i = 0;
+        uint32_t address;
+        uint16_t page[128];
+
+        //
+        // Parse address argument
+        //
+        while ((i != HEX_DWORD_STR_LEN) && isxdigit(*p))
+        {
+            address_arg[i++] = *(p++);
+        }
+
+        address_arg[i] = NULL;
+        arg_error = arg_error || (i == 0);
+        address = (uint32_t)strtol(address_arg, NULL, 16);
+
+        //
+        // Perform flash read
+        //
+        if (!arg_error && (address < 0x01000000))
+        {
+            uint16_t k = 0;
+
+            ext_flash_read(&page[0], address, 256);
+
+            sprintf(g_uart_string_buffer,
+                    "\r\n");
+            uart_write_string(g_uart_string_buffer);
+
+            for (k = 0; k != 16; ++k)
+            {
+                sprintf(g_uart_string_buffer,
+                        "%04X %04X %04X %04X %04X %04X %04X %04X\r\n",
+                        page[8 * k + 0],
+                        page[8 * k + 1],
+                        page[8 * k + 2],
+                        page[8 * k + 3],
+                        page[8 * k + 4],
+                        page[8 * k + 5],
+                        page[8 * k + 6],
+                        page[8 * k + 7]);
+                uart_write_string(g_uart_string_buffer);
+
+                while (!uart_is_write_buffer_empty()){;}
+            }
         }
         else
         {
@@ -771,5 +1050,27 @@ static void set_lora_frequency_band(void)
         {
             arg_error = true;
         }
+    }
+}
+
+static void set_sleep_allowed(void)
+{
+    uint8_t * p;
+
+    p = (uint8_t*)strstr(cmd_buffer, SET_SLEEP_ALLOWED);
+    p += strlen(SET_SLEEP_ALLOWED);
+    p += 1;     // +1 for space
+
+    if (('o' == *p) && ('n' == *(p + 1)))
+    {
+        is_sleep_allowed = true;
+    }
+    else if (('o' == *p) && ('f' == *(p + 1)) && ('f' == *(p + 2)))
+    {
+        is_sleep_allowed = false;
+    }
+    else
+    {
+        arg_error = true;
     }
 }
