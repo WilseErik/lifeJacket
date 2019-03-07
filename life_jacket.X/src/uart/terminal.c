@@ -240,7 +240,7 @@ static const char SET_LORA_FREQUENCY[] = "set lora freq";
 */
 static const char SET_SLEEP_ALLOWED[] = "set sleep allowed";
 
-/**
+/*§
  Enables/disables the debug log.
  Paramter: <'on' or 'off'>
 */
@@ -768,8 +768,8 @@ static void cmd_write_audio_test_data(void)
     // Track header for track 0:
     page[1 + 0] = 0;        // start address 256
     page[1 + 1] = 256;
-    page[1 + 2] = 0x0004;   // 4c400 samples (610*512)
-    page[1 + 3] = 0xc400;
+    page[1 + 2] = 0x002f;   // 4c400 samples (6100*512)
+    page[1 + 3] = 0xa800;
 
     ext_flash_program_page(page, 0);
 
@@ -778,17 +778,17 @@ static void cmd_write_audio_test_data(void)
         for (k = 0; k != 32; ++k)
         {
             index = i * 64 + k;
-            page[index] = k * 4;
+            page[index] = k * 1024;
         }
 
         for (k = 0; k != 32; ++k)
         {
             index = i * 64 + 32 + k;
-            page[index] = (32 - k) * 4;
+            page[index] = (32 - k) * 1024;
         }
     }
 
-    for (i = 0; i != 610; ++i)
+    for (i = 0; i != 6100*4; ++i)
     {
         uint16_t page_number = (2 + i);
         uint32_t address = ((uint32_t)page_number) << 8;
@@ -1232,7 +1232,6 @@ static void set_sleep_allowed(void)
 static void set_debug_log_enable(void)
 {
     uint8_t * p;
-    bool log_enable;
 
     p = (uint8_t*)strstr(cmd_buffer, SET_DEBUG_LOG_ENABLE);
     p += strlen(SET_DEBUG_LOG_ENABLE);

@@ -17,7 +17,8 @@ extern "C" {
 // =============================================================================
 
 typedef void (*rfmw95w_received_message_callback_t)(const uint8_t * data,
-                                                    uint8_t length);
+                                                    uint8_t length,
+                                                    int16_t rssi);
 
 // =============================================================================
 // Global variable declarations

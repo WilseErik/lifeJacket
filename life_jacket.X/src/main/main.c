@@ -161,6 +161,8 @@ static void init(void)
     p2pc_protocol_init();
 
     clock_start_rtc();
+
+    g_clock_gps_broadcast_timeout_sec = GPS_BROADCAST_INTERVAL_SEC;
 }
 
 static void print_start_message(uint16_t reset_reason)

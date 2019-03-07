@@ -66,7 +66,9 @@ static uint8_t frame_number;
 // Private function declarations
 // =============================================================================
 
-static void p2pc_handle_received_message(const uint8_t * data, uint8_t length);
+static void p2pc_handle_received_message(const uint8_t * data,
+                                         uint8_t length,
+                                         int16_t rssi);
 
 static void p2pc_write_header(uint8_t * data,
                               const p2p_frame_header_t * header);
@@ -149,7 +151,9 @@ void p2pc_protocol_broadcast_gps_position(void)
 // Private function definitions
 // =============================================================================
 
-static void p2pc_handle_received_message(const uint8_t * data, uint8_t length)
+static void p2pc_handle_received_message(const uint8_t * data,
+                                         uint8_t length,
+                                         int16_t rssi)
 {
     uint8_t i;
     char * p = g_uart_string_buffer;
@@ -162,6 +166,8 @@ static void p2pc_handle_received_message(const uint8_t * data, uint8_t length)
         sprintf(p, "%02X ", data[i]);
         p += 3;
     }
+
+    sprintf(p, "RSSI = %d", rssi);
 
     debug_log_append_line(g_uart_string_buffer);
 }

@@ -147,6 +147,11 @@ void terminal_help(char* in)
         uart_write_string("\tEnables/disables sleep mode.\n\r\tParamter: <'on' or 'off'>\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "set debug log enable"))
+    {
+        uart_write_string("\tEnables/disables the debug log.\n\r\tParamter: <'on' or 'off'>\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else
     {
         uart_write_string("\tType \"help <command>\" for more info\n\r");
@@ -190,6 +195,8 @@ void terminal_help(char* in)
         uart_write_string("lora gps broadcast\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("restart uart\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set debug log enable\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set flash\n\r\t");
         while (!uart_is_write_buffer_empty()){;}

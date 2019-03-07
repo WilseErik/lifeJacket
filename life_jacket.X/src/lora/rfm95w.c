@@ -358,12 +358,17 @@ static void handle_rx_done(void)
     }
     else
     {
+        int16_t rssi;
+
         rfm95w_read_fifo();
+
+        rssi = -137 + (int16_t)rfm95w_io_read(RFM95W_REG_PKT_RSSI_VALUE);
 
         if (NULL != received_message_callback)
         {
             received_message_callback((uint8_t*)rx_buffer.data,
-                                      rx_buffer.length);
+                                      rx_buffer.length,
+                                      rssi);
         }
     }
 }
@@ -381,12 +386,17 @@ static void handle_continuous_rx_packet(void)
     }
     else
     {
+        int16_t rssi;
+
         rfm95w_read_fifo();
+
+        rssi = -137 + (int16_t)rfm95w_io_read(RFM95W_REG_PKT_RSSI_VALUE);
 
         if (NULL != received_message_callback)
         {
             received_message_callback((uint8_t*)rx_buffer.data,
-                                      rx_buffer.length);
+                                      rx_buffer.length,
+                                      rssi);
         }
     }
 
