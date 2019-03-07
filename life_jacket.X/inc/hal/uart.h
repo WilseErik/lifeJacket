@@ -39,6 +39,11 @@ extern char g_uart_string_buffer[UART_STRING_BUFFER_SIZE];
 void uart_init();
 
 /**
+ * @Brief Shuts down the UART module.
+ */
+void uart_deinit();
+
+/**
  * @brief Writes a byte over the uart interface.
  * @param data - The data to send.
  * @return void

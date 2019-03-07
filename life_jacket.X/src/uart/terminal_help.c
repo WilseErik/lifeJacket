@@ -62,6 +62,16 @@ void terminal_help(char* in)
         uart_write_string("\tWrites test data to the first page (first 256 bytes).\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "ef spb"))
+    {
+        uart_write_string("\tSets two bytes in the page buffer. Word indexed.\n\r\tParameters: <index in range [0, 127]> <value to set as 4 hex digits>\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "ef wp"))
+    {
+        uart_write_string("\tWrites the page buffer to a page in the external flash memory.\n\r\tParameters: <page address as 6 hex digits>\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else if (NULL != strstr(in, "test audio session"))
     {
         uart_write_string("\tRuns a audio session test.\n\r\t\n\r");
@@ -70,6 +80,11 @@ void terminal_help(char* in)
     else if (NULL != strstr(in, "write audio test data"))
     {
         uart_write_string("\tWrites test audio data to the external flash memory.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "restart uart"))
+    {
+        uart_write_string("\tResets the debug UART module.\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
     else if (NULL != strstr(in, "get flash"))
@@ -142,6 +157,10 @@ void terminal_help(char* in)
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("buffered write\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("ef spb\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("ef wp\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
         uart_write_string("ext flash chip erase\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("ext flash write test\n\r\t");
@@ -169,6 +188,8 @@ void terminal_help(char* in)
         uart_write_string("lora cw\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("lora gps broadcast\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("restart uart\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set flash\n\r\t");
         while (!uart_is_write_buffer_empty()){;}

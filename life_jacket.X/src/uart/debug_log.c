@@ -32,6 +32,7 @@
 // =============================================================================
 static char line_buffer[LINE_BUFFER_SIZE];
 static uint16_t line_number = 0;
+static bool debug_log_enabled = true;
 
 // =============================================================================
 // Private function declarations
@@ -43,13 +44,21 @@ static uint16_t line_number = 0;
 
 void debug_log_append_line(const char * line)
 {
-    sprintf(line_buffer,
+    if (debug_log_enabled)
+    {
+        sprintf(line_buffer,
             "[%u, %lu] %s\r\n",
             line_number++,
             clock_get_msec(),
             line);
     
-    uart_write_string(line_buffer);
+        uart_write_string(line_buffer);
+    }
+}
+
+void debug_log_enable(bool enable)
+{
+    debug_log_enabled = enable;
 }
 
 // =============================================================================

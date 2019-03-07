@@ -34,6 +34,12 @@ extern "C" {
 */
 void debug_log_append_line(const char * line);
 
+/**
+ @brief Enables/Disables the debug log.
+ @param enable  - True to enable, false to disable.
+*/
+void debug_log_enable(bool enable);
+
 #ifdef  __cplusplus
 }
 #endif

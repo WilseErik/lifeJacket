@@ -51,6 +51,7 @@ static const char SYNTAX_ERROR[]    = "[Syntax error]";
 static const char ARGUMENT_ERROR[]  = "[Invalid argument]";
 
 #define CMD_BUFFER_SIZE 257
+#define EXT_FLASH_BUFFER_LEN (128)
 
 //
 // Commands
@@ -113,6 +114,18 @@ static const char CMD_EXT_FLASH_CHIP_ERASE[] = "ext flash chip erase";
 static const char CMD_EXT_FLASH_WRITE_TEST[] = "ext flash write test";
 
 /*§
+ Sets two bytes in the page buffer. Word indexed.
+ Parameters: <index in range [0, 127]> <value to set as 4 hex digits>
+*/
+static const char CMD_EXT_FLASH_SET_PAGE_BUFFER[] = "ef spb";
+
+/*§
+ Writes the page buffer to a page in the external flash memory.
+ Parameters: <page address as 6 hex digits>
+*/
+static const char CMD_EXT_FLASH_WRITE_PAGE[] = "ef wp";
+
+/*§
  Runs a audio session test.
 */
 static const char CMD_TEST_AUDIO_SESSION[] = "test audio session";
@@ -121,6 +134,11 @@ static const char CMD_TEST_AUDIO_SESSION[] = "test audio session";
  Writes test audio data to the external flash memory.
 */
 static const char CMD_WRITE_AUDIO_TEST_DATA[] = "write audio test data";
+
+/*§
+ Resets the debug UART module.
+*/
+static const char CMD_RESET_UART[] = "restart uart";
 
 /*§
  Gets one byte from the flash data memory.
@@ -222,6 +240,12 @@ static const char SET_LORA_FREQUENCY[] = "set lora freq";
 */
 static const char SET_SLEEP_ALLOWED[] = "set sleep allowed";
 
+/**
+ Enables/disables the debug log.
+ Paramter: <'on' or 'off'>
+*/
+static const char SET_DEBUG_LOG_ENABLE[] = "set debug log enable";
+
 // =============================================================================
 // Private variables
 // =============================================================================
@@ -229,6 +253,8 @@ static const char SET_SLEEP_ALLOWED[] = "set sleep allowed";
 static char cmd_buffer[CMD_BUFFER_SIZE] = {0};
 static bool arg_error = false;
 static bool is_sleep_allowed = true;
+
+static uint16_t ext_flash_page_buff[EXT_FLASH_BUFFER_LEN];
 
 // =============================================================================
 // Private function declarations
@@ -258,8 +284,11 @@ static void cmd_lora_contiuous_rx(void);
 static void cmd_gps_on_off_pulse(void);
 static void cmd_ext_flash_chip_erase(void);
 static void cmd_ext_flash_write_test(void);
+static void cmd_ext_flash_set_page_buffer(void);
+static void cmd_ext_flash_write_page(void);
 static void cmd_test_audio_session(void);
 static void cmd_write_audio_test_data(void);
+static void cmd_reset_uart(void);
 
 static void get_flash(void);
 static void get_ext_flash(void);
@@ -274,6 +303,7 @@ static void set_lora_coding_rate(void);
 static void set_lora_spreading_factor(void);
 static void set_lora_frequency_band(void);
 static void set_sleep_allowed(void);
+static void set_debug_log_enable(void);
 
 // =============================================================================
 // Public function definitions
@@ -383,6 +413,10 @@ static void execute_command(void)
         {
             set_sleep_allowed();
         }
+        else if (NULL != strstr(cmd_buffer, SET_DEBUG_LOG_ENABLE))
+        {
+            set_debug_log_enable();
+        }
         else
         {
             syntax_error = true;
@@ -437,6 +471,14 @@ static void execute_command(void)
         {
             cmd_ext_flash_write_test();
         }
+        else if (NULL != strstr(cmd_buffer, CMD_EXT_FLASH_SET_PAGE_BUFFER))
+        {
+            cmd_ext_flash_set_page_buffer();
+        }
+        else if (NULL != strstr(cmd_buffer, CMD_EXT_FLASH_WRITE_PAGE))
+        {
+            cmd_ext_flash_write_page();
+        }
         else if (NULL != strstr(cmd_buffer, CMD_TEST_AUDIO_SESSION))
         {
             cmd_test_audio_session();
@@ -445,11 +487,17 @@ static void execute_command(void)
         {
             cmd_write_audio_test_data();
         }
+        else if (NULL != strstr(cmd_buffer, CMD_RESET_UART))
+        {
+            cmd_reset_uart();
+        }
         else
         {
             syntax_error = true;
         }
     }
+
+    uart_disable_tx_interrupt();
 
     if (syntax_error)
     {
@@ -466,6 +514,8 @@ static void execute_command(void)
         uart_write_string("ok");
         uart_write_string(NEWLINE);
     }
+
+    uart_enable_tx_interrupt();
 }
 
 static void cmd_hello(void)
@@ -596,6 +646,104 @@ static void cmd_ext_flash_write_test(void)
     ext_flash_program_page(test_data, 256);
 }
 
+static void cmd_ext_flash_set_page_buffer(void)
+{
+    uint8_t * p;
+    char address_arg[HEX_BYTE_STR_LEN] = {0};
+    char value_arg[HEX_WORD_STR_LEN] = {0};
+
+    p = (uint8_t*)strstr(cmd_buffer, CMD_EXT_FLASH_SET_PAGE_BUFFER);
+    p += strlen(CMD_EXT_FLASH_SET_PAGE_BUFFER);
+    p += 1;     // +1 for space
+
+    if (!isxdigit(*p))
+    {
+        arg_error = true;
+    }
+    else
+    {
+        uint8_t i = 0;
+        uint16_t address;
+        uint16_t value;
+
+        //
+        // Parse address argument
+        //
+        while ((i != HEX_BYTE_STR_LEN) && isxdigit(*p))
+        {
+            address_arg[i++] = *(p++);
+        }
+
+        address_arg[i] = NULL;
+        address = (uint16_t)strtol(address_arg, NULL, 16);
+
+        ++p;    // +1 for space
+
+        //
+        // Parse value argument
+        //
+        while ((i != HEX_WORD_STR_LEN) && isxdigit(*p))
+        {
+            value_arg[i++] = *(p++);
+        }
+
+        value_arg[i] = NULL;
+        value = (uint16_t)strtol(value_arg, NULL, 16);
+
+        if (address >= EXT_FLASH_BUFFER_LEN)
+        {
+            arg_error = true;
+        }
+        else
+        {
+            ext_flash_page_buff[address] = value;
+        }
+    }
+}
+
+static void cmd_ext_flash_write_page(void)
+{
+    uint8_t * p;
+    char address_arg[HEX_DWORD_STR_LEN] = {0};
+
+    p = (uint8_t*)strstr(cmd_buffer, CMD_EXT_FLASH_WRITE_PAGE);
+    p += strlen(CMD_EXT_FLASH_WRITE_PAGE);
+    p += 1;     // +1 for space
+
+    if (!isxdigit(*p))
+    {
+        arg_error = true;
+    }
+    else
+    {
+        uint8_t i = 0;
+        uint32_t address;
+
+        //
+        // Parse address argument
+        //
+        while ((i != HEX_DWORD_STR_LEN) && isxdigit(*p))
+        {
+            address_arg[i++] = *(p++);
+        }
+
+        address_arg[i] = NULL;
+        address = (uint32_t)strtol(address_arg, NULL, 16);
+
+        //
+        // Perform page write
+        //
+        if (address < 0x01000000)
+        {
+            ext_flash_program_page(ext_flash_page_buff, address);
+        }
+        else
+        {
+            arg_error = true;
+        }
+    }
+}
+
 static void cmd_test_audio_session(void)
 {
     audio_start_playback_session(0);
@@ -650,6 +798,12 @@ static void cmd_write_audio_test_data(void)
     }
 
     debug_log_append_line("Audio test data written!");
+}
+
+static void cmd_reset_uart(void)
+{
+    uart_deinit();
+    uart_init();
 }
 
 static void get_flash(void)
@@ -1073,4 +1227,27 @@ static void set_sleep_allowed(void)
     {
         arg_error = true;
     }
+}
+
+static void set_debug_log_enable(void)
+{
+    uint8_t * p;
+    bool log_enable;
+
+    p = (uint8_t*)strstr(cmd_buffer, SET_DEBUG_LOG_ENABLE);
+    p += strlen(SET_DEBUG_LOG_ENABLE);
+    p += 1;     // +1 for space
+
+    if (('o' == *p) && ('n' == *(p + 1)))
+    {
+        debug_log_enable(true);
+    }
+    else if (('o' == *p) && ('f' == *(p + 1)) && ('f' == *(p + 2)))
+    {
+        debug_log_enable(false);
+    }
+    else
+    {
+        arg_error = true;
+    }   
 }

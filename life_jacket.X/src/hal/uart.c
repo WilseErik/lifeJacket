@@ -36,7 +36,7 @@ char g_uart_string_buffer[UART_STRING_BUFFER_SIZE];
 #define BUFFER_SIZE     ((uint16_t)256)
 #define BACKSPACE_CHAR  (0x08)
 
-static const uint32_t UART_BAUD = 9600;
+static const uint32_t UART_BAUD = 38400;
 static const uint32_t PERIPHERAL_FREQ = CLOCK_HAL_PCBCLOCK_FREQ;
 
 static const uint8_t COMMAND_TERMINATION_CHAR = '\n';
@@ -131,6 +131,43 @@ void uart_init()
         }
 
         uart_initialized = true;
+    }
+}
+
+void uart_deinit()
+{
+    if (true == uart_initialized)
+    {
+        //
+        // Variables
+        //
+        rx_buff_first = 0;
+        rx_buff_last = 0;
+        tx_buff_first = 0;
+        tx_buff_last = 0;
+
+        rx_buff_size = 0;
+        tx_buff_size = 0;
+
+        status_set(STATUS_UART_RECEIVE_FLAG, 0);
+
+        // Interrupt is generated when any character is transfered to the
+        // Transmit Shift Register and the hw transmit buffer is empty.
+        U2STAbits.UTXISEL0 = 0;
+        U2STAbits.UTXISEL1 = 0;
+        IPC7bits.U2TXIP = 2;  // Interrupt priority
+        IEC1bits.U2TXIE = 0;  // TX interrupt enable
+
+        // Interrupt is generated each time a data word is transfered from
+        // the U1RSR to the receive buffer. There may be one or more characters
+        // in the receive buffer.
+        U2STAbits.URXISEL = 0;
+        IPC7bits.U2RXIP = 2;  // Interrupt priority
+        IEC1bits.U2RXIE = 0;  // RX interrupt enable
+
+        U2MODEbits.UARTEN = 0;
+
+        uart_initialized = false;
     }
 }
 
