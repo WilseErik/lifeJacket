@@ -22,6 +22,7 @@
 #include "lora/rfm95w.h"
 #include "lora/lora_tx_queue.h"
 #include "lora/p2pc_protocol.h"
+#include "lora/p2ps_protocol.h"
 
 #include "audio/ext_flash.h"
 #include "audio/pcm1770.h"
@@ -158,11 +159,27 @@ static void init(void)
     gps_init();
 
     lora_tx_queue_init();
-    p2pc_protocol_init();
+
+    if (flash_read_byte(FLASH_INDEX_LORA_P2PS_NOT_P2PC))
+    {
+        p2ps_protocol_init();
+    }
+    else
+    {
+        p2pc_protocol_init();
+    }
 
     clock_start_rtc();
 
-    g_clock_gps_broadcast_timeout_sec = GPS_BROADCAST_INTERVAL_SEC;
+    if (p2pc_protocol_is_active())
+    {
+        g_clock_gps_broadcast_timeout_sec = GPS_BROADCAST_INTERVAL_SEC;
+    }
+
+    if (p2ps_protocol_is_active())
+    {
+        rfm95w_start_continuous_rx();
+    }
 }
 
 static void print_start_message(uint16_t reset_reason)

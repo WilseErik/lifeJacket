@@ -41,6 +41,7 @@ typedef enum
     FLASH_INDEX_LORA_ADDRESS_HIGH_MID       = 0x07,
     FLASH_INDEX_LORA_ADDRESS_LOW_MID        = 0x08,
     FLASH_INDEX_LORA_ADDRESS_LSB            = 0x09,
+    FLASH_INDEX_LORA_P2PS_NOT_P2PC          = 0x0A,
 
 } flash_index_t;
 

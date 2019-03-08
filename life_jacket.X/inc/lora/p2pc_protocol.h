@@ -13,6 +13,9 @@ extern "C" {
 // Include statements
 // =============================================================================
 
+#include <stdint.h>
+#include <stdbool.h>
+
 // =============================================================================
 // Public type definitions
 // =============================================================================
@@ -39,7 +42,11 @@ void p2pc_protocol_init(void);
  */
 void p2pc_protocol_broadcast_gps_position(void);
 
-
+/**
+* @brief Checks if the protocol has been initialized.
+* @return True if protocol is active.
+*/
+bool p2pc_protocol_is_active(void);
 
 #ifdef  __cplusplus
 }

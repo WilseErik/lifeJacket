@@ -152,6 +152,16 @@ void terminal_help(char* in)
         uart_write_string("\tEnables/disables the debug log.\n\r\tParamter: <'on' or 'off'>\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "set lora to p2ps"))
+    {
+        uart_write_string("\tSets the LORA protocol to p2ps.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
+    else if (NULL != strstr(in, "set lora to p2pc"))
+    {
+        uart_write_string("\tSets the LORA protocol to p2pc.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else
     {
         uart_write_string("\tType \"help <command>\" for more info\n\r");
@@ -209,6 +219,10 @@ void terminal_help(char* in)
         uart_write_string("set lora freq\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set lora sf\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set lora to p2pc\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set lora to p2ps\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set sleep allowed\n\r\t");
         while (!uart_is_write_buffer_empty()){;}

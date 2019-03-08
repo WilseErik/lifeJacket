@@ -33,6 +33,7 @@
         <itemPath>inc/lora/rfm95w_io.h</itemPath>
         <itemPath>inc/lora/lora_tx_queue.h</itemPath>
         <itemPath>inc/lora/p2pc_protocol.h</itemPath>
+        <itemPath>inc/lora/p2ps_protocol.h</itemPath>
       </logicalFolder>
       <logicalFolder name="uart" displayName="uart" projectFiles="true">
         <itemPath>inc/uart/debug_log.h</itemPath>
@@ -79,6 +80,7 @@
         <itemPath>src/lora/rfm95w_io.c</itemPath>
         <itemPath>src/lora/lora_tx_queue.c</itemPath>
         <itemPath>src/lora/p2pc_protocol.c</itemPath>
+        <itemPath>src/lora/p2ps_protocol.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="main" projectFiles="true">
         <itemPath>src/main/main.c</itemPath>

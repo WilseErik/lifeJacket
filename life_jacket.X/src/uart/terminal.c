@@ -246,6 +246,17 @@ static const char SET_SLEEP_ALLOWED[] = "set sleep allowed";
 */
 static const char SET_DEBUG_LOG_ENABLE[] = "set debug log enable";
 
+/*§
+ Sets the LORA protocol to p2ps.
+*/
+static const char SET_LORA_P2PS[] = "set lora to p2ps";
+
+/*§
+ Sets the LORA protocol to p2pc.
+*/
+static const char SET_LORA_P2PC[] = "set lora to p2pc";
+
+
 // =============================================================================
 // Private variables
 // =============================================================================
@@ -304,6 +315,8 @@ static void set_lora_spreading_factor(void);
 static void set_lora_frequency_band(void);
 static void set_sleep_allowed(void);
 static void set_debug_log_enable(void);
+static void set_lora_to_p2ps(void);
+static void set_lora_to_p2pc(void);
 
 // =============================================================================
 // Public function definitions
@@ -416,6 +429,14 @@ static void execute_command(void)
         else if (NULL != strstr(cmd_buffer, SET_DEBUG_LOG_ENABLE))
         {
             set_debug_log_enable();
+        }
+        else if (NULL != strstr(cmd_buffer, SET_LORA_P2PS))
+        {
+            set_lora_to_p2ps();
+        }
+        else if (NULL != strstr(cmd_buffer, SET_LORA_P2PC))
+        {
+            set_lora_to_p2pc();
         }
         else
         {
@@ -1250,3 +1271,18 @@ static void set_debug_log_enable(void)
         arg_error = true;
     }   
 }
+
+static void set_lora_to_p2ps(void)
+{
+    flash_init_write_buffer();
+    flash_write_byte_to_buffer(FLASH_INDEX_LORA_P2PS_NOT_P2PC, true);
+    flash_write_buffer_to_flash();
+}
+
+static void set_lora_to_p2pc(void)
+{
+    flash_init_write_buffer();
+    flash_write_byte_to_buffer(FLASH_INDEX_LORA_P2PS_NOT_P2PC, false);
+    flash_write_buffer_to_flash();
+}
+
