@@ -80,7 +80,10 @@ static bool initialized = false;
 
 static void p2pc_handle_received_message(const uint8_t * data,
                                          uint8_t length,
-                                         int16_t rssi);
+                                         int16_t rssi,
+                                         bool * was_valid_ack,
+                                         bool * send_ack,
+                                         rfm95w_buffer_t * ack);
 
 static void p2pc_write_header(uint8_t * data,
                               const p2p_frame_header_t * header);
@@ -175,10 +178,16 @@ bool p2pc_protocol_is_active(void)
 
 static void p2pc_handle_received_message(const uint8_t * data,
                                          uint8_t length,
-                                         int16_t rssi)
+                                         int16_t rssi,
+                                         bool * was_valid_ack,
+                                         bool * send_ack,
+                                         rfm95w_buffer_t * ack)
 {
     uint8_t i;
     char * p = g_uart_string_buffer;
+
+    *send_ack = false;
+    *was_valid_ack = false;
 
     sprintf(g_uart_string_buffer, "Received: ");
     p += strlen(g_uart_string_buffer);

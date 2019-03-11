@@ -30,14 +30,6 @@ typedef enum
     RFM95W_RADIO_STATE_RX_CONTINUOUS
 } rfm95w_radio_state_t;
 
-#define RFM95W_RX_BUFFER_SIZE (256)
-
-typedef struct rfm95w_buffer_t
-{
-    uint8_t data[RFM95W_RX_BUFFER_SIZE];
-    uint8_t length;
-} rfm95w_buffer_t;
-
 // =============================================================================
 // Global variables
 // =============================================================================
@@ -94,7 +86,6 @@ static volatile uint8_t rfm95w_retransmission_count;
 
 static volatile rfm95w_buffer_t rx_buffer;
 static volatile rfm95w_buffer_t tx_buffer;
-
 // =============================================================================
 // Private function declarations
 // =============================================================================
@@ -366,9 +357,30 @@ static void handle_rx_done(void)
 
         if (NULL != received_message_callback)
         {
+            bool send_ack = false;
+            bool was_valid_ack = false;
+
             received_message_callback((uint8_t*)rx_buffer.data,
                                       rx_buffer.length,
-                                      rssi);
+                                      rssi,
+                                      &was_valid_ack,
+                                      &send_ack,
+                                      (rfm95w_buffer_t*)&tx_buffer);
+
+            if (send_ack)
+            {
+                rfm95w_end_rx();
+                rfm95w_clear_tx_fifo();
+                rfm95w_write_tx_fifo((const uint8_t *)tx_buffer.data,
+                                     tx_buffer.length,
+                                     0);
+
+                rfm95w_start_tx();
+            }
+            else if (was_valid_ack)
+            {
+                rfm95w_end_rx();
+            }
         }
     }
 }
@@ -394,9 +406,30 @@ static void handle_continuous_rx_packet(void)
 
         if (NULL != received_message_callback)
         {
+            bool send_ack = false;
+            bool was_valid_ack = false;
+
             received_message_callback((uint8_t*)rx_buffer.data,
                                       rx_buffer.length,
-                                      rssi);
+                                      rssi,
+                                      &was_valid_ack,
+                                      &send_ack,
+                                      (rfm95w_buffer_t*)&tx_buffer);
+
+            if (send_ack)
+            {
+                rfm95w_end_rx();
+                rfm95w_clear_tx_fifo();
+                rfm95w_write_tx_fifo((const uint8_t *)tx_buffer.data,
+                                     tx_buffer.length,
+                                     0);
+
+                rfm95w_start_tx();
+            }
+            else if (was_valid_ack)
+            {
+                rfm95w_end_rx();
+            }
         }
     }
 

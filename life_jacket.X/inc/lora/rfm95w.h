@@ -16,9 +16,22 @@ extern "C" {
 // Public type definitions
 // =============================================================================
 
+#define RFM95W_RX_BUFFER_SIZE (256)
+
+typedef struct rfm95w_buffer_t
+{
+    uint8_t data[RFM95W_RX_BUFFER_SIZE];
+    uint8_t length;
+} rfm95w_buffer_t;
+
+
 typedef void (*rfmw95w_received_message_callback_t)(const uint8_t * data,
                                                     uint8_t length,
-                                                    int16_t rssi);
+                                                    int16_t rssi,
+                                                    bool * was_valid_ack,
+                                                    bool * send_ack,
+                                                    rfm95w_buffer_t * ack);
+
 
 // =============================================================================
 // Global variable declarations

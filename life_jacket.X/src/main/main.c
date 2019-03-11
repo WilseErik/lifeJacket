@@ -120,7 +120,8 @@ int main(int argc, char** argv)
 
         if (rfm95w_is_idle() &&
             gps_allows_sleep_mode() &&
-            termnial_allows_sleep())
+            termnial_allows_sleep() &&
+            uart_is_write_buffer_empty())
         {
             Sleep();
         }

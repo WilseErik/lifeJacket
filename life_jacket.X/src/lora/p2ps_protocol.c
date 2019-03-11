@@ -84,7 +84,10 @@ static bool initialized = false;
 
 static void p2ps_handle_received_message(const uint8_t * data,
                                          uint8_t length,
-                                         int16_t rssi);
+                                         int16_t rssi,
+                                         bool * was_valid_ack,
+                                         bool * send_ack,
+                                         rfm95w_buffer_t * ack);
 
 static void p2ps_parse_header(p2p_frame_header_t * header,
                               const uint8_t * data);
@@ -121,11 +124,17 @@ bool p2ps_protocol_is_active(void)
 
 static void p2ps_handle_received_message(const uint8_t * data,
                                          uint8_t length,
-                                         int16_t rssi)
+                                         int16_t rssi,
+                                         bool * was_valid_ack,
+                                         bool * send_ack,
+                                         rfm95w_buffer_t * ack)
 {
     uint8_t i;
     p2p_frame_header_t header;
     char * p = g_uart_string_buffer;
+
+    *send_ack = false;
+    *was_valid_ack = false;
 
     sprintf(g_uart_string_buffer, "Received: ");
     p += strlen(g_uart_string_buffer);
@@ -151,6 +160,25 @@ static void p2ps_handle_received_message(const uint8_t * data,
                                    &data[P2P_INDEX_APPLICATION]);
 
         p2ps_print_coordinates(&coordinates);
+#if 0
+        ack->data[0] = (uint8_t)(my_address >> 24);
+        ack->data[1] = (uint8_t)(my_address >> 16);
+        ack->data[2] = (uint8_t)(my_address >>  8);
+        ack->data[3] = (uint8_t)(my_address >>  0);
+
+        ack->data[4] = (uint8_t)(header.source_address >> 24);
+        ack->data[5] = (uint8_t)(header.source_address >> 16);
+        ack->data[6] = (uint8_t)(header.source_address >>  8);
+        ack->data[7] = (uint8_t)(header.source_address >>  0);
+
+        ack->data[8] = header.frame_number;
+        ack->data[9] = header.time_to_live;
+        ack->data[10] = header.protocol;
+        ack->data[11] = P2P_DATA_TYPE_ACK;
+
+        ack->length = 12;
+        *send_ack = true;
+#endif
     }
 }
 
