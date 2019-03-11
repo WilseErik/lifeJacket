@@ -16,6 +16,7 @@ extern "C" {
 // Public type definitions
 // =============================================================================
 
+
 typedef struct nmea_coordinates_info_t
 {
     bool        latitude_north;

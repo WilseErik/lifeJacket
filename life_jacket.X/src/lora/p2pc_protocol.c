@@ -127,41 +127,57 @@ void p2pc_protocol_broadcast_gps_position(void)
 
     if (NULL == coordinates)
     {
-        return;
+        message[P2P_INDEX_APPLICATION + 0] = 0;
+        message[P2P_INDEX_APPLICATION + 1] = 0;
+        message[P2P_INDEX_APPLICATION + 2] = 0;
+        message[P2P_INDEX_APPLICATION + 3] = 0;
+        message[P2P_INDEX_APPLICATION + 4] = 0;
+        message[P2P_INDEX_APPLICATION + 5] = 0;
+        message[P2P_INDEX_APPLICATION + 6] = 0;
+        message[P2P_INDEX_APPLICATION + 7] = 0;
+        message[P2P_INDEX_APPLICATION + 8] = 0;
+        message[P2P_INDEX_APPLICATION + 9] = 0;
+        message[P2P_INDEX_APPLICATION + 10] = 0;
+        message[P2P_INDEX_APPLICATION + 11] = 0;
+        message[P2P_INDEX_APPLICATION + 12] = 0;
+        message[P2P_INDEX_APPLICATION + 13] = 0;
+        message[P2P_INDEX_APPLICATION + 14] = 0;
+    }
+    else
+    {
+        message[P2P_INDEX_APPLICATION + 0] = (uint8_t)(coordinates->latitude_deg >> 8);
+        message[P2P_INDEX_APPLICATION + 1] = (uint8_t)coordinates->latitude_deg;
+
+        if (coordinates->latitude_north)
+        {
+            message[P2P_INDEX_APPLICATION + 0] |= 0x80;
+        }
+
+        message[P2P_INDEX_APPLICATION + 2] = (uint8_t)(coordinates->longitude_deg >> 8);
+        message[P2P_INDEX_APPLICATION + 3] = (uint8_t)coordinates->longitude_deg;
+
+        if (coordinates->longitude_east)
+        {
+            message[P2P_INDEX_APPLICATION + 2] |= 0x80;
+        }
+
+        minutes_pointer = (uint8_t*)&(coordinates->latitude_minutes);
+        message[P2P_INDEX_APPLICATION + 4] = *(minutes_pointer + 0);
+        message[P2P_INDEX_APPLICATION + 5] = *(minutes_pointer + 1);
+        message[P2P_INDEX_APPLICATION + 6] = *(minutes_pointer + 2);
+        message[P2P_INDEX_APPLICATION + 7] = *(minutes_pointer + 3);
+
+        minutes_pointer = (uint8_t*)&(coordinates->longitude_minutes);
+        message[P2P_INDEX_APPLICATION + 8] = *(minutes_pointer + 0);
+        message[P2P_INDEX_APPLICATION + 9] = *(minutes_pointer + 1);
+        message[P2P_INDEX_APPLICATION + 10] = *(minutes_pointer + 2);
+        message[P2P_INDEX_APPLICATION + 11] = *(minutes_pointer + 3);
+
+        message[P2P_INDEX_APPLICATION + 12] = coordinates->time_of_fix_hours;
+        message[P2P_INDEX_APPLICATION + 13] = coordinates->time_of_fix_minutes;
+        message[P2P_INDEX_APPLICATION + 14] = coordinates->time_of_fix_seconds;
     }
     
-    message[P2P_INDEX_APPLICATION + 0] = (uint8_t)(coordinates->latitude_deg >> 8);
-    message[P2P_INDEX_APPLICATION + 1] = (uint8_t)coordinates->latitude_deg;
-
-    if (coordinates->latitude_north)
-    {
-        message[P2P_INDEX_APPLICATION + 0] |= 0x80;
-    }
-
-    message[P2P_INDEX_APPLICATION + 2] = (uint8_t)(coordinates->longitude_deg >> 8);
-    message[P2P_INDEX_APPLICATION + 3] = (uint8_t)coordinates->longitude_deg;
-
-    if (coordinates->longitude_east)
-    {
-        message[P2P_INDEX_APPLICATION + 2] |= 0x80;
-    }
-
-    minutes_pointer = (uint8_t*)&(coordinates->latitude_minutes);
-    message[P2P_INDEX_APPLICATION + 4] = *(minutes_pointer + 0);
-    message[P2P_INDEX_APPLICATION + 5] = *(minutes_pointer + 1);
-    message[P2P_INDEX_APPLICATION + 6] = *(minutes_pointer + 2);
-    message[P2P_INDEX_APPLICATION + 7] = *(minutes_pointer + 3);
-
-    minutes_pointer = (uint8_t*)&(coordinates->longitude_minutes);
-    message[P2P_INDEX_APPLICATION + 8] = *(minutes_pointer + 0);
-    message[P2P_INDEX_APPLICATION + 9] = *(minutes_pointer + 1);
-    message[P2P_INDEX_APPLICATION + 10] = *(minutes_pointer + 2);
-    message[P2P_INDEX_APPLICATION + 11] = *(minutes_pointer + 3);
-
-    message[P2P_INDEX_APPLICATION + 12] = coordinates->time_of_fix_hours;
-    message[P2P_INDEX_APPLICATION + 13] = coordinates->time_of_fix_minutes;
-    message[P2P_INDEX_APPLICATION + 14] = coordinates->time_of_fix_seconds;
-
     queue_element.data = message;
     queue_element.length = P2P_INDEX_APPLICATION + 15;
     lora_tx_queue_append(&queue_element);

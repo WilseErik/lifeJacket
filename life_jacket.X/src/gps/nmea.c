@@ -78,6 +78,13 @@ typedef enum
     NMEA_GGA_FIELD_DIFF_REF_STATION_ID      = 14
 } nmea_gga_field_t;
 
+typedef enum
+{
+    NMEA_GSV_FIELD_MNEMONIC                 = 0,
+    NMEA_GSV_FIELD_NUMBER_OF_SENTENCES      = 1,
+    NMEA_GSV_FIELD_SATELLITES_IN_VIEW       = 2,
+} nmea_gsv_field_t;
+
 #define LATITUDE_STR_LEN    (11)
 #define LONGITUDE_STR_LEN   (11)
 
@@ -121,6 +128,7 @@ static nmea_position_info_t position_info;
 
 static nmea_mode_indicator_t            mode_indicator;
 static nmea_gps_quality_indicator_t     gps_quality_indicator;
+static uint8_t                          satellites_in_view;
 
 // =============================================================================
 // Private function declarations
@@ -549,6 +557,45 @@ static void nmea_handle_rmc_message(char * message)
 static void nmea_handle_gsv_message(char * message)
 {
     // GNSS Satellites in View message
+    char * start_of_field;
+    char * end_of_field;
+    char * message_end;
+    char * p_src;
+    char * p_dst;
+    char str[8];
+
+    message_end = nmea_find_end_of_message(message);
+
+    start_of_field = message;
+    start_of_field = nmea_next_field(start_of_field, message_end);
+    start_of_field = nmea_next_field(start_of_field, message_end);
+    start_of_field = nmea_next_field(start_of_field, message_end);
+    end_of_field = nmea_next_field(start_of_field, message_end);
+
+    if (end_of_field - start_of_field >= 8)
+    {
+        return;
+    }
+
+    p_src = start_of_field;
+    p_dst = str;
+
+    while (p_src != end_of_field)
+    {
+        *p_dst++ = *p_src++;
+    }
+
+    p_dst = 0;
+
+    if (strlen(str))
+    {
+        satellites_in_view = (uint8_t)atoi(str);
+    }
+    else
+    {
+        satellites_in_view = 0;
+    }
+
 }
 
 static void nmea_parse_deg_minutes(const char * string,
