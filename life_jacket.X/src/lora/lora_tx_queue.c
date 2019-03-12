@@ -79,14 +79,17 @@ void lora_tx_queue_append(const lora_tx_queue_element_t * element)
         return;
     }
 
+    if (lora_tx_queue.size)
+    {
+        lora_tx_queue_increment_first();
+    }
+
     first_element = &lora_tx_queue.elements[lora_tx_queue.first];
 
     memcpy(first_element->data,
            element->data,
            element->length);
     first_element->length = element->length;
-
-    lora_tx_queue_increment_first();
 
     lora_tx_queue.size += 1;
 }

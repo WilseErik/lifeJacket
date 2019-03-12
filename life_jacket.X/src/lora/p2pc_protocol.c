@@ -22,43 +22,6 @@
 // Private type definitions
 // =============================================================================
 
-typedef enum
-{
-    P2P_DATA_TYPE_ACK           = 0x01,
-    P2P_DATA_TYPE_GPS_POSITION  = 0x02
-} p2p_data_type_t;
-
-typedef struct p2p_frame_header_t
-{
-    uint32_t source_address;
-    uint32_t destination_address;
-    uint8_t frame_number;
-    uint8_t time_to_live;
-    uint8_t protocol;
-    p2p_data_type_t data_type;
-} p2p_frame_header_t;
-
-typedef enum
-{
-    P2P_INDEX_SOURCE        = 0,
-    P2P_INDEX_DESTINATION   = 5,
-    P2P_INDEX_FRAME_NUMBER  = 9,
-    P2P_INDEX_TIME_TO_LIVE  = 10,
-    P2P_INDEX_PROTOCOL      = 11,
-    P2P_INDEX_DATA_TYPE     = 12,
-    P2P_INDEX_APPLICATION   = 13,
-} p2p_message_index_t;
-
-typedef enum
-{
-    P2P_GPS_INDEX_LATITUDE_DEG          = 0,
-    P2P_GPS_INDEX_LONGITUDE_DEG         = 2,
-    P2P_GPS_INDEX_LATITUDE_MINUTES      = 4,
-    P2P_GPS_INDEX_LONGITUDE_MINUTES     = 8,
-    P2P_GPS_INDEX_TOF_HOURS             = 12,
-    P2P_GPS_INDEX_TOF_MINUTES           = 13,
-    P2P_GPS_INDEX_TOD_SECONDS           = 14
-} p2p_gps_message_index_t;
 
 // =============================================================================
 // Global variables
@@ -74,7 +37,8 @@ static const uint32_t P2P_BROADCAST_ADDRESS = 0xFFFFFFFF;
 // Private variables
 // =============================================================================
 
-static uint8_t frame_number;
+static volatile uint8_t frame_number;
+static volatile uint8_t last_sent_frame_number;
 static uint32_t my_address;
 static bool initialized = false;
 
@@ -96,6 +60,8 @@ static uint32_t p2pc_parse_radio_code(const uint8_t * data);
 static void p2pc_print_received_message(const uint8_t * data,
                                         uint8_t length,
                                         int16_t rssi);
+
+static bool p2pc_handle_ack(const uint8_t * data, uint8_t length);
 
 // =============================================================================
 // Public function definitions
@@ -123,10 +89,13 @@ void p2pc_protocol_broadcast_gps_position(void)
 
     header.source_address = my_address;
     header.destination_address = P2P_BROADCAST_ADDRESS;
-    header.frame_number = frame_number++;
+    header.frame_number = frame_number;
     header.time_to_live = 15;
     header.protocol = 1;
     header.data_type = P2P_DATA_TYPE_GPS_POSITION;
+
+    last_sent_frame_number = header.frame_number;
+    frame_number += 1;
 
     p2pc_write_header(message, &header);
 
@@ -223,7 +192,18 @@ static void p2pc_handle_received_message(
 
     if ((P2P_BROADCAST_ADDRESS == dst) || (dst == my_address))
     {
-        ack_parameters->was_valid_ack = true;
+        uint8_t data_type = data[P2P_INDEX_DATA_TYPE];
+
+        switch (data_type)
+        {
+            case P2P_DATA_TYPE_ACK:
+                ack_parameters->was_valid_ack =
+                    p2pc_handle_ack(data, length);
+                break;
+
+            default:
+                break;
+        }
     }
 }
 
@@ -276,4 +256,9 @@ static void p2pc_print_received_message(const uint8_t * data,
     sprintf(p, "RSSI = %d", rssi);
 
     debug_log_append_line(g_uart_string_buffer);
+}
+
+static bool p2pc_handle_ack(const uint8_t * data, uint8_t length)
+{
+    return data[P2P_INDEX_FRAME_NUMBER] == last_sent_frame_number;
 }

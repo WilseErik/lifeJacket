@@ -1,2 +1,2 @@
-#define BUILD_NUMBER_STRING "368"
+#define BUILD_NUMBER_STRING "379"
 

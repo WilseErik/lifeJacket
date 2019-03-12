@@ -34,6 +34,7 @@
         <itemPath>inc/lora/lora_tx_queue.h</itemPath>
         <itemPath>inc/lora/p2pc_protocol.h</itemPath>
         <itemPath>inc/lora/p2ps_protocol.h</itemPath>
+        <itemPath>inc/lora/p2p_protocol.h</itemPath>
       </logicalFolder>
       <logicalFolder name="uart" displayName="uart" projectFiles="true">
         <itemPath>inc/uart/debug_log.h</itemPath>
