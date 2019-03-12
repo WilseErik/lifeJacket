@@ -344,30 +344,22 @@ void rfmw_send_cw(void)
 
 static void handle_tx_done(void)
 {
-    debug_log_append_line("TX done");
     if (wait_for_ack)
     {
-        debug_log_append_line("TX done - start single rx");
         rfm95w_start_single_rx();
     }
     else
     {
         if (0 != rfm95w_retransmission_count)
         {
-            debug_log_append_line("TX done - retransmission");
             --rfm95w_retransmission_count;
             rfm95w_end_tx();
             rfm95w_start_retransmission();
         }
         else
         {
-            debug_log_append_line("TX done - no retrans");
-            //rfm95w_end_tx();
-            //rfm95w_io_clear_all_irqs();
-
             if (contiuous_mode)
             {
-                debug_log_append_line("TX done - restart cont rx");
                 rfm95w_start_continuous_rx();
             }
         }
@@ -468,7 +460,6 @@ static void handle_continuous_rx_packet(void)
 
             if (ack_parameters.send_ack)
             {
-                debug_log_append_line("handle_continuous_rx_packet - send ack");
                 rfm95w_end_rx();
                 rx_base_addr = rfm95w_io_read(RFM95W_REG_FIFO_RX_BASE_ADDR);
                 rfm95w_io_write(RFM95W_REG_FIFO_ADDR_PTR, rx_base_addr);
@@ -660,28 +651,24 @@ static void rfmw_dio0_callback(bool rising)
     {
         if (RFM95W_RADIO_STATE_TX == radio_state)
         {
-            debug_log_append_line("dio 0 tx");
             handle_tx_done();
         }
         else if (RFM95W_RADIO_STATE_RX_SINGLE == radio_state)
         {
-            debug_log_append_line("dio 0 rxs");
             handle_rx_done();
         }
         else if (RFM95W_RADIO_STATE_RX_CONTINUOUS == radio_state)
         {
-            debug_log_append_line("dio 0 rxc");
             handle_continuous_rx_packet();
         }
         else
         {
-            debug_log_append_line("dio 0 rising wtf");
+            ;
         }
     }
     else
     {
         ;
-        debug_log_append_line("dio 0 falling wtf");
     }
 }
 
@@ -691,17 +678,11 @@ static void rfmw_dio1_callback(bool rising)
     {
         if (RFM95W_RADIO_STATE_RX_SINGLE == radio_state)
         {
-            debug_log_append_line("dio 1 rxs");
             handle_rx_timeout();
-        }
-        else
-        {
-            debug_log_append_line("dio 1 rising wtf");
         }
     }
     else
     {
         ;
-        debug_log_append_line("dio 1 falling wtf");
     }
 }

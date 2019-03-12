@@ -171,6 +171,11 @@ static const char GET_GPS_STATUS[]  = "get gps status";
 static const char GET_ORIENTATION[] = "get orientation";
 
 /*§
+ Gets the LORA address.
+*/
+static const char GET_LORA_ADDRESS[] = "get lora address";
+
+/*§
  Sets one byte in the flash data memory.
  Paramter: <index in hex format> <one byte value in hex format>
  */
@@ -256,6 +261,12 @@ static const char SET_LORA_P2PS[] = "set lora to p2ps";
 */
 static const char SET_LORA_P2PC[] = "set lora to p2pc";
 
+/*§
+ Sets the LORA P2P address.
+ Parameter: <address as 8 digit hex number>
+*/
+static const char SET_LORA_ADDRESS[] = "set lora address";
+
 
 // =============================================================================
 // Private variables
@@ -306,6 +317,7 @@ static void get_ext_flash(void);
 static void get_page_ext_flash(void);
 static void get_gps_status(void);
 static void get_orientation(void);
+static void get_lora_address(void);
 
 static void set_flash(void);
 static void set_gps_echo(void);
@@ -317,6 +329,7 @@ static void set_sleep_allowed(void);
 static void set_debug_log_enable(void);
 static void set_lora_to_p2ps(void);
 static void set_lora_to_p2pc(void);
+static void set_lora_address(void);
 
 // =============================================================================
 // Public function definitions
@@ -388,6 +401,10 @@ static void execute_command(void)
         {
             get_orientation();
         }
+        else if (NULL != strstr(cmd_buffer, GET_LORA_ADDRESS))
+        {
+            get_lora_address();
+        }
         else
         {
             syntax_error = true;
@@ -437,6 +454,10 @@ static void execute_command(void)
         else if (NULL != strstr(cmd_buffer, SET_LORA_P2PC))
         {
             set_lora_to_p2pc();
+        }
+        else if (NULL != strstr(cmd_buffer, SET_LORA_ADDRESS))
+        {
+            set_lora_address();
         }
         else
         {
@@ -1011,6 +1032,17 @@ static void get_orientation(void)
     uart_write_string(s);
 }
 
+static void get_lora_address(void)
+{
+    char s[32] = {0};
+    uint32_t address = flash_read_dword(FLASH_INDEX_LORA_ADDRESS_MSB);
+
+    sprintf(s, "\t%04X%04X\r\n",
+            (uint16_t)(address >> 16),
+            (uint16_t)address);
+    uart_write_string(s);
+}
+
 static void set_flash(void)
 {
     uint8_t * p;
@@ -1284,5 +1316,60 @@ static void set_lora_to_p2pc(void)
     flash_init_write_buffer();
     flash_write_byte_to_buffer(FLASH_INDEX_LORA_P2PS_NOT_P2PC, false);
     flash_write_buffer_to_flash();
+}
+
+static void set_lora_address(void)
+{
+    uint8_t * p;
+    uint8_t i = 0;
+    char address_arg[HEX_BYTE_STR_LEN] = {0};
+
+    p = (uint8_t*)strstr(cmd_buffer, SET_LORA_ADDRESS);
+    p += strlen(SET_LORA_ADDRESS);
+    p += 1;     // +1 for space
+
+    for (i = 0; i != 8; ++i)
+    {
+        if (!isxdigit(*p))
+        {
+            arg_error = true;
+        }
+    }
+
+    if (!arg_error)
+    {
+        uint32_t address = 0x00000000;
+
+        //
+        // Parse address argument
+        //
+        i = 0;
+        address_arg[i++] = *(p++);
+        address_arg[i++] = *(p++);
+        address_arg[i++] = 0;
+        address = ((uint32_t)strtol(address_arg, NULL, 16)) << 24;
+
+        i = 0;
+        address_arg[i++] = *(p++);
+        address_arg[i++] = *(p++);
+        address_arg[i++] = 0;
+        address |= ((uint32_t)strtol(address_arg, NULL, 16)) << 16;
+
+        i = 0;
+        address_arg[i++] = *(p++);
+        address_arg[i++] = *(p++);
+        address_arg[i++] = 0;
+        address |= ((uint32_t)strtol(address_arg, NULL, 16)) << 8;
+
+        i = 0;
+        address_arg[i++] = *(p++);
+        address_arg[i++] = *(p++);
+        address_arg[i++] = 0;
+        address |= ((uint32_t)strtol(address_arg, NULL, 16)) << 0;
+
+        flash_init_write_buffer();
+        flash_write_dword_to_buffer(FLASH_INDEX_LORA_ADDRESS_MSB, address);
+        flash_write_buffer_to_flash();
+    }
 }
 

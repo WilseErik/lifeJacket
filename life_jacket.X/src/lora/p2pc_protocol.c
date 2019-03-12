@@ -16,6 +16,7 @@
 #include "hal/uart.h"
 #include "lora/lora_tx_queue.h"
 #include "gps/gps.h"
+#include "hal/flash.h"
 
 // =============================================================================
 // Private type definitions
@@ -67,11 +68,14 @@ typedef enum
 // Private constants
 // =============================================================================
 
+static const uint32_t P2P_BROADCAST_ADDRESS = 0xFFFFFFFF;
+
 // =============================================================================
 // Private variables
 // =============================================================================
 
 static uint8_t frame_number;
+static uint32_t my_address;
 static bool initialized = false;
 
 // =============================================================================
@@ -87,6 +91,12 @@ static void p2pc_handle_received_message(const uint8_t * data,
 static void p2pc_write_header(uint8_t * data,
                               const p2p_frame_header_t * header);
 
+static uint32_t p2pc_parse_radio_code(const uint8_t * data);
+
+static void p2pc_print_received_message(const uint8_t * data,
+                                        uint8_t length,
+                                        int16_t rssi);
+
 // =============================================================================
 // Public function definitions
 // =============================================================================
@@ -96,6 +106,7 @@ void p2pc_protocol_init(void)
     rfm95w_register_received_message_callback(p2pc_handle_received_message);
 
     frame_number = 0;
+    my_address = flash_read_dword(FLASH_INDEX_LORA_ADDRESS_MSB);
 
     initialized = true;
     debug_log_append_line("LORA P2PC initialized");
@@ -110,8 +121,8 @@ void p2pc_protocol_broadcast_gps_position(void)
     const nmea_coordinates_info_t * coordinates;
     uint8_t * minutes_pointer;
 
-    header.source_address = 0xA1A2A3A4;
-    header.destination_address = 0xFFFFFFFF;
+    header.source_address = my_address;
+    header.destination_address = P2P_BROADCAST_ADDRESS;
     header.frame_number = frame_number++;
     header.time_to_live = 15;
     header.protocol = 1;
@@ -198,25 +209,22 @@ static void p2pc_handle_received_message(
     rfm95w_ack_parameters_t * ack_parameters,
     rfm95w_buffer_t * ack)
 {
-    uint8_t i;
-    char * p = g_uart_string_buffer;
+    uint32_t src;
+    uint32_t dst;
 
     ack_parameters->send_ack = false;
     ack_parameters->wait_for_ack = false;
     ack_parameters->was_valid_ack = false;
 
-    sprintf(g_uart_string_buffer, "Received: ");
-    p += strlen(g_uart_string_buffer);
+    p2pc_print_received_message(data, length, rssi);
 
-    for (i = 0; i != length; ++i)
+    src = p2pc_parse_radio_code(&data[0]);
+    dst = p2pc_parse_radio_code(&data[4]);
+
+    if ((P2P_BROADCAST_ADDRESS == dst) || (dst == my_address))
     {
-        sprintf(p, "%02X ", data[i]);
-        p += 3;
+        ack_parameters->was_valid_ack = true;
     }
-
-    sprintf(p, "RSSI = %d", rssi);
-
-    debug_log_append_line(g_uart_string_buffer);
 }
 
 static void p2pc_write_header(uint8_t * data, const p2p_frame_header_t * header)
@@ -235,4 +243,37 @@ static void p2pc_write_header(uint8_t * data, const p2p_frame_header_t * header)
     data[9] = header->time_to_live;
     data[10] = header->protocol;
     data[11] = header->data_type;
+}
+
+static uint32_t p2pc_parse_radio_code(const uint8_t * data)
+{
+    uint32_t radio_code = 0x00000000;
+
+    radio_code |= ((uint32_t)*data++) << 24;
+    radio_code |= ((uint32_t)*data++) << 16;
+    radio_code |= ((uint32_t)*data++) <<  8;
+    radio_code |= ((uint32_t)*data++) <<  0;
+
+    return radio_code;
+}
+
+static void p2pc_print_received_message(const uint8_t * data,
+                                        uint8_t length,
+                                        int16_t rssi)
+{
+    uint8_t i;
+    char * p = g_uart_string_buffer;
+
+    sprintf(g_uart_string_buffer, "Received: ");
+    p += strlen(g_uart_string_buffer);
+
+    for (i = 0; i != length; ++i)
+    {
+        sprintf(p, "%02X ", data[i]);
+        p += 3;
+    }
+
+    sprintf(p, "RSSI = %d", rssi);
+
+    debug_log_append_line(g_uart_string_buffer);
 }

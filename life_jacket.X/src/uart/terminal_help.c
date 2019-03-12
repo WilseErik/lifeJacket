@@ -112,6 +112,11 @@ void terminal_help(char* in)
         uart_write_string("\tGets the x, y, z values from the accelerometer.\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "get lora address"))
+    {
+        uart_write_string("\tGets the LORA address.\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else if (NULL != strstr(in, "set flash"))
     {
         uart_write_string("\tSets one byte in the flash data memory.\n\r\tParamter: <index in hex format> <one byte value in hex format>\n\r\t\n\r");
@@ -162,6 +167,11 @@ void terminal_help(char* in)
         uart_write_string("\tSets the LORA protocol to p2pc.\n\r\t\n\r");
         while (!uart_is_write_buffer_empty()){;}
     }
+    else if (NULL != strstr(in, "set lora address"))
+    {
+        uart_write_string("\tSets the LORA P2P address.\n\r\tParameter: <address as 8 digit hex number>\n\r\t\n\r");
+        while (!uart_is_write_buffer_empty()){;}
+    }
     else
     {
         uart_write_string("\tType \"help <command>\" for more info\n\r");
@@ -188,6 +198,8 @@ void terminal_help(char* in)
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("get gps status\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("get lora address\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
         uart_write_string("get orientation\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("get page ext flash\n\r\t");
@@ -211,6 +223,8 @@ void terminal_help(char* in)
         uart_write_string("set flash\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set gps echo\n\r\t");
+        while (!uart_is_write_buffer_empty()){;}
+        uart_write_string("set lora address\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
         uart_write_string("set lora bw\n\r\t");
         while (!uart_is_write_buffer_empty()){;}
