@@ -26,7 +26,7 @@ extern "C" {
 // Global constatants
 // =============================================================================
 
-#define GPS_BROADCAST_INTERVAL_SEC (120)
+#define GPS_BROADCAST_INTERVAL_SEC (30)
 
 // =============================================================================
 // Public function declarations

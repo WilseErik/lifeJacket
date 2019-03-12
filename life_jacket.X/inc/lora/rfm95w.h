@@ -24,13 +24,21 @@ typedef struct rfm95w_buffer_t
     uint8_t length;
 } rfm95w_buffer_t;
 
+typedef struct rfm95w_ack_parameters_t
+{
+    bool send_ack;
+    bool wait_for_ack;
 
-typedef void (*rfmw95w_received_message_callback_t)(const uint8_t * data,
-                                                    uint8_t length,
-                                                    int16_t rssi,
-                                                    bool * was_valid_ack,
-                                                    bool * send_ack,
-                                                    rfm95w_buffer_t * ack);
+    bool was_valid_ack;
+} rfm95w_ack_parameters_t;
+
+
+typedef void (*rfmw95w_received_message_callback_t)(
+    const uint8_t * data,
+    uint8_t length,
+    int16_t rssi,
+    rfm95w_ack_parameters_t * ack_parameters,
+    rfm95w_buffer_t * ack);
 
 
 // =============================================================================
@@ -40,6 +48,7 @@ typedef void (*rfmw95w_received_message_callback_t)(const uint8_t * data,
 // =============================================================================
 // Global constatants
 // =============================================================================
+#define RFM95W_MAX_RETRANSMISSION_COUNT (3)
 
 // =============================================================================
 // Public function declarations
@@ -82,7 +91,7 @@ void rfm95w_clear_tx_fifo(void);
 /**
  * @brief Starts a TX session.
  */
-void rfm95w_start_tx(void);
+void rfm95w_start_tx(uint8_t max_retransmissions, bool wait_for_ack);
 
 /**
  * @brief Starts a RX session which ends at complete packet reception

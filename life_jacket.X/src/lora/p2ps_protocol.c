@@ -85,8 +85,7 @@ static bool initialized = false;
 static void p2ps_handle_received_message(const uint8_t * data,
                                          uint8_t length,
                                          int16_t rssi,
-                                         bool * was_valid_ack,
-                                         bool * send_ack,
+                                         rfm95w_ack_parameters_t * ack_parameters,
                                          rfm95w_buffer_t * ack);
 
 static void p2ps_parse_header(p2p_frame_header_t * header,
@@ -122,19 +121,20 @@ bool p2ps_protocol_is_active(void)
 // Private function definitions
 // =============================================================================
 
-static void p2ps_handle_received_message(const uint8_t * data,
-                                         uint8_t length,
-                                         int16_t rssi,
-                                         bool * was_valid_ack,
-                                         bool * send_ack,
-                                         rfm95w_buffer_t * ack)
+static void p2ps_handle_received_message(
+    const uint8_t * data,
+    uint8_t length,
+    int16_t rssi,
+    rfm95w_ack_parameters_t * ack_parameters,
+    rfm95w_buffer_t * ack)
 {
     uint8_t i;
     p2p_frame_header_t header;
     char * p = g_uart_string_buffer;
 
-    *send_ack = false;
-    *was_valid_ack = false;
+    ack_parameters->send_ack = false;
+    ack_parameters->wait_for_ack = false;
+    ack_parameters->was_valid_ack = false;
 
     sprintf(g_uart_string_buffer, "Received: ");
     p += strlen(g_uart_string_buffer);
@@ -160,7 +160,7 @@ static void p2ps_handle_received_message(const uint8_t * data,
                                    &data[P2P_INDEX_APPLICATION]);
 
         p2ps_print_coordinates(&coordinates);
-#if 0
+#if 1
         ack->data[0] = (uint8_t)(my_address >> 24);
         ack->data[1] = (uint8_t)(my_address >> 16);
         ack->data[2] = (uint8_t)(my_address >>  8);
@@ -177,7 +177,7 @@ static void p2ps_handle_received_message(const uint8_t * data,
         ack->data[11] = P2P_DATA_TYPE_ACK;
 
         ack->length = 12;
-        *send_ack = true;
+        ack_parameters->send_ack = true;
 #endif
     }
 }

@@ -113,7 +113,7 @@ void lora_tx_queue_transmit_and_pop(void)
                          element.length,
                          0);
 
-    rfm95w_start_tx();
+    rfm95w_start_tx(RFM95W_MAX_RETRANSMISSION_COUNT, true);
 
     if (1 != lora_tx_queue.size)
     {

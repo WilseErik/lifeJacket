@@ -71,7 +71,7 @@ static const uint8_t RFM95W_SILICON_VERSION = 0x12;
 
 static const uint16_t SINGLE_RX_TIMEOUT_SYMBOLS = 1023; // must be in [4, 1023]
 
-static const uint8_t RFM95W_MAX_RETRANSMISSION_COUNT = 3;
+static const uint8_t RFM95W_ACK_RETRANSMISSION_COUNT = 1;
 
 // =============================================================================
 // Private variables
@@ -83,9 +83,12 @@ static volatile uint8_t tx_fifo_size = 0;
 
 static volatile rfm95w_radio_state_t radio_state = RFM95W_RADIO_STATE_IDLE;
 static volatile uint8_t rfm95w_retransmission_count;
+static volatile bool wait_for_ack;
 
 static volatile rfm95w_buffer_t rx_buffer;
 static volatile rfm95w_buffer_t tx_buffer;
+
+static bool contiuous_mode = false;
 // =============================================================================
 // Private function declarations
 // =============================================================================
@@ -127,6 +130,11 @@ static void rfm95w_read_fifo(void);
  * @brief Ends a RX session.
  */
 static void rfm95w_end_rx(void);
+
+/**
+ * @brief Ends a TX session.
+ */
+static void rfm95w_end_tx(void);
 
 /**
  * @brief Starts a retransmission.
@@ -188,6 +196,7 @@ void rfm95w_init(void)
     rx_buffer.length = 0;
     received_message_callback = NULL;
     rfm95w_retransmission_count = 0;
+    wait_for_ack = false;
     memset((void*)&rx_buffer, sizeof(rfm95w_buffer_t), 0);
     memset((void*)&tx_buffer, sizeof(rfm95w_buffer_t), 0);
 
@@ -269,13 +278,14 @@ void rfm95w_clear_tx_fifo(void)
     rfm95w_io_write(RFM95W_REG_PAYLOAD_LENGTH, 1);
 }
 
-void rfm95w_start_tx(void)
+void rfm95w_start_tx(uint8_t max_retransmissions, bool iwait_for_ack)
 {
     rfm95w_io_clear_all_irqs();
     rfm95w_setup_dio0_for_tx_done();
 
     radio_state = RFM95W_RADIO_STATE_TX;
-    rfm95w_retransmission_count = 0;
+    rfm95w_retransmission_count = max_retransmissions - 1;
+    wait_for_ack = iwait_for_ack;
 
     rfm95w_io_set_operating_mode(RFM95W_OP_MODE_TX);
 }
@@ -313,6 +323,8 @@ void rfm95w_start_continuous_rx(void)
     radio_state = RFM95W_RADIO_STATE_RX_CONTINUOUS;
 
     rfm95w_io_set_operating_mode(RFM95W_OP_MODE_RX_CONT);
+
+    contiuous_mode = true;
 }
 
 void rfmw_send_cw(void)
@@ -332,7 +344,34 @@ void rfmw_send_cw(void)
 
 static void handle_tx_done(void)
 {
-    rfm95w_start_single_rx();
+    debug_log_append_line("TX done");
+    if (wait_for_ack)
+    {
+        debug_log_append_line("TX done - start single rx");
+        rfm95w_start_single_rx();
+    }
+    else
+    {
+        if (0 != rfm95w_retransmission_count)
+        {
+            debug_log_append_line("TX done - retransmission");
+            --rfm95w_retransmission_count;
+            rfm95w_end_tx();
+            rfm95w_start_retransmission();
+        }
+        else
+        {
+            debug_log_append_line("TX done - no retrans");
+            //rfm95w_end_tx();
+            //rfm95w_io_clear_all_irqs();
+
+            if (contiuous_mode)
+            {
+                debug_log_append_line("TX done - restart cont rx");
+                rfm95w_start_continuous_rx();
+            }
+        }
+    }
 }
 
 static void handle_rx_done(void)
@@ -355,32 +394,40 @@ static void handle_rx_done(void)
 
         rssi = -137 + (int16_t)rfm95w_io_read(RFM95W_REG_PKT_RSSI_VALUE);
 
+        rfm95w_end_rx();
+
         if (NULL != received_message_callback)
         {
-            bool send_ack = false;
-            bool was_valid_ack = false;
+            rfm95w_ack_parameters_t ack_parameters;
 
             received_message_callback((uint8_t*)rx_buffer.data,
                                       rx_buffer.length,
                                       rssi,
-                                      &was_valid_ack,
-                                      &send_ack,
+                                      &ack_parameters,
                                       (rfm95w_buffer_t*)&tx_buffer);
 
-            if (send_ack)
+            if (ack_parameters.send_ack)
             {
-                rfm95w_end_rx();
                 rfm95w_clear_tx_fifo();
                 rfm95w_write_tx_fifo((const uint8_t *)tx_buffer.data,
                                      tx_buffer.length,
                                      0);
 
-                rfm95w_start_tx();
+                rfm95w_start_tx(RFM95W_ACK_RETRANSMISSION_COUNT,
+                                ack_parameters.wait_for_ack);
             }
-            else if (was_valid_ack)
+            else if (!ack_parameters.was_valid_ack)
             {
-                rfm95w_end_rx();
+                handle_rx_timeout();
             }
+            else if (contiuous_mode)
+            {
+                rfm95w_start_continuous_rx();
+            }
+        }
+        else
+        {
+            handle_rx_timeout();
         }
     }
 }
@@ -391,6 +438,11 @@ static void handle_continuous_rx_packet(void)
     uint8_t rx_base_addr;
 
     reg_irq_flags = rfm95w_io_read(RFM95W_REG_IRQ_FLAGS);
+
+    rx_base_addr = rfm95w_io_read(RFM95W_REG_FIFO_RX_BASE_ADDR);
+    rfm95w_io_write(RFM95W_REG_FIFO_ADDR_PTR, rx_base_addr);
+
+    rfm95w_io_clear_all_irqs();
 
     if (reg_irq_flags & RFM95W_IRQ_FLAG_PAYLOAD_CRC_ERROR_MASK)
     {
@@ -406,48 +458,49 @@ static void handle_continuous_rx_packet(void)
 
         if (NULL != received_message_callback)
         {
-            bool send_ack = false;
-            bool was_valid_ack = false;
+            rfm95w_ack_parameters_t ack_parameters;
 
             received_message_callback((uint8_t*)rx_buffer.data,
                                       rx_buffer.length,
                                       rssi,
-                                      &was_valid_ack,
-                                      &send_ack,
+                                      &ack_parameters,
                                       (rfm95w_buffer_t*)&tx_buffer);
 
-            if (send_ack)
+            if (ack_parameters.send_ack)
             {
+                debug_log_append_line("handle_continuous_rx_packet - send ack");
                 rfm95w_end_rx();
+                rx_base_addr = rfm95w_io_read(RFM95W_REG_FIFO_RX_BASE_ADDR);
+                rfm95w_io_write(RFM95W_REG_FIFO_ADDR_PTR, rx_base_addr);
+                rfm95w_io_clear_all_irqs();
+
                 rfm95w_clear_tx_fifo();
                 rfm95w_write_tx_fifo((const uint8_t *)tx_buffer.data,
                                      tx_buffer.length,
                                      0);
 
-                rfm95w_start_tx();
-            }
-            else if (was_valid_ack)
-            {
-                rfm95w_end_rx();
+                rfm95w_start_tx(RFM95W_ACK_RETRANSMISSION_COUNT,
+                                ack_parameters.wait_for_ack);
             }
         }
     }
-
-    rx_base_addr = rfm95w_io_read(RFM95W_REG_FIFO_RX_BASE_ADDR);
-    rfm95w_io_write(RFM95W_REG_FIFO_ADDR_PTR, rx_base_addr);
-
-    rfm95w_io_clear_all_irqs();
 }
 
 static void handle_rx_timeout(void)
 {
-    if (++rfm95w_retransmission_count < RFM95W_MAX_RETRANSMISSION_COUNT)
+    if (0 != rfm95w_retransmission_count)
     {
+        --rfm95w_retransmission_count;
         rfm95w_start_retransmission();
     }
     else
     {
         rfm95w_end_rx();
+
+        if (contiuous_mode)
+        {
+            rfm95w_start_continuous_rx();
+        }
     }
 }
 
@@ -470,6 +523,15 @@ static void rfm95w_read_fifo(void)
 }
 
 static void rfm95w_end_rx(void)
+{
+    gpio_enable_cn(GPIO_CN_PIN_LORA_DIO0, false);
+    gpio_enable_cn(GPIO_CN_PIN_LORA_DIO1, false);
+
+    rfm95w_io_set_operating_mode(RFM95W_OP_MODE_STAND_BY);
+    radio_state = RFM95W_RADIO_STATE_IDLE;
+}
+
+static void rfm95w_end_tx(void)
 {
     gpio_enable_cn(GPIO_CN_PIN_LORA_DIO0, false);
     gpio_enable_cn(GPIO_CN_PIN_LORA_DIO1, false);
@@ -598,20 +660,28 @@ static void rfmw_dio0_callback(bool rising)
     {
         if (RFM95W_RADIO_STATE_TX == radio_state)
         {
+            debug_log_append_line("dio 0 tx");
             handle_tx_done();
         }
         else if (RFM95W_RADIO_STATE_RX_SINGLE == radio_state)
         {
+            debug_log_append_line("dio 0 rxs");
             handle_rx_done();
         }
         else if (RFM95W_RADIO_STATE_RX_CONTINUOUS == radio_state)
         {
+            debug_log_append_line("dio 0 rxc");
             handle_continuous_rx_packet();
+        }
+        else
+        {
+            debug_log_append_line("dio 0 rising wtf");
         }
     }
     else
     {
         ;
+        debug_log_append_line("dio 0 falling wtf");
     }
 }
 
@@ -621,11 +691,17 @@ static void rfmw_dio1_callback(bool rising)
     {
         if (RFM95W_RADIO_STATE_RX_SINGLE == radio_state)
         {
+            debug_log_append_line("dio 1 rxs");
             handle_rx_timeout();
+        }
+        else
+        {
+            debug_log_append_line("dio 1 rising wtf");
         }
     }
     else
     {
         ;
+        debug_log_append_line("dio 1 falling wtf");
     }
 }
