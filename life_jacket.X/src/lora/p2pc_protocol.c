@@ -219,8 +219,8 @@ static void p2pc_write_header(uint8_t * data, const p2p_frame_header_t * header)
     data[6] = (uint8_t)(header->destination_address >>  8);
     data[7] = (uint8_t)(header->destination_address >>  0);
 
-    data[8] = header->frame_number;
-    data[9] = header->time_to_live;
+    data[8] = header->time_to_live;
+    data[9] = header->frame_number;
     data[10] = header->protocol;
     data[11] = header->data_type;
 }

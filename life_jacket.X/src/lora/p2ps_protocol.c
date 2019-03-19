@@ -144,8 +144,8 @@ static void p2ps_parse_header(p2p_frame_header_t * header,
     header->destination_address |= ((uint32_t)data[P2P_INDEX_DESTINATION + 2]) <<  8;
     header->destination_address |= ((uint32_t)data[P2P_INDEX_DESTINATION + 3]) <<  0;
 
-    header->frame_number = data[P2P_INDEX_FRAME_NUMBER];
     header->time_to_live = data[P2P_INDEX_TIME_TO_LIVE];
+    header->frame_number = data[P2P_INDEX_FRAME_NUMBER];
     header->protocol = data[P2P_INDEX_PROTOCOL];
     header->data_type = data[P2P_INDEX_DATA_TYPE];
 }
@@ -271,8 +271,8 @@ static void p2ps_prepare_ack(rfm95w_buffer_t * ack, p2p_frame_header_t header)
     ack->data[6] = (uint8_t)(header.source_address >>  8);
     ack->data[7] = (uint8_t)(header.source_address >>  0);
 
-    ack->data[8] = header.frame_number;
-    ack->data[9] = header.time_to_live;
+    ack->data[8] = header.time_to_live;
+    ack->data[9] = header.frame_number;
     ack->data[10] = header.protocol;
     ack->data[11] = P2P_DATA_TYPE_ACK;
 
