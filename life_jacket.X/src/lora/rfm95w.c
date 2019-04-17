@@ -40,7 +40,7 @@ typedef enum
 
 static const uint8_t RFM95W_REG_INIT_TABLE[][2] =
 {
-    {RFM95W_REG_PA_CONFIG,          0x4F},  // Output power = 4dBm
+    {RFM95W_REG_PA_CONFIG,          0xCC},  // Output power = 14dBm
     {RFM95W_REG_PA_RAMP,            0x09},  // Default value (40 us)
     {RFM95W_REG_LNA,                0x20},  // Max LNA gain
     {RFM95W_REG_FIFO_ADDR_PTR,      0x00},
