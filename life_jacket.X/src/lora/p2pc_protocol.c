@@ -49,6 +49,7 @@ static bool initialized = false;
 static void p2pc_handle_received_message(const uint8_t * data,
                                          uint8_t length,
                                          int16_t rssi,
+                                         uint8_t snr,
                                          rfm95w_ack_parameters_t * ack_parameters,
                                          rfm95w_buffer_t * ack);
 
@@ -59,7 +60,8 @@ static uint32_t p2pc_parse_radio_code(const uint8_t * data);
 
 static void p2pc_print_received_message(const uint8_t * data,
                                         uint8_t length,
-                                        int16_t rssi);
+                                        int16_t rssi,
+                                        uint8_t snr);
 
 static bool p2pc_handle_ack(const uint8_t * data, uint8_t length);
 
@@ -175,6 +177,7 @@ static void p2pc_handle_received_message(
     const uint8_t * data,
     uint8_t length,
     int16_t rssi,
+    uint8_t snr,
     rfm95w_ack_parameters_t * ack_parameters,
     rfm95w_buffer_t * ack)
 {
@@ -185,7 +188,7 @@ static void p2pc_handle_received_message(
     ack_parameters->wait_for_ack = false;
     ack_parameters->was_valid_ack = false;
 
-    p2pc_print_received_message(data, length, rssi);
+    p2pc_print_received_message(data, length, rssi, snr);
 
     src = p2pc_parse_radio_code(&data[0]);
     dst = p2pc_parse_radio_code(&data[4]);
@@ -239,7 +242,8 @@ static uint32_t p2pc_parse_radio_code(const uint8_t * data)
 
 static void p2pc_print_received_message(const uint8_t * data,
                                         uint8_t length,
-                                        int16_t rssi)
+                                        int16_t rssi,
+                                        uint8_t snr)
 {
     uint8_t i;
     char * p = g_uart_string_buffer;
@@ -253,7 +257,7 @@ static void p2pc_print_received_message(const uint8_t * data,
         p += 3;
     }
 
-    sprintf(p, "RSSI = %d", rssi);
+    sprintf(p, "RSSI = %d SNR = %f dB", rssi, ((double)(int8_t)snr) / 4);
 
     debug_log_append_line(g_uart_string_buffer);
 }

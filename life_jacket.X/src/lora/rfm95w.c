@@ -381,10 +381,12 @@ static void handle_rx_done(void)
     else
     {
         int16_t rssi;
+        uint8_t snr;
 
         rfm95w_read_fifo();
 
         rssi = -137 + (int16_t)rfm95w_io_read(RFM95W_REG_PKT_RSSI_VALUE);
+        snr = rfm95w_io_read(RFM95W_REG_PKT_SNR_VALUE);
 
         rfm95w_end_rx();
 
@@ -395,6 +397,7 @@ static void handle_rx_done(void)
             received_message_callback((uint8_t*)rx_buffer.data,
                                       rx_buffer.length,
                                       rssi,
+                                      snr,
                                       &ack_parameters,
                                       (rfm95w_buffer_t*)&tx_buffer);
 
@@ -443,10 +446,12 @@ static void handle_continuous_rx_packet(void)
     else
     {
         int16_t rssi;
+        uint8_t snr;
 
         rfm95w_read_fifo();
 
         rssi = -137 + (int16_t)rfm95w_io_read(RFM95W_REG_PKT_RSSI_VALUE);
+        snr = rfm95w_io_read(RFM95W_REG_PKT_SNR_VALUE);
 
         if (NULL != received_message_callback)
         {
@@ -455,6 +460,7 @@ static void handle_continuous_rx_packet(void)
             received_message_callback((uint8_t*)rx_buffer.data,
                                       rx_buffer.length,
                                       rssi,
+                                      snr,
                                       &ack_parameters,
                                       (rfm95w_buffer_t*)&tx_buffer);
 

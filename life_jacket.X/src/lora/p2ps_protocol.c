@@ -48,6 +48,7 @@ static bool initialized = false;
 static void p2ps_handle_received_message(const uint8_t * data,
                                          uint8_t length,
                                          int16_t rssi,
+                                         uint8_t snr,
                                          rfm95w_ack_parameters_t * ack_parameters,
                                          rfm95w_buffer_t * ack);
 
@@ -56,7 +57,8 @@ static void p2ps_parse_header(p2p_frame_header_t * header,
 
 static void p2ps_print_received_message(const uint8_t * data,
                                         uint8_t length,
-                                        int16_t rssi);
+                                        int16_t rssi,
+                                        uint8_t snr);
 
 static void p2ps_parse_gps_coordinates(nmea_coordinates_info_t * coordinates,
                                        const uint8_t * data);
@@ -97,6 +99,7 @@ static void p2ps_handle_received_message(
     const uint8_t * data,
     uint8_t length,
     int16_t rssi,
+    uint8_t snr,
     rfm95w_ack_parameters_t * ack_parameters,
     rfm95w_buffer_t * ack)
 {
@@ -106,7 +109,7 @@ static void p2ps_handle_received_message(
     ack_parameters->wait_for_ack = false;
     ack_parameters->was_valid_ack = false;
 
-    p2ps_print_received_message(data, length, rssi);
+    p2ps_print_received_message(data, length, rssi, snr);
 
     p2ps_parse_header(&header, data);
 
@@ -152,7 +155,8 @@ static void p2ps_parse_header(p2p_frame_header_t * header,
 
 static void p2ps_print_received_message(const uint8_t * data,
                                         uint8_t length,
-                                        int16_t rssi)
+                                        int16_t rssi,
+                                        uint8_t snr)
 {
     uint8_t i;
     char * p = g_uart_string_buffer;
@@ -166,7 +170,7 @@ static void p2ps_print_received_message(const uint8_t * data,
         p += 3;
     }
 
-    sprintf(p, "RSSI = %d", rssi);
+    sprintf(p, "RSSI = %d SNR = %f dB", rssi, ((double)(int8_t)snr) / 4);
 
     debug_log_append_line(g_uart_string_buffer);
 }

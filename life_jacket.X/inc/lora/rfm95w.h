@@ -37,6 +37,7 @@ typedef void (*rfmw95w_received_message_callback_t)(
     const uint8_t * data,
     uint8_t length,
     int16_t rssi,
+    uint8_t snr,
     rfm95w_ack_parameters_t * ack_parameters,
     rfm95w_buffer_t * ack);
 
